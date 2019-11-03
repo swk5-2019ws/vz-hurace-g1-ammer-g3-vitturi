@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Core.Tests", "Hurace
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Domain", "Hurace.Domain\Hurace.Domain.csproj", "{2543CF21-3B17-4546-B14D-A00031DB71C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurace.Api", "Hurace.Api\Hurace.Api.csproj", "{42383546-7D4F-4EFC-B805-1FD02E4D1E04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Api", "Hurace.Api\Hurace.Api.csproj", "{42383546-7D4F-4EFC-B805-1FD02E4D1E04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurace.Dal.Interface", "Hurace.Dal.Interface\Hurace.Dal.Interface.csproj", "{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{42383546-7D4F-4EFC-B805-1FD02E4D1E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42383546-7D4F-4EFC-B805-1FD02E4D1E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42383546-7D4F-4EFC-B805-1FD02E4D1E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
