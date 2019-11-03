@@ -1,10 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hurace.Domain
 {
     public class Skier : DataObject
     {
+        public string FirstName
+        {
+            get => default;
+            set { }
+        }
+
+        public string LastName
+        {
+            get => default;
+            set { }
+        }
+
+        public DateTime Birthdate
+        {
+            get => default;
+            set { }
+        }
+
+        public byte[] ProfileImage
+        {
+            get => default;
+            set { }
+        }
+
+        public int Archived
+        {
+            get => default;
+            set { }
+        }
+
+        public Country Country
+        {
+            get => default;
+            set { }
+        }
     }
 }

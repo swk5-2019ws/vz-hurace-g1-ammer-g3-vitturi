@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hurace.Domain
 {
@@ -9,9 +7,13 @@ namespace Hurace.Domain
         public int Id
         {
             get => default;
-            set
-            {
-            }
+            set { }
+        }
+
+        public DateTime LastModified
+        {
+            get => default;
+            set { }
         }
     }
 }

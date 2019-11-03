@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Hurace.Domain
 {
-    public class RaceData : DataObject
+    public class SensorData
     {
-        public RaceStatus RaceStatus
+        public int SensorId
         {
             get => default;
             set { }
         }
 
-        public IEnumerable<SensorData> SensorData
+        public DateTime Time
         {
             get => default;
             set { }

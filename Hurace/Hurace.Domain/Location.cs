@@ -2,15 +2,21 @@
 
 namespace Hurace.Domain
 {
-    public class RaceData : DataObject
+    public class Location
     {
-        public RaceStatus RaceStatus
+        public string Name
         {
             get => default;
             set { }
         }
 
-        public IEnumerable<SensorData> SensorData
+        public Country Country
+        {
+            get => default;
+            set { }
+        }
+
+        public IEnumerable<RaceType> RaceTypes
         {
             get => default;
             set { }
