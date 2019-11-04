@@ -39,5 +39,11 @@ namespace Hurace.Domain
             get => default;
             set { }
         }
+
+        public Gender Gender
+        {
+            get => default;
+            set { }
+        }
     }
 }

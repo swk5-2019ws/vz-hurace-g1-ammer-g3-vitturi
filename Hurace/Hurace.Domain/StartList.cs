@@ -14,13 +14,13 @@
             set { }
         }
 
-        public int FirstRunNumber
+        public int Number
         {
             get => default;
             set { }
         }
 
-        public int SecondRunNumber
+        public Run Run
         {
             get => default;
             set { }

@@ -10,7 +10,19 @@ namespace Hurace.Domain
             set { }
         }
 
-        public IEnumerable<SensorData> SensorData
+        public ICollection<SensorData> SensorData
+        {
+            get => default;
+            set { }
+        }
+
+        public int Position
+        {
+            get => default;
+            set { }
+        }
+
+        public Run Run
         {
             get => default;
             set { }
