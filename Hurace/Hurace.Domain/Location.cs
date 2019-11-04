@@ -21,5 +21,13 @@ namespace Hurace.Domain
             get => default;
             set { }
         }
+
+        public DataObject DataObject
+        {
+            get => default;
+            set
+            {
+            }
+        }
     }
 }
