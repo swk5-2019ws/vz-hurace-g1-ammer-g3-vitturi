@@ -9,11 +9,5 @@ namespace Hurace.Domain
             get => default;
             set { }
         }
-
-        public DateTime LastModified
-        {
-            get => default;
-            set { }
-        }
     }
 }
