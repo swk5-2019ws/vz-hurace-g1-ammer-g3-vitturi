@@ -1,21 +1,19 @@
-CREATE TABLE IF NOT EXISTS race
+CREATE TABLE IF NOT EXISTS races
 (
     id                INTEGER PRIMARY KEY,
+    date              TEXT    NOT NULL,
     description       TEXT,
-    end_data          TEXT    NOT NULL,
     name              TEXT    NOT NULL,
     number_of_sensors INTEGER NOT NULL,
-    start_data        TEXT    NOT NULL,
+    website           TEXT,
     gender_id         TEXT,
-    race_type_id      TEXT,
-    location_id       INT,
-    FOREIGN KEY (gender_id) REFERENCES gender (id),
-    FOREIGN KEY (location_id) REFERENCES location (id),
-    FOREIGN KEY (race_type_id) REFERENCES race_type (id),
+    competition_id    INTEGER,
+    FOREIGN KEY (gender_id) REFERENCES genders (id),
+    FOREIGN KEY (competition_id) REFERENCES competitions (id),
     CHECK (number_of_sensors > 0)
 );
 
-CREATE TABLE IF NOT EXISTS skier
+CREATE TABLE IF NOT EXISTS skiers
 (
     id            INTEGER PRIMARY KEY,
     archived      INTEGER DEFAULT 0,
@@ -25,23 +23,23 @@ CREATE TABLE IF NOT EXISTS skier
     profile_image BLOB,
     national_code TEXT,
     gender_id     TEXT,
-    FOREIGN KEY (national_code) REFERENCES country (national_code),
-    FOREIGN KEY (gender_id) REFERENCES gender (id),
+    FOREIGN KEY (national_code) REFERENCES countries (national_code),
+    FOREIGN KEY (gender_id) REFERENCES genders (id),
     CHECK ( archived = 0 OR archived = 1 ),
     CHECK (LENGTH(first_name) = 50),
     CHECK (LENGTH(last_name) = 50)
 );
 
-CREATE TABLE IF NOT EXISTS start_list
+CREATE TABLE IF NOT EXISTS start_lists
 (
     id       INTEGER PRIMARY KEY,
     number   INTEGER,
     skier_id INTEGER,
     race_id  INTEGER,
     run_id   INTEGER,
-    FOREIGN KEY (skier_id) REFERENCES skier (id),
-    FOREIGN KEY (race_id) REFERENCES race (id),
-    FOREIGN KEY (run_id) REFERENCES run (id),
+    FOREIGN KEY (skier_id) REFERENCES skiers (id),
+    FOREIGN KEY (race_id) REFERENCES races (id),
+    FOREIGN KEY (run_id) REFERENCES runs (id),
     CHECK (number > 0)
 );
 
@@ -52,7 +50,7 @@ CREATE TABLE IF NOT EXISTS race_data
     sensor_data_id INTEGER,
     run_id         INTEGER,
     FOREIGN KEY (sensor_data_id) REFERENCES sensor_data (id),
-    FOREIGN KEY (run_id) REFERENCES run (id),
+    FOREIGN KEY (run_id) REFERENCES runs (id),
     CHECK (position > 0)
 );
 
@@ -64,32 +62,40 @@ CREATE TABLE IF NOT EXISTS sensor_data
     CHECK (sensor_id >= 0)
 );
 
-CREATE TABLE IF NOT EXISTS location
+CREATE TABLE IF NOT EXISTS locations
 (
     id            INTEGER PRIMARY KEY,
-    name          TEXT NOT NULL,
+    name          TEXT UNIQUE NOT NULL,
     national_code INTEGER,
-    FOREIGN KEY (national_code) REFERENCES country (national_code)
+    FOREIGN KEY (national_code) REFERENCES countries (national_code)
 );
 
-CREATE TABLE IF NOT EXISTS country
+CREATE TABLE IF NOT EXISTS competitions
+(
+    id           INTEGER PRIMARY KEY,
+    location_id  INTEGER,
+    race_type_id INTEGER,
+    FOREIGN KEY (location_id) REFERENCES locations (id),
+    FOREIGN KEY (race_type_id) REFERENCES race_types (id)
+);
+
+CREATE TABLE IF NOT EXISTS countries
 (
     national_code TEXT PRIMARY KEY NOT NULL,
     CHECK (LENGTH(national_code) = 3)
 );
 
-CREATE TABLE IF NOT EXISTS race_type
+CREATE TABLE IF NOT EXISTS race_types
 (
     id TEXT PRIMARY KEY NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS gender
+CREATE TABLE IF NOT EXISTS genders
 (
     id TEXT PRIMARY KEY NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS run
+CREATE TABLE IF NOT EXISTS runs
 (
     id INTEGER PRIMARY KEY NOT NULL
 );
-
