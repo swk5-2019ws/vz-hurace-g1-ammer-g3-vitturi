@@ -17,7 +17,7 @@
   <Class Name="Hurace.Domain.Race">
     <Position X="12" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAACAAAIAAAQgAAAACIAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAACAAAIAAAQAAAAACIABAAAAAAAAAAA=</HashCode>
       <FileName>Race.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -36,20 +36,9 @@
       <Property Name="RaceStatus" />
       <Property Name="Run" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="SensorData" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Hurace.Domain.Skier">
     <Position X="9.75" Y="5.5" Width="1.5" />
-    <AssociationLine Name="Country" Type="Hurace.Domain.Country" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10.906" Y="5.5" />
-        <Point X="10.906" Y="4.875" />
-        <Point X="10.875" Y="4.875" />
-        <Point X="10.875" Y="2.853" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAEAAAAAAAACCAAAAAAQIAAIAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>Skier.cs</FileName>
@@ -64,11 +53,11 @@
     <AssociationLine Name="Race" Type="Hurace.Domain.Race" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="8.625" Y="6.733" />
-        <Point X="8.625" Y="7.877" />
-        <Point X="10.292" Y="7.877" Type="JumpStart" />
-        <Point X="10.458" Y="7.877" Type="JumpEnd" />
-        <Point X="12.312" Y="7.877" />
-        <Point X="12.312" Y="7.502" />
+        <Point X="8.625" Y="7.685" />
+        <Point X="10.292" Y="7.685" Type="JumpStart" />
+        <Point X="10.458" Y="7.685" Type="JumpEnd" />
+        <Point X="12.312" Y="7.685" />
+        <Point X="12.312" Y="7.31" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -98,9 +87,6 @@
       <Property Name="Country" />
       <Property Name="DataObject" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="RaceTypes" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Hurace.Domain.SensorData">
     <Position X="5.5" Y="5.5" Width="1.5" />

@@ -4,13 +4,7 @@ namespace Hurace.Domain
 {
     public class Race : DataObject
     {
-        public DateTime StartDate
-        {
-            get => default;
-            set { }
-        }
-
-        public DateTime EndDate
+        public DateTime Date
         {
             get => default;
             set { }
