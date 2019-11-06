@@ -2,7 +2,9 @@
 {
     public enum RaceType
     {
+        Downhill,
+        GiantSlalom,
         Slalom,
-        GiantSlalom
+        SuperG
     }
 }

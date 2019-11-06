@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
 {
+    [Table("race_data")]
     public class RaceData : DataObject
     {
         public RaceStatus RaceStatus
@@ -16,6 +18,7 @@ namespace Hurace.Domain
             set { }
         }
 
+        [Column("position")]
         public int Position
         {
             get => default;

@@ -56,6 +56,14 @@ VALUES ('Downhill'),
 
 INSERT OR
 REPLACE
+INTO race_status (id)
+VALUES ('DidNotStart'),
+       ('Disqualified'),
+       ('DidNotFinish'),
+       ('DidNotQualify');
+
+INSERT OR
+REPLACE
 INTO locations (id, name, national_code)
 VALUES (1, 'Adelboden', 'SUI'),
        (2, 'Alta Badia', 'ITA'),
@@ -115,17 +123,19 @@ INTO races (id, date, description, name, number_of_sensors, website, gender_id, 
 VALUES (1, '2019-01-26 00:00:00.000', 'The Kitzbühel Slalom', 'Kitzbühel Slalom', 5, 'hahnenkamm.com', 'm', 4),
        (2, '2019-01-29 00:00:00.000', 'The Schladming Slalom', 'Schladming Slalom', 5, 'thenightrace.at', 'm', 1),
        (3, '2019-01-20 00:00:00.000', 'The Wengen Slalom', 'Wengen Slalom', 5, NULL, 'm', 6),
-       (4, '2019-01-12 00:00:00.000', 'The Adelboden Giant Slalom', 'Adelboden Giant Slalom', 5, 'weltcup-adelboden.ch', 'm', 7),
+       (4, '2019-01-12 00:00:00.000', 'The Adelboden Giant Slalom', 'Adelboden Giant Slalom', 5, 'weltcup-adelboden.ch',
+        'm', 7),
        (5, '2019-01-13 00:00:00.000', 'The Adelboden Slalom', 'Adelboden Slalom', 5, 'weltcup-adelboden.ch', 'm', 8),
        (6, '2019-01-06 00:00:00.000', 'The Zagreb Slalom', 'Zagreb Slalom', 5, 'snowqueentrophy.com', 'm', 10),
        (7, '2019-01-05 00:00:00.000', 'The Zagreb Slalom', 'Zagreb Slalom', 5, 'snowqueentrophy.com', 'w', 10),
        (8, '2019-01-08 00:00:00.000', 'The Flachau Slalom', 'Flachau Slalom', 5, 'skiweltcup-flachau.at', 'w', 9),
-       (9, '2018-12-21 00:00:00.000', 'The Courchevel Giant Slalom', 'Courchevel Giant Slalom', 5, 'sportcourchevel.com', 'w', 12),
+       (9, '2018-12-21 00:00:00.000', 'The Courchevel Giant Slalom', 'Courchevel Giant Slalom', 5,
+        'sportcourchevel.com', 'w', 12),
        (10, '2018-12-22 00:00:00.000', 'The Courchevel Slalom', 'Courchevel Slalom', 5, 'sportcourchevel.com', 'w', 11);
 
 INSERT OR
-REPLACE 
-INTO skiers (id, birthdate, first_name, last_name, profile_image, national_code, gender_id) 
+REPLACE
+INTO skiers (id, birthdate, first_name, last_name, profile_image, national_code, gender_id)
 VALUES (1, '1998-04-18', 'Ema', 'Martinez', NULL, 'USA', 'f'),
        (2, '1988-06-01', 'Donghyun', 'Jung', NULL, 'KOR', 'm'),
        (3, '2000-01-03', 'Jean', 'Kayrouz', NULL, 'LBN', 'm'),

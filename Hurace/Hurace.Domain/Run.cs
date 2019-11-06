@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hurace.Domain
+﻿namespace Hurace.Domain
 {
     public enum Run
     {
