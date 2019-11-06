@@ -45,18 +45,20 @@ CREATE TABLE IF NOT EXISTS race_data
 (
     id             INTEGER PRIMARY KEY,
     position       INTEGER,
-    sensor_data_id INTEGER,
     run_id         INTEGER,
-    FOREIGN KEY (sensor_data_id) REFERENCES sensor_data (id),
+    race_status_id INTEGER,
     FOREIGN KEY (run_id) REFERENCES runs (id),
+    FOREIGN KEY (race_status_id) REFERENCES race_status (id),
     CHECK (position > 0)
 );
 
 CREATE TABLE IF NOT EXISTS sensor_data
 (
-    id        INTEGER PRIMARY KEY,
-    sensor_id INTEGER NOT NULL,
-    time      TEXT    NOT NULL,
+    id           INTEGER PRIMARY KEY,
+    sensor_id    INTEGER NOT NULL,
+    time         TEXT    NOT NULL,
+    race_data_id INTEGER NOT NULL,
+    FOREIGN KEY (race_data_id) REFERENCES race_data (id),
     CHECK (sensor_id >= 0)
 );
 
@@ -96,4 +98,9 @@ CREATE TABLE IF NOT EXISTS genders
 CREATE TABLE IF NOT EXISTS runs
 (
     id INTEGER PRIMARY KEY NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS race_status
+(
+    id TEXT PRIMARY KEY NOT NULL
 );
