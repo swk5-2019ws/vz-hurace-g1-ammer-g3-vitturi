@@ -36,6 +36,9 @@
       <Property Name="RaceStatus" />
       <Property Name="Run" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="SensorData" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Hurace.Domain.Skier">
     <Position X="9.75" Y="5.5" Width="1.5" />
@@ -80,30 +83,19 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAAAQAAAIACAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAIACAAAAAAAAAAAAAA=</HashCode>
       <FileName>Location.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Country" />
-      <Property Name="DataObject" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Hurace.Domain.SensorData">
     <Position X="5.5" Y="5.5" Width="1.5" />
-    <AssociationLine Name="DataObject" Type="Hurace.Domain.DataObject" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="6.125" Y="5.5" />
-        <Point X="6.125" Y="4.062" />
-        <Point X="6.75" Y="4.062" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAIAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
       <FileName>SensorData.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="DataObject" />
-    </ShowAsAssociation>
   </Class>
   <Enum Name="Hurace.Domain.Gender">
     <Position X="9.5" Y="9" Width="1.5" />
@@ -122,7 +114,7 @@
   <Enum Name="Hurace.Domain.RaceType">
     <Position X="14.5" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAAAAIAAAAAAAAAAAgBAAAAAAAAAAA=</HashCode>
       <FileName>RaceType.cs</FileName>
     </TypeIdentifier>
   </Enum>

@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
 {
-    public class Location
+    [Table("locations")]
+    public class Location : DataObject
     {
+        [Column("name")]
         public string Name
         {
             get => default;
@@ -20,14 +23,6 @@ namespace Hurace.Domain
         {
             get => default;
             set { }
-        }
-
-        public DataObject DataObject
-        {
-            get => default;
-            set
-            {
-            }
         }
     }
 }
