@@ -25,9 +25,7 @@ CREATE TABLE IF NOT EXISTS skiers
     gender_id     TEXT,
     FOREIGN KEY (national_code) REFERENCES countries (national_code),
     FOREIGN KEY (gender_id) REFERENCES genders (id),
-    CHECK ( archived = 0 OR archived = 1 ),
-    CHECK (LENGTH(first_name) = 50),
-    CHECK (LENGTH(last_name) = 50)
+    CHECK ( archived = 0 OR archived = 1 )
 );
 
 CREATE TABLE IF NOT EXISTS start_lists
