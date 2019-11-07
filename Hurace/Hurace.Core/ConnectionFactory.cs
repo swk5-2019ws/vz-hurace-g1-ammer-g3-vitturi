@@ -15,22 +15,20 @@ namespace Hurace.Core
             ConnectionString = connectionString;
         }
 
-        public IDbConnection CreateConnection()
+        public DbConnection CreateConnection()
         {
-            IDbConnection connection = new SQLiteConnection(ConnectionString);
+            DbConnection connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             InitializeDatabase(connection);
             return connection;
         }
 
-        private void InitializeDatabase(IDbConnection connection)
+        private void InitializeDatabase(DbConnection connection)
         {
-            using (IDbCommand command = connection.CreateCommand())
-            {
-                string script = File.ReadAllText(".\\Scripts\\create_tables.sql");
-                command.CommandText = script;
-                command.ExecuteNonQuery();
-            }
+            using var command = connection.CreateCommand();
+            string script = File.ReadAllText(".\\Scripts\\create_tables.sql");
+            command.CommandText = script;
+            command.ExecuteNonQuery();
         }
     }
 }

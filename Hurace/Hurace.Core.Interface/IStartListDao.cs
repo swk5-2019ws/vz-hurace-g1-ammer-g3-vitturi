@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Hurace.Domain;
+﻿using Hurace.Domain;
 
-namespace Hurace.Dal.Interface
+namespace Hurace.Core.Interface
 {
     public interface IStartListDao : IDataObjectDao<StartList>
     {

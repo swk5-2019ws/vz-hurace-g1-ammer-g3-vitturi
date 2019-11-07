@@ -2,7 +2,7 @@
 
 namespace Hurace.Core.Interface
 {
-    public interface ISkierDao : IDataObjectDao<Skier>
+    public interface ISensorDataDao : IDataObjectDao<SensorData>
     {
     }
 }

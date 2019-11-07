@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace Hurace.Core.Mapper
         /// <param name="connection">Open SqlConnection</param>
         /// <param name="entity">The new entity.</param>
         /// <returns>Id of inserted entity</returns>
-        public static Task<object> Insert<TEntity>(this DbConnection connection, TEntity entity)
+        public static Task<TEntity> Insert<TEntity>(this DbConnection connection, TEntity entity)
         {
             return null;
         }
