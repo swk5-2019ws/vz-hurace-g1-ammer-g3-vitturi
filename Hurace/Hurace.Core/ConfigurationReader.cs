@@ -2,7 +2,7 @@
 
 namespace Hurace.Core
 {
-    public static class ConfigurationUtil
+    static class ConfigurationReader
     {
         private static IConfiguration configuration = null;
 
@@ -11,9 +11,9 @@ namespace Hurace.Core
             .AddJsonFile("appsettings.json", optional: false)
             .Build();
 
-        public static string GetConnectionString(string configName) =>
+        public static string GetConnectionString(Environment environment) =>
             GetConfiguration()
             .GetSection("ConnectionStrings")
-            .GetSection(configName).Value;
+            .GetSection(environment.ToString()).Value;
     }
 }

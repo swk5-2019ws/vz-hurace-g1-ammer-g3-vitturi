@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
@@ -9,10 +9,28 @@ namespace Hurace.Core
     public class ConnectionFactory
     {
         public string ConnectionString { get; }
+        public Environment Environment { get; }
 
-        public ConnectionFactory(string connectionString)
+        private static readonly Dictionary<Environment, DbConnection> connections = new Dictionary<Environment, DbConnection>();
+
+        public ConnectionFactory(Environment environment)
         {
-            ConnectionString = connectionString;
+            Environment = environment;
+            ConnectionString = ConfigurationReader.GetConnectionString(environment);
+        }
+
+        public DbConnection GetConnection()
+        {
+            if (!connections.ContainsKey(Environment))
+            {
+                connections.Add(Environment, CreateConnection());
+            }
+            else if (connections[Environment].State == ConnectionState.Closed)
+            {
+                connections[Environment].Open();
+            }
+
+            return connections[Environment];
         }
 
         public DbConnection CreateConnection()
@@ -23,12 +41,16 @@ namespace Hurace.Core
             return connection;
         }
 
-        private void InitializeDatabase(DbConnection connection)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Script does not contain user input")]
+        private static void InitializeDatabase(DbConnection connection)
         {
-            using var command = connection.CreateCommand();
             string script = File.ReadAllText(".\\Scripts\\create_tables.sql");
-            command.CommandText = script;
-            command.ExecuteNonQuery();
+
+            using (DbCommand command = connection.CreateCommand())
+            {
+                command.CommandText = script;
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
