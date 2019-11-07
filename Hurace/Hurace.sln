@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Core", "Hurace.Core\Hurace.Core.csproj", "{92B3CB18-D1F8-47C6-A923-EE7FC05C793D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Core.Tests", "Hurace.Core.Tests\Hurace.Core.Tests.csproj", "{2233C753-475A-4D49-83F0-0E47FA516F4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Core.Test", "Hurace.Core.Test\Hurace.Core.Test.csproj", "{2233C753-475A-4D49-83F0-0E47FA516F4D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Domain", "Hurace.Domain\Hurace.Domain.csproj", "{2543CF21-3B17-4546-B14D-A00031DB71C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Api", "Hurace.Api\Hurace.Api.csproj", "{42383546-7D4F-4EFC-B805-1FD02E4D1E04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Dal.Interface", "Hurace.Dal.Interface\Hurace.Dal.Interface.csproj", "{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Core.Interface", "Hurace.Core.Interface\Hurace.Core.Interface.csproj", "{7E9AF0A9-4F9A-45D4-AD35-304A279DDB14}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hurace.Core.Mapper", "Hurace.Mapper\Hurace.Core.Mapper.csproj", "{96509EB7-0055-4D84-945B-CA45A03A89FD}"
 EndProject
