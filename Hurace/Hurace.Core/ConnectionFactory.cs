@@ -10,34 +10,26 @@ namespace Hurace.Core
     {
         public string ConnectionString { get; }
         public Environment Environment { get; }
-
-        private static readonly Dictionary<Environment, DbConnection> connections = new Dictionary<Environment, DbConnection>();
+        private bool initialized;
 
         public ConnectionFactory(Environment environment)
         {
             Environment = environment;
             ConnectionString = ConfigurationReader.GetConnectionString(environment);
-        }
-
-        public DbConnection GetConnection()
-        {
-            if (!connections.ContainsKey(Environment))
-            {
-                connections.Add(Environment, CreateConnection());
-            }
-            else if (connections[Environment].State == ConnectionState.Closed)
-            {
-                connections[Environment].Open();
-            }
-
-            return connections[Environment];
+            initialized = false;
         }
 
         public DbConnection CreateConnection()
         {
             DbConnection connection = new SQLiteConnection(ConnectionString);
             connection.Open();
-            InitializeDatabase(connection);
+
+            if (!initialized)
+            {
+                InitializeDatabase(connection);
+                initialized = true;
+            }
+
             return connection;
         }
 
