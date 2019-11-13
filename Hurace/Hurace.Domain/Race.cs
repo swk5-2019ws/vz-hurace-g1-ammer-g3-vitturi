@@ -27,19 +27,15 @@ namespace Hurace.Domain
             set { }
         }
 
-        public RaceType RaceType
-        {
-            get => default;
-            set { }
-        }
-
+        [ForeignKey("gender_id")]
         public Gender Gender
         {
             get => default;
             set { }
         }
 
-        public Location Location
+        [ForeignKey("competition_id")]
+        public Competition Competition
         {
             get => default;
             set { }

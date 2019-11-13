@@ -40,13 +40,15 @@ namespace Hurace.Domain
             get => default;
             set { }
         }
-
+        
+        [ForeignKey("national_code")]
         public Country Country
         {
             get => default;
             set { }
         }
 
+        [ForeignKey("gender_id")]
         public Gender Gender
         {
             get => default;

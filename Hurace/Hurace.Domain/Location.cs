@@ -13,13 +13,14 @@ namespace Hurace.Domain
             set { }
         }
 
+        [ForeignKey("national_code")]
         public Country Country
         {
             get => default;
             set { }
         }
 
-        public IEnumerable<RaceType> RaceTypes
+        public ICollection<RaceType> RaceTypes
         {
             get => default;
             set { }
