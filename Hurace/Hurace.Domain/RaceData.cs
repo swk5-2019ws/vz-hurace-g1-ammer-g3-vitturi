@@ -6,6 +6,7 @@ namespace Hurace.Domain
     [Table("race_data")]
     public class RaceData : DataObject
     {
+        [ForeignKey("race_status_id")]
         public RaceStatus RaceStatus
         {
             get => default;
@@ -25,6 +26,7 @@ namespace Hurace.Domain
             set { }
         }
 
+        [ForeignKey("run_id")]
         public Run Run
         {
             get => default;
