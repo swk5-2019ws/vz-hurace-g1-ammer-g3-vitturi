@@ -6,10 +6,6 @@ namespace Hurace.Domain
     {
         [Key]
         [Column("id")]
-        public int Id
-        {
-            get => default;
-            set { }
-        }
+        public int Id { get; set; }
     }
 }

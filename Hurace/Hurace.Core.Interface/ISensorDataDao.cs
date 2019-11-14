@@ -2,7 +2,7 @@
 
 namespace Hurace.Core.Interface
 {
-    public interface ISensorDataDao : IDataObjectDao<SensorData>
+    public interface ISensorDataDao : IDataObjectDao<SensorMeasurement>
     {
     }
 }

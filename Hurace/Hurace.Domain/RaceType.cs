@@ -7,17 +7,9 @@ namespace Hurace.Domain
     {
         [Key(false)]
         [Column("name")]
-        public string Name
-        {
-            get => default;
-            set { }
-        }
+        public string Name { get; set; }
 
         [Column("run_count")]
-        public int RunCount
-        {
-            get => default;
-            set { }
-        }
+        public int RunCount { get; set; }
     }
 }

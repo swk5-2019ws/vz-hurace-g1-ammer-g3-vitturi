@@ -7,52 +7,24 @@ namespace Hurace.Domain
     public class Skier : DataObject
     {
         [Column("first_name")]
-        public string FirstName
-        {
-            get => default;
-            set { }
-        }
+        public string FirstName { get; set; }
 
         [Column("last_name")]
-        public string LastName
-        {
-            get => default;
-            set { }
-        }
+        public string LastName { get; set; }
 
         [Column("birthdate")]
-        public DateTime Birthdate
-        {
-            get => default;
-            set { }
-        }
+        public DateTime Birthdate { get; set; }
 
         [Column("picture_url")]
-        public string PictureUrl
-        {
-            get => default;
-            set { }
-        }
+        public string PictureUrl { get; set; }
 
         [Column("archived")]
-        public bool Archived
-        {
-            get => default;
-            set { }
-        }
+        public bool Archived { get; set; }
 
         [ForeignKey("country_code")]
-        public Country Country
-        {
-            get => default;
-            set { }
-        }
+        public Country Country { get; set; }
 
-        [ForeignKey("gender")]
-        public Gender Gender
-        {
-            get => default;
-            set { }
-        }
+        [Column("gender")]
+        public Gender Gender { get; set; }
     }
 }

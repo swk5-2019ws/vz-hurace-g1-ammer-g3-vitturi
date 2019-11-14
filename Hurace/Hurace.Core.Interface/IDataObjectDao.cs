@@ -9,7 +9,7 @@ namespace Hurace.Core.Interface
         Task<IEnumerable<T>> FindAll();
         Task<T> FindById(int id);
         Task<bool> Update(T dataObject);
-        Task<T> Insert(T dataObject);
+        Task<int> Insert(T dataObject);
         Task<bool> Delete(int id);
     }
 }

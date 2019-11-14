@@ -7,7 +7,7 @@ namespace Hurace.Core.Mapper.Attributes
     {
         public Column(string name)
         {
-            this.Name = name;
+            Name = name;
         }
 
         public string Name { get; set; }

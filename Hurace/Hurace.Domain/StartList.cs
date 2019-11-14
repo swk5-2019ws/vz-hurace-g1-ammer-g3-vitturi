@@ -6,31 +6,15 @@ namespace Hurace.Domain
     public class StartList : DataObject
     {
         [ForeignKey("race_id")]
-        public Race Race
-        {
-            get => default;
-            set { }
-        }
+        public Race Race { get; set; }
 
         [ForeignKey("skier_id")]
-        public Skier Skier
-        {
-            get => default;
-            set { }
-        }
+        public Skier Skier { get; set; }
 
         [Column("number")]
-        public int Number
-        {
-            get => default;
-            set { }
-        }
+        public int Number { get; set; }
 
         [Column("run_number")]
-        public int RunNumber
-        {
-            get => default;
-            set { }
-        }
+        public int RunNumber { get; set; }
     }
 }

@@ -7,61 +7,27 @@ namespace Hurace.Domain
     public class Race : DataObject
     {
         [Column("date")]
-        public DateTime Date
-        {
-            get => default;
-            set { }
-        }
+        public DateTime Date { get; set; }
 
         [Column("name")]
-        public string Name
-        {
-            get => default;
-            set { }
-        }
+        public string Name { get; set; }
 
         [Column("description")]
-        public string Description
-        {
-            get => default;
-            set { }
-        }
+        public string Description { get; set; }
 
-        [ForeignKey("gender")]
-        public Gender Gender
-        {
-            get => default;
-            set { }
-        }
+        [Column("gender")]
+        public Gender Gender { get; set; }
 
         [Column("number_of_sensors")]
-        public int NumberOfSensors
-        {
-            get => default;
-            set { }
-        }
+        public int NumberOfSensors { get; set; }
 
         [Column("race_type_name")]
-        public RaceType RaceType
-        {
-            get => default;
-            set { }
-        }
+        public RaceType RaceType { get; set; }
 
         [Column("website")]
-        public string Website
-        {
-            get => default;
-            set { }
-        }
+        public string Website { get; set; }
 
         [ForeignKey("location_id")]
-        public Location Location
-        {
-            get => default;
-            set
-            {
-            }
-        }
+        public Location Location { get; set; }
     }
 }

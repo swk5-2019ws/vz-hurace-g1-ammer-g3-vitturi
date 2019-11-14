@@ -7,38 +7,18 @@ namespace Hurace.Domain
     public class RaceData : DataObject
     {
         [Column("race_status")]
-        public RaceStatus RaceStatus
-        {
-            get => default;
-            set { }
-        }
+        public RaceStatus RaceStatus { get; set; }
 
         [Column("time")]
-        public DateTime Time
-        {
-            get => default;
-            set { }
-        }
+        public DateTime Time { get; set; }
 
         [ForeignKey("race_id")]
-        public Race Race
-        {
-            get => default;
-            set { }
-        }
+        public Race Race { get; set; }
 
         [ForeignKey("skier_id")]
-        public Skier Skier
-        {
-            get => default;
-            set { }
-        }
+        public Skier Skier { get; set; }
 
         [Column("run_number")]
-        public int RunNumber
-        {
-            get => default;
-            set { }
-        }
+        public int RunNumber { get; set; }
     }
 }

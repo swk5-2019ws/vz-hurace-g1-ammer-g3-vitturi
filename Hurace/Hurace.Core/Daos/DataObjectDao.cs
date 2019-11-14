@@ -33,7 +33,7 @@ namespace Hurace.Core.Daos
             return connection.Update(dataObject);
         }
 
-        public Task<T> Insert(T dataObject)
+        public Task<int> Insert(T dataObject)
         {
             using var connection = ConnectionFactory.CreateConnection();
             return connection.Insert(dataObject);
