@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
@@ -6,28 +6,36 @@ namespace Hurace.Domain
     [Table("race_data")]
     public class RaceData : DataObject
     {
-        [ForeignKey("race_status_id")]
+        [Column("race_status")]
         public RaceStatus RaceStatus
         {
             get => default;
             set { }
         }
 
-        public ICollection<SensorData> SensorData
+        [Column("time")]
+        public DateTime Time
         {
             get => default;
             set { }
         }
 
-        [Column("position")]
-        public int Position
+        [ForeignKey("race_id")]
+        public Race Race
         {
             get => default;
             set { }
         }
 
-        [ForeignKey("run_id")]
-        public Run Run
+        [ForeignKey("skier_id")]
+        public Skier Skier
+        {
+            get => default;
+            set { }
+        }
+
+        [Column("run_number")]
+        public int RunNumber
         {
             get => default;
             set { }

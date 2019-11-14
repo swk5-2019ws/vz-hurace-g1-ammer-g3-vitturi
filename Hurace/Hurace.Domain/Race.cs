@@ -3,7 +3,7 @@ using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
 {
-    [Table("races")]
+    [Table("race")]
     public class Race : DataObject
     {
         [Column("date")]
@@ -27,15 +27,8 @@ namespace Hurace.Domain
             set { }
         }
 
-        [ForeignKey("gender_id")]
+        [ForeignKey("gender")]
         public Gender Gender
-        {
-            get => default;
-            set { }
-        }
-
-        [ForeignKey("competition_id")]
-        public Competition Competition
         {
             get => default;
             set { }
@@ -46,6 +39,29 @@ namespace Hurace.Domain
         {
             get => default;
             set { }
+        }
+
+        [Column("race_type_name")]
+        public RaceType RaceType
+        {
+            get => default;
+            set { }
+        }
+
+        [Column("website")]
+        public string Website
+        {
+            get => default;
+            set { }
+        }
+
+        [ForeignKey("location_id")]
+        public Location Location
+        {
+            get => default;
+            set
+            {
+            }
         }
     }
 }

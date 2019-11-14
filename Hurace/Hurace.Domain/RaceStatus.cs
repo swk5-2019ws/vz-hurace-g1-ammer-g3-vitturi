@@ -2,9 +2,8 @@
 {
     public enum RaceStatus
     {
-        DidNotStart,
-        Disqualified,
         DidNotFinish,
-        DidNotQualify
+        DidNotQualify,
+        CurrentlyRunning
     }
 }

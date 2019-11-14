@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Hurace.Core.Mapper.Attributes;
+﻿using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
 {
-    [Table("locations")]
+    [Table("location")]
     public class Location : DataObject
     {
         [Column("name")]
@@ -13,14 +12,8 @@ namespace Hurace.Domain
             set { }
         }
 
-        [ForeignKey("national_code")]
+        [ForeignKey("country_code")]
         public Country Country
-        {
-            get => default;
-            set { }
-        }
-
-        public ICollection<RaceType> RaceTypes
         {
             get => default;
             set { }

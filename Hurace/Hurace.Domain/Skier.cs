@@ -3,7 +3,7 @@ using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
 {
-    [Table("skiers")]
+    [Table("skier")]
     public class Skier : DataObject
     {
         [Column("first_name")]
@@ -27,28 +27,28 @@ namespace Hurace.Domain
             set { }
         }
 
-        [Column("profile_image")]
-        public byte[] ProfileImage
+        [Column("picture_url")]
+        public string PictureUrl
         {
             get => default;
             set { }
         }
 
         [Column("archived")]
-        public int Archived
+        public bool Archived
         {
             get => default;
             set { }
         }
-        
-        [ForeignKey("national_code")]
+
+        [ForeignKey("country_code")]
         public Country Country
         {
             get => default;
             set { }
         }
 
-        [ForeignKey("gender_id")]
+        [ForeignKey("gender")]
         public Gender Gender
         {
             get => default;

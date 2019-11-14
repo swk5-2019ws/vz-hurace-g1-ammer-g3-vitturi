@@ -3,8 +3,8 @@ using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Domain
 {
-    [Table("sensor_data")]
-    public class SensorData : DataObject
+    [Table("sensor_measurement")]
+    public class SensorMeasurement : DataObject
     {
         [Column("sensor_id")]
         public int SensorId
@@ -13,8 +13,15 @@ namespace Hurace.Domain
             set { }
         }
 
-        [Column("time")]
-        public DateTime Time
+        [Column("interim_time")]
+        public DateTime InterimTime
+        {
+            get => default;
+            set { }
+        }
+
+        [ForeignKey("race_data_id")]
+        public RaceData RaceData
         {
             get => default;
             set { }

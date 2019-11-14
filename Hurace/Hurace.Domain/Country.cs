@@ -2,12 +2,12 @@
 
 namespace Hurace.Domain
 {
-    [Table("countries")]
+    [Table("country")]
     public class Country
     {
-        [Key]
-        [Column("national_code")]
-        public int NationalCode
+        [Key(false)]
+        [Column("code")]
+        public int Code
         {
             get => default;
             set { }

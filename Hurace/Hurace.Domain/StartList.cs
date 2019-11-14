@@ -2,7 +2,7 @@
 
 namespace Hurace.Domain
 {
-    [Table("start_lists")]
+    [Table("start_list")]
     public class StartList : DataObject
     {
         [ForeignKey("race_id")]
@@ -26,8 +26,8 @@ namespace Hurace.Domain
             set { }
         }
 
-        [ForeignKey("run_id")]
-        public Run Run
+        [Column("run_number")]
+        public int RunNumber
         {
             get => default;
             set { }
