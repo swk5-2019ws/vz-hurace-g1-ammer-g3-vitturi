@@ -62,11 +62,11 @@ CREATE TABLE IF NOT EXISTS race_data
     run_number  INTEGER,
     FOREIGN KEY (skier_id, race_id, run_number) REFERENCES skier_run (skier_id, race_id, run_number),
     CHECK (
-            race_status IS NULL OR
-            race_status = 'DidNotFinish' OR
-            race_status = 'DidNotQualify' OR
-            race_status = 'CurrentlyRunning'
-        )
+        race_status = 'Completed' OR
+        race_status = 'InProgress' OR
+        race_status = 'Unfinished' OR
+        race_status = 'Disqualified'
+    )
 );
 
 CREATE TABLE IF NOT EXISTS sensor_measurement
