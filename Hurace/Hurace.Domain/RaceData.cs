@@ -10,7 +10,7 @@ namespace Hurace.Domain
         public RaceStatus RaceStatus { get; set; }
 
         [Column("time")]
-        public DateTime Time { get; set; }
+        public double Time { get; set; }
 
         [ForeignKey("race_id")]
         public Race Race { get; set; }

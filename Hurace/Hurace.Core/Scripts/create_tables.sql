@@ -73,10 +73,11 @@ CREATE TABLE IF NOT EXISTS sensor_measurement
 (
     id           INTEGER PRIMARY KEY,
     sensor_id    INTEGER NOT NULL,
-    interim_time TEXT    NOT NULL,
+    interim_time REAL    NOT NULL,
     race_data_id INTEGER NOT NULL,
     FOREIGN KEY (race_data_id) REFERENCES race_data (id),
-    CHECK (sensor_id >= 0)
+    CHECK (sensor_id >= 0),
+    CHECK (interim_time >= 0),
 );
 
 CREATE TABLE IF NOT EXISTS location

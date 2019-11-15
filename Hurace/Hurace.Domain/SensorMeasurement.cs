@@ -10,7 +10,7 @@ namespace Hurace.Domain
         public int SensorId { get; set; }
 
         [Column("interim_time")]
-        public DateTime InterimTime { get; set; }
+        public double InterimTime { get; set; }
 
         [ForeignKey("race_data_id")]
         public RaceData RaceData { get; set; }
