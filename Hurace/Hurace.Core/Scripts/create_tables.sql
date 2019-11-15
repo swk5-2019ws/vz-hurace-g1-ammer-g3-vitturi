@@ -63,11 +63,11 @@ CREATE TABLE IF NOT EXISTS race_data (
     id          INTEGER PRIMARY KEY,
     race_status TEXT,
     time        REAL,
-    race_id     INTEGER,
     skier_id    INTEGER,
+    race_id     INTEGER,
     run_number  INTEGER,
     FOREIGN KEY (skier_id, race_id, run_number) REFERENCES skier_run (skier_id, race_id, run_number),
-    CHECK (race_status IN ('Completed', 'InProgress', 'Unfinished', 'Disqualified'))
+    CHECK (race_status IN ('Completed', 'InProgress', 'Unfinished', 'NotStarted', 'Disqualified'))
 );
 
 CREATE TABLE IF NOT EXISTS sensor_measurement (

@@ -5,6 +5,7 @@
         Completed,
         InProgress,
         Unfinished,
+        NotStarted,
         Disqualified
     }
 }
