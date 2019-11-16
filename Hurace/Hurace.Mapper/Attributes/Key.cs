@@ -7,7 +7,7 @@ namespace Hurace.Core.Mapper.Attributes
     {
         public Key(bool generated = true)
         {
-            this.Generated = generated;
+            Generated = generated;
         }
 
         public bool Generated { get; set; }
