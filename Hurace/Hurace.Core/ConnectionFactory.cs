@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
@@ -8,15 +7,24 @@ namespace Hurace.Core
 {
     public class ConnectionFactory
     {
-        public string ConnectionString { get; }
-        public Environment Environment { get; }
+        public string ConnectionString { get; private set; }
+        public Environment Environment { get; private set; }
+
         private bool initialized;
+        private DbConnection keepAliveConnection; // First connection to in-memory cached databases
+        private string guid;
+        private const string guid_placeholder = "{guid}";
 
         public ConnectionFactory(Environment environment)
         {
-            Environment = environment;
-            ConnectionString = ConfigurationReader.GetConnectionString(environment);
-            initialized = false;
+            this.Environment = environment;
+            this.ConnectionString = ConfigurationReader.GetConnectionString(environment);
+            if (ConnectionString.Contains(guid_placeholder))
+            {
+                this.guid = Guid.NewGuid().ToString();
+                this.ConnectionString = this.ConnectionString.Replace(guid_placeholder, this.guid);
+            }
+            this.initialized = false;
         }
 
         public DbConnection CreateConnection()
@@ -28,6 +36,12 @@ namespace Hurace.Core
             {
                 InitializeDatabase(connection);
                 initialized = true;
+            }
+
+            if (keepAliveConnection == null && this.guid != null)
+            {
+                keepAliveConnection = connection;
+                return CreateConnection();
             }
 
             return connection;
