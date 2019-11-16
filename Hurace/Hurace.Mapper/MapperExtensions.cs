@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ namespace Hurace.Core.Mapper
             var keyColumn = AttributeParser.GetColumnName(key);
             var sql = $"SELECT * FROM {tableName} WHERE {keyColumn} = @Id";
 
-            return (await connection.Query<TEntity>(sql, new { Id = id }).ConfigureAwait(false)).FirstOrDefault();
+            return (await connection.Query<TEntity>(sql, new {Id = id}).ConfigureAwait(false)).FirstOrDefault();
         }
 
         /// <summary>
@@ -60,10 +59,7 @@ namespace Hurace.Core.Mapper
             var collections = AttributeParser.GetAllCollections(type);
             var key = AttributeParser.GetKey(type);
 
-            if (AttributeParser.GetKeyIsGenerated(key))
-            {
-                properties = properties.Where(pi => pi != key);
-            }
+            if (AttributeParser.GetKeyIsGenerated(key)) properties = properties.Where(pi => pi != key);
             var insertAttributes = properties.Except(collections).ToList();
 
             var columns = new StringBuilder(null);
@@ -137,6 +133,7 @@ namespace Hurace.Core.Mapper
             return deleted > 0;
         }
 
+
         /// <summary>
         ///     Execute a query.
         /// </summary>
@@ -145,10 +142,43 @@ namespace Hurace.Core.Mapper
         /// <param name="sql">The SQL to execute</param>
         /// <param name="param">The parameters for the query</param>
         /// <returns>The entities.</returns>
+        [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification =
+            "Script does not contain user input")]
         public static async Task<IEnumerable<TEntity>> Query<TEntity>(this DbConnection connection, string sql,
             object param = null)
         {
-            return null;
+            _ = connection ?? throw new ArgumentNullException($"{nameof(connection)} must not be null!");
+
+            using var command = connection.CreateCommand();
+            command.CommandText = sql;
+            if (param != null) command.AddParams(param);
+
+            var items = new List<TEntity>();
+            using var reader = await command.ExecuteReaderAsync().ConfigureAwait(false);
+            while (reader.Read())
+            {
+                var entity = (TEntity) Activator.CreateInstance(typeof(TEntity));
+                var properties = AttributeParser.GetAllProperties(entity.GetType()).ToList();
+                foreach (var propertyInfo in properties)
+                    if (AttributeParser.HasForeignKey(propertyInfo))
+                    {
+                        // TODO: Add foreign key casting
+                    }
+                    else if (propertyInfo.PropertyType.IsEnum)
+                    {
+                        // TODO: Add enum casting
+                    }
+                    else
+                    {
+                        var value = Convert.ChangeType(reader[AttributeParser.GetColumnName(propertyInfo)],
+                            propertyInfo.PropertyType);
+                        propertyInfo.SetValue(entity, value);
+                    }
+
+                items.Add(entity);
+            }
+
+            return items;
         }
 
         /// <summary>
@@ -158,32 +188,17 @@ namespace Hurace.Core.Mapper
         /// <param name="sql">The SQL to execute</param>
         /// <param name="param">The parameters for the query</param>
         /// <returns>The number of rows affected.</returns>
+        [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification =
+            "Script does not contain user input")]
         public static async Task<int> Execute(this DbConnection connection, string sql,
             object param = null)
         {
             _ = connection ?? throw new ArgumentNullException($"{nameof(connection)} must not be null!");
 
-            using DbCommand command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = sql;
+            if (param != null) command.AddParams(param);
 
-            if (param != null)
-            {
-                var properties = AttributeParser.GetAllProperties(param.GetType()).ToList();
-                foreach (var propertyInfo in properties)
-                {
-                    object value = null;
-                    if (AttributeParser.HasForeignKey(propertyInfo))
-                    {
-                        value = AttributeParser.GetKey(propertyInfo.PropertyType).GetValue(propertyInfo.GetValue(param));
-                    } else if(propertyInfo.PropertyType.IsEnum)
-                    {
-                        value = propertyInfo.GetValue(param).ToString();
-                    }
-
-                    command.AddValue(propertyInfo.Name, value ?? propertyInfo.GetValue(param));
-                }
-            }
-            
             return await command.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
     }
