@@ -12,11 +12,11 @@ namespace Hurace.Domain
         [Column("time")]
         public double Time { get; set; }
 
-        [ForeignKey("race_id")]
-        public Race Race { get; set; }
-
         [ForeignKey("skier_id")]
         public Skier Skier { get; set; }
+        
+        [ForeignKey("race_id")]
+        public Race Race { get; set; }
 
         [Column("run_number")]
         public int RunNumber { get; set; }

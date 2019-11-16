@@ -8,7 +8,7 @@ namespace Hurace.Domain
         [Column("name")]
         public string Name { get; set; }
 
-        [ForeignKey("country_code")]
+        [ForeignKey("country_id")]
         public Country Country { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Hurace.Domain
         [Column("archived")]
         public bool Archived { get; set; }
 
-        [ForeignKey("country_code")]
+        [ForeignKey("country_id")]
         public Country Country { get; set; }
 
         [Column("gender")]

@@ -1,17 +1,13 @@
 CREATE TABLE IF NOT EXISTS country (
-    code TEXT PRIMARY KEY NOT NULL,
+    id   INTEGER PRIMARY KEY,
+    code TEXT    NOT NULL,
     CHECK (LENGTH(code) = 3)
 );
 
 CREATE TABLE IF NOT EXISTS location (
     id           INTEGER PRIMARY KEY,
     name         TEXT    NOT NULL,
-    country_code INTEGER REFERENCES country (code)
-);
-
-CREATE TABLE IF NOT EXISTS race_type (
-    name      TEXT    PRIMARY KEY NOT NULL,
-    run_count INTEGER NOT NULL
+    country_id   INTEGER REFERENCES country (id)
 );
 
 CREATE TABLE IF NOT EXISTS race (
@@ -21,10 +17,11 @@ CREATE TABLE IF NOT EXISTS race (
     description       TEXT,
     gender            TEXT    NOT NULL,
     number_of_sensors INTEGER NOT NULL,
-    race_type_name    TEXT    REFERENCES race_type (name),
+    race_type         TEXT,
     website           TEXT,
     location_id       INTEGER REFERENCES location (id),
     CHECK (gender IN ('Male', 'Female')),
+    CHECK (race_type IN ('Slalom', 'SuperSlalom')),
     CHECK (number_of_sensors > 0)
 );
 
@@ -35,7 +32,7 @@ CREATE TABLE IF NOT EXISTS skier (
     birthdate    TEXT    NOT NULL,
     picture_url  TEXT,
     archived     INTEGER DEFAULT 0,
-    country_code TEXT    REFERENCES country (code),
+    country_id   INTEGER REFERENCES country (id),
     gender       TEXT    NOT NULL,
     CHECK (gender IN ('Male', 'Female')),
     CHECK (archived IN (0, 1))

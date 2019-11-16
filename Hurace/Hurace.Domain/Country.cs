@@ -3,9 +3,8 @@
 namespace Hurace.Domain
 {
     [Table("country")]
-    public class Country
+    public class Country : DataObject
     {
-        [Key(false)]
         [Column("code")]
         public string Code { get; set; }
     }

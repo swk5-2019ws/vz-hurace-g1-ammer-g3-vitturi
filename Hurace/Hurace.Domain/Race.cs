@@ -21,7 +21,7 @@ namespace Hurace.Domain
         [Column("number_of_sensors")]
         public int NumberOfSensors { get; set; }
 
-        [Column("race_type_name")]
+        [Column("race_type")]
         public RaceType RaceType { get; set; }
 
         [Column("website")]
