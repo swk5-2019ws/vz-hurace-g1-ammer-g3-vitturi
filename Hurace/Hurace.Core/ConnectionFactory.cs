@@ -50,7 +50,7 @@ namespace Hurace.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Script does not contain user input")]
         private static void InitializeDatabase(DbConnection connection)
         {
-            string script = File.ReadAllText(".\\Scripts\\create_tables.sql");
+            string script = File.ReadAllText("./Scripts/create_tables.sql");
 
             using (DbCommand command = connection.CreateCommand())
             {
