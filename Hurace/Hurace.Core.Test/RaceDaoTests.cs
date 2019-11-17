@@ -55,6 +55,8 @@ namespace Hurace.Core.Test
 
             Race raceFound = await raceDao.FindById(race.Id);
             Assert.Equal(race.Name, raceFound.Name);
+            Assert.Equal(race.Gender, raceFound.Gender);
+            Assert.Equal(race.RaceType, raceFound.RaceType);
         }
 
         [Fact]
@@ -65,10 +67,12 @@ namespace Hurace.Core.Test
 
             Race race = await InsertRace(connectionFactory);
             race.Name = "Hinterstoder Slalom";
+            race.RaceType = RaceType.SuperSlalom;
             await raceDao.Update(race);
 
             Race raceAfter = await raceDao.FindById(race.Id);
             Assert.Equal(race.Name, raceAfter.Name);
+            Assert.Equal(race.RaceType, raceAfter.RaceType);
         }
 
         [Fact]

@@ -55,6 +55,7 @@ namespace Hurace.Core.Test
 
             RaceData raceDataFound = await raceDataDao.FindById(raceData.Id);
             Assert.Equal(raceData.Time, raceDataFound.Time);
+            Assert.Equal(raceData.RaceStatus, raceDataFound.RaceStatus);
         }
 
         [Fact]
@@ -65,10 +66,12 @@ namespace Hurace.Core.Test
 
             RaceData raceData = await InsertRaceData(connectionFactory);
             raceData.Time = 85.11;
+            raceData.RaceStatus = RaceStatus.InProgress;
             await raceDataDao.Update(raceData);
 
             RaceData raceDataAfter = await raceDataDao.FindById(raceData.Id);
             Assert.Equal(raceData.Time, raceDataAfter.Time);
+            Assert.Equal(raceData.RaceStatus, raceDataAfter.RaceStatus);
         }
 
         [Fact]

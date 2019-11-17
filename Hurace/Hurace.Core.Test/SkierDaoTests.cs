@@ -54,6 +54,7 @@ namespace Hurace.Core.Test
 
             Skier skierFound = await skierDao.FindById(skier.Id);
             Assert.Equal(skier.FirstName, skierFound.FirstName);
+            Assert.Equal(skier.Gender, skierFound.Gender);
         }
 
         [Fact]
@@ -63,11 +64,13 @@ namespace Hurace.Core.Test
             ISkierDao skierDao = new SkierDao(connectionFactory);
 
             Skier skier = await InsertSkier(connectionFactory);
-            skier.FirstName = "Jack";
+            skier.FirstName = "Andrea";
+            skier.Gender = Gender.Female;
             await skierDao.Update(skier);
 
             Skier skierAfter = await skierDao.FindById(skier.Id);
             Assert.Equal(skier.FirstName, skierAfter.FirstName);
+            Assert.Equal(skier.Gender, skierAfter.Gender);
         }
 
         [Fact]

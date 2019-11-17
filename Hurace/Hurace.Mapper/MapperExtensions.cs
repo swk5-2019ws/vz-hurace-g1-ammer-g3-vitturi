@@ -166,7 +166,8 @@ namespace Hurace.Core.Mapper
                     }
                     else if (propertyInfo.PropertyType.IsEnum)
                     {
-                        // TODO: Add enum casting
+                        var parsedEnum = Enum.Parse(propertyInfo.PropertyType, (string) reader[AttributeParser.GetColumnName(propertyInfo)]);
+                        propertyInfo.SetValue(entity, parsedEnum);
                     }
                     else
                     {
