@@ -1,5 +1,6 @@
 ﻿public enum Environment
 {
     Production,
-    Testing
+    Testing,
+    Debug
 }
