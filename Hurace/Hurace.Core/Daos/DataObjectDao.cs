@@ -38,16 +38,8 @@ namespace Hurace.Core.Daos
 
         public Task<int> Insert(T dataObject)
         {
-            // TODO: Move fetch of id to MapperExtensions
-            return Task.Run(() =>
-            {
-                using var connection = ConnectionFactory.CreateConnection();
-                connection.Insert(dataObject);
-                DbCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT last_insert_rowid()";
-                int id = Convert.ToInt32(command.ExecuteScalar());
-                return id;
-            });
+            using var connection = ConnectionFactory.CreateConnection();
+            return connection.Insert<T>(dataObject);
         }
 
         public Task<bool> Delete(int id)

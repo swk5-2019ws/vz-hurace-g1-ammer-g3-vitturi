@@ -51,7 +51,7 @@ namespace Hurace.Core.Mapper
         /// <param name="connection">Open DbConnection</param>
         /// <param name="entity">The new entity.</param>
         /// <returns>Id of inserted entity</returns>
-        public static Task<int> Insert<TEntity>(this DbConnection connection, TEntity entity)
+        public static async Task<int> Insert<TEntity>(this DbConnection connection, TEntity entity)
         {
             var type = typeof(TEntity);
             var name = AttributeParser.GetTableName(type);
@@ -79,7 +79,12 @@ namespace Hurace.Core.Mapper
             }
 
             var sql = $"INSERT INTO {name} ({columns}) VALUES ({parameters})";
-            return connection.Execute(sql, entity);
+            await connection.Execute(sql, entity).ConfigureAwait(false);
+
+            DbCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT last_insert_rowid()";
+            var identity = await command.ExecuteScalarAsync().ConfigureAwait(false);
+            return Convert.ToInt32(identity);
         }
 
         /// <summary>
