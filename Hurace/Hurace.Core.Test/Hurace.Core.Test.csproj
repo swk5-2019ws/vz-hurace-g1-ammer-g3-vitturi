@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hurace.Core\Hurace.Core.csproj" />
+    <ProjectReference Include="..\Hurace.Mapper\Hurace.Core.Mapper.csproj" />
   </ItemGroup>
 
 </Project>
