@@ -47,3 +47,19 @@ Slalom races are divided into two runs, other types only require one run.
 
 `RaceStatus`
 : The status of a run. Can represent whether a run is currently being performed, the end state of a run (completed or unfinished), or a disqualification.
+
+# Demo data
+
+# Testing
+
+# Project structure
+
+## `Hurace.Core`
+
+## `Hurace.Core.Interface`
+
+## `Hurace.Core.Test`
+
+## `Hurace.Domain`
+
+## `Hurace.Mapper`
