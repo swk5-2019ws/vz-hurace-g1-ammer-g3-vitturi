@@ -38,33 +38,22 @@ CREATE TABLE IF NOT EXISTS skier (
     CHECK (archived IN (0, 1))
 );
 
-CREATE TABLE IF NOT EXISTS skier_run (
-    skier_id   INTEGER REFERENCES skier (id),
-    race_id    INTEGER REFERENCES race (id),
-    run_number INTEGER,
-    PRIMARY KEY (skier_id, race_id, run_number),
-    CHECK (run_number IN (1, 2))
-);
-
-CREATE TABLE IF NOT EXISTS start_list (
-    id         INTEGER PRIMARY KEY,
-    skier_id   INTEGER,
-    race_id    INTEGER,
-    run_number INTEGER,
-    number     INTEGER,
-    FOREIGN KEY (skier_id, race_id, run_number) REFERENCES skier_run (skier_id, race_id, run_number),
-    CHECK (number > 0)
-);
-
 CREATE TABLE IF NOT EXISTS race_data (
     id          INTEGER PRIMARY KEY,
     race_status TEXT,
     time        REAL,
-    skier_id    INTEGER,
-    race_id     INTEGER,
+    skier_id    INTEGER REFERENCES skier (id),
+    race_id     INTEGER REFERENCES race (id),
     run_number  INTEGER,
-    FOREIGN KEY (skier_id, race_id, run_number) REFERENCES skier_run (skier_id, race_id, run_number),
-    CHECK (race_status IN ('Completed', 'InProgress', 'Unfinished', 'NotStarted', 'Disqualified'))
+    CHECK (race_status IN ('Completed', 'InProgress', 'Unfinished', 'NotStarted', 'Disqualified')),
+    CHECK (run_number IN (1, 2))
+);
+
+CREATE TABLE IF NOT EXISTS start_list (
+    id           INTEGER PRIMARY KEY,
+    number       INTEGER,
+    race_data_id INTEGER REFERENCES race_data (id),
+    CHECK (number > 0)
 );
 
 CREATE TABLE IF NOT EXISTS sensor_measurement (
