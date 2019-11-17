@@ -8,7 +8,7 @@ namespace Hurace.Domain
         [Column("number")]
         public int Number { get; set; }
         
-        [Column("race_data_id")]
+        [ForeignKey("race_data_id")]
         public RaceData RaceData { get; set; }
     }
 }
