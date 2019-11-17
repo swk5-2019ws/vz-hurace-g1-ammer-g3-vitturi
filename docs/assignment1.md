@@ -76,6 +76,7 @@ This project contains all the domain classes, which are classes used by the busi
 The Mapper project is a simple object mapper that is responsible for mapping between the database and the programming language. It also adds extension methods for DbConnections to query a database.
 
 To enable the mapper, you use one of the provided attributes. 
+
 * Table: Defines the table name of the class in the database.
 * Column: Defines the column name of a property in the database.
 * ForeignKey: Defines the foreign key column name.
@@ -83,6 +84,7 @@ To enable the mapper, you use one of the provided attributes.
 * Required: Indicates that the column must not be null.
 
 The following methods can be used to communicate with the database.
+
 * Get<T>(id): Returns a single entity by a unique id.
 * GetAll<T>(): Returns a list of entities.
 * Insert<T>(newObject): Inserts an entity and returns an id.
@@ -92,6 +94,7 @@ The following methods can be used to communicate with the database.
 All of these extensions rely on one of the base methods `Execute` or `Query`.
 
 **Info**
+
 * Inner objects do not get resolved at the moment.
 * An object can only have one property with the Id attribute.
 * Required attributes are not checked.
