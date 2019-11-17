@@ -99,7 +99,7 @@ namespace Hurace.Core.Mapper
             var keyColumn = AttributeParser.GetColumnName(key);
             var updateAttributes = properties.Except(collections).Where(pi => pi != key).ToList();
 
-            var sql = new StringBuilder($"UPDATE {name} SET");
+            var sql = new StringBuilder($"UPDATE {name} SET ");
 
             for (var i = 0; i < updateAttributes.Count; i++)
             {
