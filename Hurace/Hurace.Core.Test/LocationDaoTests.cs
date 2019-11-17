@@ -8,15 +8,16 @@ namespace Hurace.Core.Test
 {
     public class LocationDaoTests
     {
-        private async Task<Location> InsertLocation(ConnectionFactory connectionFactory)
+        public static async Task<Location> InsertLocation(ConnectionFactory connectionFactory, Country country = null)
         {
-            ICountryDao countryDao = new CountryDao(connectionFactory);
             ILocationDao locationDao = new LocationDao(connectionFactory);
 
-            Country country = new Country {Code = "AUT"};
-            country.Id = await countryDao.Insert(country);
-
-            Location location = new Location {Country = country, Name = "Kitzbühel"};
+            country ??= await CountryDaoTests.InsertCountry(connectionFactory);
+            Location location = new Location
+            {
+                Country = country,
+                Name = "Kitzbühel"
+            };
             location.Id = await locationDao.Insert(location);
 
             return location;
@@ -60,7 +61,7 @@ namespace Hurace.Core.Test
             await locationDao.Update(location);
 
             Location locationAfter = await locationDao.FindById(location.Id);
-            Assert.Equal("Hinterstoder", locationAfter.Name);
+            Assert.Equal(location.Name, locationAfter.Name);
         }
 
         [Fact]

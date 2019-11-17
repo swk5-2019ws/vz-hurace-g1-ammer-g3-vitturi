@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Hurace.Core.Daos;
 using Hurace.Core.Interface;
 using Hurace.Domain;
@@ -7,6 +8,19 @@ namespace Hurace.Core.Test
 {
     public class CountryDaoTests
     {
+        public static async Task<Country> InsertCountry(ConnectionFactory connectionFactory)
+        {
+            ICountryDao countryDao = new CountryDao(connectionFactory);
+
+            Country country = new Country
+            {
+                Code = "AUT"
+            };
+            country.Id = await countryDao.Insert(country);
+
+            return country;
+        }
+
         [Fact]
         public async void TestFindAll()
         {
@@ -48,7 +62,7 @@ namespace Hurace.Core.Test
             country.Code = "AFT";
             await countryDao.Update(country);
             Country countryAfter = await countryDao.FindById(country.Id);
-            Assert.Equal("AFT", countryAfter.Code);
+            Assert.Equal(country.Code, countryAfter.Code);
         }
 
         [Fact]
