@@ -28,7 +28,6 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Gender" />
-      <Property Name="RaceType" />
       <Property Name="Location" />
     </ShowAsAssociation>
   </Class>
@@ -79,28 +78,10 @@
   </Class>
   <Class Name="Hurace.Domain.StartList">
     <Position X="9.75" Y="5.5" Width="1.75" />
-    <AssociationLine Name="Race" Type="Hurace.Domain.Race" ManuallyRouted="true" FixedFromPoint="true">
-      <Path>
-        <Point X="11.5" Y="6.312" />
-        <Point X="12.5" Y="6.312" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Skier" Type="Hurace.Domain.Skier" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="10.312" Y="6.925" />
-        <Point X="10.312" Y="9.859" />
-        <Point X="4.438" Y="9.859" />
-        <Point X="4.438" Y="7.502" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAAAAAAEAACAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>StartList.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Race" />
-      <Property Name="Skier" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Hurace.Domain.Location">
     <Position X="12.75" Y="3" Width="1.5" />
@@ -129,13 +110,6 @@
       <Property Name="RaceData" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Hurace.Domain.RaceType">
-    <Position X="15" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>RaceType.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Enum Name="Hurace.Domain.Gender">
     <Position X="7.75" Y="11" Width="1.5" />
     <TypeIdentifier>
@@ -146,7 +120,7 @@
   <Enum Name="Hurace.Domain.RaceStatus">
     <Position X="7.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AQAAAAAAAAAAAAIAAAAAQAAAAAAAAAAAAAAAABAAAgA=</HashCode>
       <FileName>RaceStatus.cs</FileName>
     </TypeIdentifier>
   </Enum>
