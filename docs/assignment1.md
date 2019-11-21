@@ -73,25 +73,47 @@ All tests that need a database make use of the functionality provided by `Connec
 This project contains all the domain classes, which are classes used by the business logic to store information. Domain classes are serialized/deserialized by their relative DAO to be persisted/retrieved to/from a database.
 
 ## `Hurace.Mapper`
-The Mapper project is a simple object mapper that is responsible for mapping between the database and the programming language. It also adds extension methods for DbConnections to query a database.
+
+The Mapper project is a simple object mapper that is responsible for mapping between the database and the programming language. It also adds extension methods for `DbConnections` to query a database.
 
 To enable the mapper, you use one of the provided attributes. 
-* Table: Defines the table name of the class in the database.
-* Column: Defines the column name of a property in the database.
-* ForeignKey: Defines the foreign key column name.
-* Id: Indicates that the property is the primary key.
-* Required: Indicates that the column must not be null.
+
+`Table`
+: Defines the table name of the class in the database.
+
+`Column`
+: Defines the column name of a property in the database.
+
+`ForeignKey`
+: Defines the foreign key column name.
+
+`Id`
+: Indicates that the property is the primary key.
+
+`Required`
+: Indicates that the column must not be null.
 
 The following methods can be used to communicate with the database.
-* Get<T>(id): Returns a single entity by a unique id.
-* GetAll<T>(): Returns a list of entities.
-* Insert<T>(newObject): Inserts an entity and returns an id.
-* Update<T>(updatedObject): Updates an entity.
-* Delete<T>(id): Deletes an entity.
+
+`Get<T>(id)`
+: Returns a single entity by a unique id.
+
+`GetAll<T>()`
+: Returns a list of entities.
+
+`Insert<T>(newObject)`
+: Inserts an entity and returns an id.
+
+`Update<T>(updatedObject)`
+: Updates an entity.
+
+`Delete<T>(id)`
+: Deletes an entity.
 
 All of these extensions rely on one of the base methods `Execute` or `Query`.
 
-**Info**
+> **Info**
+>
 * Inner objects do not get resolved at the moment.
-* An object can only have one property with the Id attribute.
+* An object can only have one property with the `Id` attribute.
 * Required attributes are not checked.
