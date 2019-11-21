@@ -15,8 +15,8 @@ namespace Hurace.Core.Test
             country ??= await CountryDaoTests.InsertCountry(connectionFactory);
             Location location = new Location
             {
+                Name = "Kitzbühel",
                 Country = country,
-                Name = "Kitzbühel"
             };
             location.Id = await locationDao.Insert(location);
 

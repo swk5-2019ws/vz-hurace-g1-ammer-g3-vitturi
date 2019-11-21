@@ -16,14 +16,14 @@ namespace Hurace.Core.Test
             location ??= await LocationDaoTests.InsertLocation(connectionFactory);
             Race race = new Race
             {
-                Date = DateTime.Today,
                 Name = "Kitzbühel Slalom",
-                Description = null,
+                Date = DateTime.Today,
+                Location = location,
                 Gender = Gender.Female,
-                NumberOfSensors = 5,
                 RaceType = RaceType.Slalom,
+                Description = null,
                 Website = null,
-                Location = location
+                NumberOfSensors = 5,
             };
             race.Id = await raceDao.Insert(race);
 

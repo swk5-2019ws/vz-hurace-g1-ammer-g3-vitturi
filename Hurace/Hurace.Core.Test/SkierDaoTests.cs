@@ -19,10 +19,10 @@ namespace Hurace.Core.Test
                 FirstName = "John",
                 LastName = "Doe",
                 Birthdate = DateTime.Today,
+                Gender = Gender.Male,
+                Country = country,
                 PictureUrl = null,
                 Archived = false,
-                Country = country,
-                Gender = Gender.Male
             };
             skier.Id = await skierDao.Insert(skier);
 

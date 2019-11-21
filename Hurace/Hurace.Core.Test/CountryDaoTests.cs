@@ -14,7 +14,7 @@ namespace Hurace.Core.Test
 
             Country country = new Country
             {
-                Code = "AUT"
+                Code = "AUT",
             };
             country.Id = await countryDao.Insert(country);
 

@@ -10,16 +10,16 @@ namespace Hurace.Core.Test
     public class SensorMeasurementDaoTests
     {
         public static async Task<SensorMeasurement> InsertSensorMeasurement(ConnectionFactory connectionFactory,
-            RaceData raceData = null)
+            Run run = null)
         {
             ISensorMeasurementDao sensorMeasurementDao = new SensorMeasurementDao(connectionFactory);
 
-            raceData ??= await RaceDataDaoTests.InsertRaceData(connectionFactory);
+            run ??= await RunDaoTests.InsertRun(connectionFactory);
             SensorMeasurement sensorMeasurement = new SensorMeasurement
             {
                 SensorId = 1,
                 InterimTime = 11.2,
-                RaceData = raceData
+                Run = run,
             };
             sensorMeasurement.Id = await sensorMeasurementDao.Insert(sensorMeasurement);
 

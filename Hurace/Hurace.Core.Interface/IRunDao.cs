@@ -2,7 +2,7 @@
 
 namespace Hurace.Core.Interface
 {
-    public interface IStartListDao : IDataObjectDao<StartList>
+    public interface IRunDao : IDataObjectDao<Run>
     {
     }
 }
