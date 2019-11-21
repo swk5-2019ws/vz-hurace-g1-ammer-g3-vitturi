@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,7 +85,7 @@ namespace Hurace.Core.Mapper
             DbCommand command = connection.CreateCommand();
             command.CommandText = "SELECT last_insert_rowid()";
             var identity = await command.ExecuteScalarAsync().ConfigureAwait(false);
-            return Convert.ToInt32(identity);
+            return Convert.ToInt32(identity, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -177,7 +178,8 @@ namespace Hurace.Core.Mapper
                     else
                     {
                         var value = Convert.ChangeType(reader[AttributeParser.GetColumnName(propertyInfo)],
-                            propertyInfo.PropertyType);
+                            propertyInfo.PropertyType,
+                            CultureInfo.InvariantCulture);
                         propertyInfo.SetValue(entity, value);
                     }
 

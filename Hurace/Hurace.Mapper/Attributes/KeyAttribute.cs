@@ -3,9 +3,9 @@
 namespace Hurace.Core.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class Key : Attribute
+    public class KeyAttribute : Attribute
     {
-        public Key(bool generated = true)
+        public KeyAttribute(bool generated = true)
         {
             Generated = generated;
         }

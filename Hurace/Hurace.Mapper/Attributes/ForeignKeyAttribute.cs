@@ -3,9 +3,9 @@
 namespace Hurace.Core.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class Column : Attribute
+    public class ForeignKeyAttribute : Attribute
     {
-        public Column(string name)
+        public ForeignKeyAttribute(string name)
         {
             Name = name;
         }

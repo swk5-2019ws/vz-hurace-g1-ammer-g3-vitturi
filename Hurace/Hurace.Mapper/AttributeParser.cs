@@ -17,7 +17,7 @@ namespace Hurace.Core.Mapper
         internal static string GetTableName(Type type)
         {
             var tableName = nameof(type);
-            var tableAttributes = (Table[]) type.GetCustomAttributes(typeof(Table), false);
+            var tableAttributes = (TableAttribute[]) type.GetCustomAttributes(typeof(TableAttribute), false);
 
             if (tableAttributes.Length > 0) tableName = tableAttributes[0].Name;
 
@@ -31,7 +31,7 @@ namespace Hurace.Core.Mapper
         /// <returns>The property info of the key attribute</returns>
         public static PropertyInfo GetKey(Type type)
         {
-            var keyProperties = type.GetProperties().Where(property => Attribute.IsDefined(property, typeof(Key)))
+            var keyProperties = type.GetProperties().Where(property => Attribute.IsDefined(property, typeof(KeyAttribute)))
                 .ToArray();
 
             if (keyProperties.Length > 1)
@@ -50,7 +50,7 @@ namespace Hurace.Core.Mapper
         public static bool HasForeignKey(PropertyInfo propertyInfo)
         {
             return propertyInfo.GetCustomAttributesData()
-                       .Count(attribute => attribute.AttributeType == typeof(ForeignKey)) == 1;
+                       .Count(attribute => attribute.AttributeType == typeof(ForeignKeyAttribute)) == 1;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Hurace.Core.Mapper
             var isGenerated = true;
 
             var keyAttributes = propertyInfo.GetCustomAttributesData()
-                .Where(attribute => attribute.AttributeType == typeof(Key)).ToArray();
+                .Where(attribute => attribute.AttributeType == typeof(KeyAttribute)).ToArray();
             if (keyAttributes.Length == 1)
                 isGenerated = (bool) keyAttributes[0].ConstructorArguments[0].Value;
 
@@ -91,12 +91,12 @@ namespace Hurace.Core.Mapper
             var name = propertyInfo.Name;
 
             var columnAttributes = propertyInfo.GetCustomAttributesData()
-                .Where(attribute => attribute.AttributeType == typeof(Column)).ToArray();
+                .Where(attribute => attribute.AttributeType == typeof(ColumnAttribute)).ToArray();
             if (columnAttributes.Length == 1)
                 name = (string) columnAttributes[0].ConstructorArguments[0].Value;
 
             var foreignKeyAttributes = propertyInfo.GetCustomAttributesData()
-                .Where(attribute => attribute.AttributeType == typeof(ForeignKey)).ToArray();
+                .Where(attribute => attribute.AttributeType == typeof(ForeignKeyAttribute)).ToArray();
             if (foreignKeyAttributes.Length == 1)
                 name = (string) foreignKeyAttributes[0].ConstructorArguments[0].Value;
 

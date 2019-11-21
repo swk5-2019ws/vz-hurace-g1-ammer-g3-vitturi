@@ -3,9 +3,9 @@
 namespace Hurace.Core.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class Table : Attribute
+    public class TableAttribute : Attribute
     {
-        public Table(string name)
+        public TableAttribute(string name)
         {
             Name = name;
         }
