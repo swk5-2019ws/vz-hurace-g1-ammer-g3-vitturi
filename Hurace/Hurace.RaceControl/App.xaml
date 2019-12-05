@@ -1,7 +1,6 @@
-﻿<Application
+﻿<local:RaceControlApp
     x:Class="Hurace.RaceControl.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hurace.RaceControl">
-
-</Application>
+</local:RaceControlApp>
