@@ -14,19 +14,17 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Races" IsSelected="True">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4A;"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4A;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="Screens">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7F4;"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7F4;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItemHeader Content="Quick Links"></NavigationViewItemHeader>
-                <NavigationViewItem Content="Create race" Icon="Add">
-                </NavigationViewItem>
-                <NavigationViewItem Content="Current race" Icon="Play" IsEnabled="False">
-                </NavigationViewItem>
+                <NavigationViewItemHeader Content="Quick Links" />
+                <NavigationViewItem Content="Create race" Icon="Add" />
+                <NavigationViewItem Content="Current race" Icon="Play" IsEnabled="False" />
             </NavigationView.MenuItems>
         </NavigationView>
     </Grid>
