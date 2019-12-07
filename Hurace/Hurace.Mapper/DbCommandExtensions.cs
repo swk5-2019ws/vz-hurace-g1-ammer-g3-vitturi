@@ -24,10 +24,21 @@ namespace Hurace.Core.Mapper
             foreach (var propertyInfo in properties)
             {
                 object value = null;
+
                 if (AttributeParser.HasForeignKey(propertyInfo))
+                {
                     value = AttributeParser.GetKey(propertyInfo.PropertyType)
                         .GetValue(propertyInfo.GetValue(param));
-                else if (propertyInfo.PropertyType.IsEnum) value = propertyInfo.GetValue(param).ToString();
+                }
+                // Enum or Nullable<Enum>
+                else if (propertyInfo.PropertyType.IsEnum ||
+                         propertyInfo.PropertyType.IsGenericType &&
+                         propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                         propertyInfo.PropertyType.GetGenericArguments()[0].IsEnum &&
+                         propertyInfo.GetValue(param) != null)
+                {
+                    value = propertyInfo.GetValue(param).ToString();
+                }
 
                 command.AddParam(propertyInfo.Name, value ?? propertyInfo.GetValue(param));
             }
