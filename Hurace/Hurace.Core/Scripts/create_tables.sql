@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS race (
     race_type         TEXT    NOT NULL,
     description       TEXT,
     website           TEXT,
+	picture_url       TEXT,
     number_of_sensors INTEGER NOT NULL,
     CHECK (gender IN ('Male', 'Female')),
     CHECK (race_type IN ('Slalom', 'SuperSlalom'))
