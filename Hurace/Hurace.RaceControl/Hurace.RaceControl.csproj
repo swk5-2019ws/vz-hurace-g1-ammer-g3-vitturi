@@ -271,6 +271,10 @@
       <Project>{7e9af0a9-4f9a-45d4-ad35-304a279ddb14}</Project>
       <Name>Hurace.Core.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hurace.Core\Hurace.Core.csproj">
+      <Project>{92b3cb18-d1f8-47c6-a923-ee7fc05c793d}</Project>
+      <Name>Hurace.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hurace.Domain\Hurace.Domain.csproj">
       <Project>{2543cf21-3b17-4546-b14d-a00031db71c0}</Project>
       <Name>Hurace.Domain</Name>
