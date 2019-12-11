@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -168,7 +169,13 @@ namespace Hurace.Core.Mapper
                 foreach (var propertyInfo in properties)
                     if (AttributeParser.HasForeignKey(propertyInfo))
                     {
-                        // TODO: Add foreign key casting
+                        MethodInfo method = typeof(MapperExtensions).GetMethod("Get");
+                        MethodInfo generic = method.MakeGenericMethod(propertyInfo.PropertyType);
+                        var columnValue = Convert.ChangeType(reader[AttributeParser.GetColumnName(propertyInfo)], typeof(int), CultureInfo.InvariantCulture);
+                        var task = (Task)generic.Invoke(null, new object[] { connection, columnValue });
+                        await task.ConfigureAwait(false);
+                        var resultProperty = task.GetType().GetProperty("Result");
+                        propertyInfo.SetValue(entity, resultProperty.GetValue(task));
                     }
                     else if (propertyInfo.PropertyType.IsEnum)
                     {
