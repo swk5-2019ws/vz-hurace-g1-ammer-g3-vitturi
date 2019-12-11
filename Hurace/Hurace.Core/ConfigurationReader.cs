@@ -2,7 +2,7 @@
 
 namespace Hurace.Core
 {
-    static class ConfigurationReader
+    public static class ConfigurationReader
     {
         private static IConfiguration configuration = null;
 

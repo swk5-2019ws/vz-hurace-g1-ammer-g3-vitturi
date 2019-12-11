@@ -15,10 +15,11 @@ namespace Hurace.Core
         private string guid;
         private const string guid_placeholder = "{guid}";
 
-        public ConnectionFactory(Environment environment)
+        public ConnectionFactory(Environment environment, string customConnectionString = null)
         {
             this.Environment = environment;
-            this.ConnectionString = ConfigurationReader.GetConnectionString(environment);
+            this.ConnectionString = customConnectionString ?? ConfigurationReader.GetConnectionString(environment);
+
             if (ConnectionString.Contains(guid_placeholder))
             {
                 this.guid = Guid.NewGuid().ToString();
@@ -55,7 +56,7 @@ namespace Hurace.Core
             using (DbCommand command = connection.CreateCommand())
             {
                 command.CommandText = script;
-                command.ExecuteNonQuery();
+                int code = command.ExecuteNonQuery();
             }
         }
     }
