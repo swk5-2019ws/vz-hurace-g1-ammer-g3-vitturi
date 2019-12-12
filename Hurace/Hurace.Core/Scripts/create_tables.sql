@@ -21,8 +21,10 @@ CREATE TABLE IF NOT EXISTS race (
     website           TEXT,
 	picture_url       TEXT,
     number_of_sensors INTEGER NOT NULL,
+    status            TEXT,
     CHECK (gender IN ('Male', 'Female')),
-    CHECK (race_type IN ('Slalom', 'SuperSlalom'))
+    CHECK (race_type IN ('Slalom', 'SuperSlalom')),
+    CHECK (status IN ('Ready', 'InProgress', 'Finished'))
 );
 
 CREATE TABLE IF NOT EXISTS run (
@@ -31,10 +33,10 @@ CREATE TABLE IF NOT EXISTS run (
     race_id        INTEGER REFERENCES race (id),
     run_number     INTEGER NOT NULL,
     start_position INTEGER,
-    race_status    TEXT,
+    status         TEXT,
     total_time     REAL,
     UNIQUE (skier_id, race_id, run_number),
-    CHECK (race_status IN ('Completed', 'InProgress', 'Unfinished', 'NotStarted', 'Disqualified')),
+    CHECK (status IN ('Ready', 'Completed', 'InProgress', 'Unfinished', 'NotStarted', 'Disqualified')),
     CHECK (run_number IN (1, 2))
 );
 

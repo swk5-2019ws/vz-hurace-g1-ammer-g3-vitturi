@@ -24,6 +24,7 @@ namespace Hurace.Core.Test
                 Description = null,
                 Website = null,
                 NumberOfSensors = 5,
+                Status = RaceStatus.Ready
             };
             race.Id = await raceDao.Insert(race);
 

@@ -1,11 +1,9 @@
-﻿namespace Hurace.Domain
+namespace Hurace.Domain
 {
     public enum RaceStatus
     {
-        Completed,
+        Ready,
         InProgress,
-        Unfinished,
-        NotStarted,
-        Disqualified
+        Finished
     }
 }

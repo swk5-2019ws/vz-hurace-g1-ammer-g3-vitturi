@@ -23,7 +23,7 @@ namespace Hurace.Core.Test
                 Race = race,
                 RunNumber = 1,
                 StartPosition = 1,
-                RaceStatus = RaceStatus.Completed,
+                Status = RunStatus.Completed,
                 TotalTime = 82.1,
             };
             run.Id = await runDao.Insert(run);
@@ -56,7 +56,7 @@ namespace Hurace.Core.Test
 
             Run runFound = await runDao.FindById(run.Id);
             Assert.Equal(run.TotalTime, runFound.TotalTime);
-            Assert.Equal(run.RaceStatus, runFound.RaceStatus);
+            Assert.Equal(run.Status, runFound.Status);
         }
 
         [Fact]
@@ -67,12 +67,12 @@ namespace Hurace.Core.Test
 
             Run run = await InsertRun(connectionFactory);
             run.TotalTime = 85.11;
-            run.RaceStatus = RaceStatus.InProgress;
+            run.Status = RunStatus.InProgress;
             await runDao.Update(run);
 
             Run runAfter = await runDao.FindById(run.Id);
             Assert.Equal(run.TotalTime, runAfter.TotalTime);
-            Assert.Equal(run.RaceStatus, runAfter.RaceStatus);
+            Assert.Equal(run.Status, runAfter.Status);
         }
 
         [Fact]

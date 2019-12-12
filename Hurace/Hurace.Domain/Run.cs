@@ -18,8 +18,8 @@ namespace Hurace.Domain
         [Column("start_position")]
         public int StartPosition { get; set; }
 
-        [Column("race_status")]
-        public RaceStatus RaceStatus { get; set; }
+        [Column("status")]
+        public RunStatus Status { get; set; }
 
         [Column("total_time")]
         public double TotalTime { get; set; }
