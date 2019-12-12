@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
@@ -87,6 +88,22 @@ namespace Hurace.Core.Mapper
             command.CommandText = "SELECT last_insert_rowid()";
             var identity = await command.ExecuteScalarAsync().ConfigureAwait(false);
             return Convert.ToInt32(identity, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        ///     Inserts multiple entity.
+        /// </summary>
+        /// <typeparam name="TEntity">Entity type</typeparam>
+        /// <param name="connection">Open DbConnection</param>
+        /// <param name="entities">The new entities.</param>
+        public static async Task InsertMany<TEntity>(this DbConnection connection, IEnumerable<TEntity> entities)
+        {
+            var transaction = connection.BeginTransaction();
+            foreach (var entity in entities)
+            {
+                await connection.Insert(entity).ConfigureAwait(false);
+            }
+            transaction.Commit();
         }
 
         /// <summary>

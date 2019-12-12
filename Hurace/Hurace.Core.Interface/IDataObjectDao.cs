@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hurace.Domain;
 
@@ -10,6 +11,7 @@ namespace Hurace.Core.Interface
         Task<T> FindById(int id);
         Task<bool> Update(T dataObject);
         Task<int> Insert(T dataObject);
+        Task InsertMany(IEnumerable<T> dataObjects);
         Task<bool> Delete(int id);
     }
 }

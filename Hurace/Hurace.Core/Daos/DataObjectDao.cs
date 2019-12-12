@@ -42,6 +42,12 @@ namespace Hurace.Core.Daos
             return connection.Insert<T>(dataObject);
         }
 
+        public Task InsertMany(IEnumerable<T> dataObjects)
+        {
+            using var connection = ConnectionFactory.CreateConnection();
+            return connection.InsertMany<T>(dataObjects);
+        }
+
         public Task<bool> Delete(int id)
         {
             using var connection = ConnectionFactory.CreateConnection();
