@@ -120,7 +120,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\App.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
     <Compile Include="ViewModels\ScreenViewModel.cs" />
     <Compile Include="ViewModels\StartListViewModel.cs" />
@@ -160,6 +162,7 @@
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
     <Content Include="Assets\HomeBackground.jpg" />
+    <Content Include="Assets\RacePicturePlaceholder.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -219,6 +222,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Themes\Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="Views\CreateRace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

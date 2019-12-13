@@ -27,8 +27,16 @@ namespace Hurace.Domain
         [Column("website")]
         public string Website { get; set; }
 
-        [Column("picture_url")]
-        public string PictureUrl { get; set; }
+        private string _pictureUrl;
+
+        [Column("picture_url")] 
+        public string PictureUrl
+        {
+            get => _pictureUrl; 
+            set {
+                _pictureUrl = value.Length == 0 ? null : value;
+            }
+        }
 
         [Column("number_of_sensors")]
         public int NumberOfSensors { get; set; }

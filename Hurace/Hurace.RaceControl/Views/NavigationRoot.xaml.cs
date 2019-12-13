@@ -1,4 +1,7 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System.Collections.Generic;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.ViewModels;
 using MvvmCross.ViewModels;
@@ -17,7 +20,7 @@ namespace Hurace.RaceControl.Views
             InitializeComponent();
         }
 
-        private void Navview_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked) ViewModel.ShowSettings();
 
@@ -33,9 +36,32 @@ namespace Hurace.RaceControl.Views
                     ViewModel.ShowCreateRace();
                     break;
                 case "Current race":
-                    //_navigationService.NavigateToNotesAsync();
                     break;
             }
+        }
+
+        private void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            var frame = FindListBoxChildOfType<Frame>(NavView);
+            if (frame.CanGoBack) frame.GoBack();
+        }
+
+        private static T FindListBoxChildOfType<T>(DependencyObject root) where T : class
+        {
+            var dependencyObjects = new Queue<DependencyObject>();
+            dependencyObjects.Enqueue(root);
+            while (dependencyObjects.Count > 0)
+            {
+                var current = dependencyObjects.Dequeue();
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child is T typedChild) return typedChild;
+                    dependencyObjects.Enqueue(child);
+                }
+            }
+
+            return null;
         }
     }
 }
