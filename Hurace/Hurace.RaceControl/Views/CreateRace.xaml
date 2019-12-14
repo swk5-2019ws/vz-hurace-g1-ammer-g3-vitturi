@@ -11,6 +11,7 @@
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:helpers="using:Hurace.RaceControl.Helpers"
     xmlns:domain="using:Hurace.Domain"
+    xmlns:viewModels="using:Hurace.RaceControl.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
@@ -29,8 +30,8 @@
                 <controls:ImageEx x:Name="PersonPicture" Grid.RowSpan="2" Stretch="UniformToFill" Width="32"
                                   Height="32" Margin="6" VerticalAlignment="Center" HorizontalAlignment="Center"
                                   PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
-                                  PlaceholderSource="/Assets/RacePicturePlaceholder.png"
-                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}"
+                                  PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
+                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
                                   CornerRadius="18" />
                 <TextBlock Grid.Column="1" Grid.Row="0" Style="{ThemeResource BaseTextBlockStyle}"
                            Margin="12,6,0,0">
@@ -40,6 +41,67 @@
                 <TextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind Country.Code}" x:Phase="2"
                            Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
             </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartListEntryViewTemplate" x:DataType="viewModels:StartListEntryViewModel">
+            <UserControl PointerEntered="StartListEntry_PointerEntered" PointerExited="StartListEntry_PointerExited">
+                <Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="HoveringStates">
+                            <VisualState x:Name="HoverButtonsHidden" />
+                            <VisualState x:Name="HoverButtonsShown">
+                                <VisualState.Setters>
+                                    <Setter Target="HoverButton.Visibility" Value="Visible" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <SwipeControl x:Name="ListViewSwipeContainer">
+                        <SwipeControl.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem x:Name="DeleteSwipeItem"
+                                           Background="Red" 
+                                           Command="{x:Bind DeleteCommand}" 
+                                           CommandParameter="{x:Bind StartPosition}"/>
+                            </SwipeItems>
+                        </SwipeControl.RightItems>
+                        <Grid VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Grid.RowSpan="2" Margin="10,0,30,0" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Text="{x:Bind StartPosition, Mode=OneWay}" />
+                            <controls:ImageEx x:Name="PersonPicture" Grid.Column="1" Grid.RowSpan="2"
+                                          Stretch="UniformToFill" Width="32"
+                                          Height="32" Margin="6" VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
+                                          PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
+                                          Source="{x:Bind Skier.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
+                                          CornerRadius="18" />
+                            <TextBlock Grid.Column="2" Grid.Row="0" Style="{ThemeResource BaseTextBlockStyle}"
+                                   Margin="12,6,0,0">
+                            <Run Text="{x:Bind Skier.FirstName}" />
+                            <Run Text="{x:Bind Skier.LastName}" />
+                            </TextBlock>
+                            <TextBlock Grid.Column="2" Grid.Row="1" Text="{x:Bind Skier.Country.Code}" x:Phase="2"
+                                   Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                            <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton"
+                                      IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
+                                      Command="{x:Bind DeleteCommand}"
+                                      CommandParameter="{x:Bind StartPosition}" />
+                        </Grid>
+                    </SwipeControl>
+                </Grid>
+            </UserControl>
         </DataTemplate>
     </views:MvxWindowsPage.Resources>
 
@@ -151,11 +213,20 @@
                                 QuerySubmitted="SkierAutoSuggestBox_QuerySubmitted"
                                 SuggestionChosen="SkierAutoSuggestBox_SuggestionChosen"
                                 ItemTemplate="{StaticResource SkierViewTemplate}" QueryIcon="Find" />
-                <ListView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2" CanDragItems="True"
-                          CanReorderItems="True"
-                          AllowDrop="True"
-                          SelectionMode="Single" ItemsSource="{Binding SelectedSkiers}"
-                          ItemTemplate="{StaticResource SkierViewTemplate}" />
+                <ListView x:Name="RunListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2"
+                          CanDragItems="True"
+                          CanReorderItems="True" AllowDrop="True" SelectionMode="Single"
+                          ItemsSource="{Binding StartListEntries}"
+                          ItemTemplate="{StaticResource StartListEntryViewTemplate}">
+                    <ListView.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Position" Width="50" Margin="0,0,15,0" />
+                                <TextBlock Text="Skier" Width="300" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.HeaderTemplate>
+                </ListView>
             </Grid>
         </controls:UniformGrid>
     </Grid>

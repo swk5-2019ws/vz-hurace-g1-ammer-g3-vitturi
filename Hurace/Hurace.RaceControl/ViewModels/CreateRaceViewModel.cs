@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Hurace.Core.Interface;
 using Hurace.Domain;
@@ -10,12 +11,13 @@ namespace Hurace.RaceControl.ViewModels
 {
     public class CreateRaceViewModel : MvxViewModel<Race>
     {
+        private readonly ILocationDao _locationDao;
+        private readonly ISkierDao _skierDao;
         private DateTimeOffset _date;
 
         private string _description;
 
         private Gender _gender;
-        private readonly ILocationDao _locationDao;
 
         private string _name;
 
@@ -27,7 +29,6 @@ namespace Hurace.RaceControl.ViewModels
         private RaceType _raceType;
 
         private Location _selectedLocation;
-        private readonly ISkierDao _skierDao;
 
         private string _skierSearchText;
 
@@ -41,7 +42,8 @@ namespace Hurace.RaceControl.ViewModels
 
         public MvxObservableCollection<Location> Locations { get; } = new MvxObservableCollection<Location>();
 
-        public MvxObservableCollection<Skier> SelectedSkiers { get; } = new MvxObservableCollection<Skier>();
+        public MvxObservableCollection<StartListEntryViewModel> StartListEntries { get; } =
+            new MvxObservableCollection<StartListEntryViewModel>();
 
         public MvxObservableCollection<Skier> SearchSkiers { get; } = new MvxObservableCollection<Skier>();
 
@@ -54,11 +56,13 @@ namespace Hurace.RaceControl.ViewModels
                     SetProperty(ref _skierSearchText, value, async () =>
                     {
                         var skiers = await _skierDao.SearchSkiers(SkierSearchText, null, Gender);
-                        var filteredSkiers = skiers.Where(skier => SelectedSkiers.All(i => i.Id != skier.Id));
+                        var filteredSkiers = skiers.Where(skier => StartListEntries.All(i => i.Skier.Id != skier.Id));
                         SearchSkiers.SwitchTo(filteredSkiers);
                     });
             }
         }
+
+        public int ReorderIndex { get; set; }
 
         public DateTimeOffset Date
         {
@@ -135,6 +139,28 @@ namespace Hurace.RaceControl.ViewModels
 
             var locations = await _locationDao.FindAll();
             Locations.SwitchTo(locations);
+            StartListEntries.CollectionChanged += RunsOnCollectionChanged;
+        }
+
+        private void RunsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Remove:
+                    ReorderIndex = e.OldStartingIndex;
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    if (ReorderIndex == -1)
+                        return;
+                    ReorderRuns(ReorderIndex > e.NewStartingIndex ? e.NewStartingIndex : ReorderIndex);
+                    ReorderIndex = -1;
+                    break;
+            }
+        }
+
+        private void ReorderRuns(int start)
+        {
+            for (var i = start; i < StartListEntries.Count; i++) StartListEntries[i].StartPosition = i + 1;
         }
     }
 }
