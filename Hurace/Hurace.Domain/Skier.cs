@@ -15,8 +15,17 @@ namespace Hurace.Domain
         [Column("birthdate")]
         public DateTime Birthdate { get; set; }
 
+        private string _pictureUrl;
+
         [Column("picture_url")]
-        public string PictureUrl { get; set; }
+        public string PictureUrl
+        {
+            get => _pictureUrl;
+            set
+            {
+                _pictureUrl = value.Length == 0 ? null : value;
+            }
+        }
 
         [Column("archived")]
         public bool Archived { get; set; }
