@@ -121,6 +121,8 @@
     </Compile>
     <Compile Include="Core\App.cs" />
     <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
+    <Compile Include="Helpers\RaceStatusToColorConverter.cs" />
+    <Compile Include="Helpers\RaceStatusToStringConverter.cs" />
     <Compile Include="Helpers\RaceTypeToStringConverter.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
     <Compile Include="ViewModels\ScreenViewModel.cs" />

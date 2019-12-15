@@ -33,6 +33,7 @@ namespace Hurace.RaceControl.ViewModels
         private string _skierSearchText;
 
         private string _website;
+        private RaceStatus _status;
 
         public CreateRaceViewModel(ILocationDao locationDao, ISkierDao skierDao)
         {
@@ -68,6 +69,12 @@ namespace Hurace.RaceControl.ViewModels
         {
             get => _date;
             set => SetProperty(ref _date, value, () => { _race.Date = Date.DateTime; });
+        }
+
+        public RaceStatus Status
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
         }
 
         public string Name
@@ -141,6 +148,7 @@ namespace Hurace.RaceControl.ViewModels
             NumberOfSensors = _race.NumberOfSensors;
             PictureUrl = _race.PictureUrl;
             SelectedLocation = _race.Location;
+            Status = _race.Status;
 
             var locations = await _locationDao.FindAll();
             Locations.SwitchTo(locations);
