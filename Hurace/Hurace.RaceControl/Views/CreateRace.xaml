@@ -16,6 +16,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        <helpers:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
 
         <DataTemplate x:Key="SkierViewTemplate" x:DataType="domain:Skier">
             <Grid>
@@ -179,11 +180,17 @@
                                     SuggestionChosen="LocationAutoSuggestBox_SuggestionChosen"
                                     PlaceholderText="Type a location name" Header="Location:" />
                     <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding RaceTypes}"
-                              SelectedValue="{Binding RaceType, Mode=TwoWay}"
-                              Grid.Row="3" DisplayMemberPath="Item2" SelectedValuePath="Item1" Header="Race type:" />
+                              SelectedItem="{Binding RaceType, Mode=TwoWay}" PlaceholderText="Pick a race type"
+                              Grid.Row="3"  Header="Race type:">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource RaceTypeToStringConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Genders}"
-                              SelectedValue="{Binding Gender, Mode=TwoWay}"
-                              Grid.Row="4" DisplayMemberPath="Item2" SelectedValuePath="Item1" Header="Gender:" />
+                              SelectedItem="{Binding Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
+                              Grid.Row="4" Header="Gender:" />
                     <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5"
                              Text="{Binding NumberOfSensors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Grid.Row="6" Text="Additional information"

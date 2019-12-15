@@ -1,4 +1,5 @@
-﻿using MvvmCross.Navigation;
+﻿using Hurace.Domain;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
@@ -33,9 +34,9 @@ namespace Hurace.RaceControl.ViewModels
             _navigationService.Navigate<ScreenViewModel>();
         }
 
-        public void ShowCreateRace()
+        public void ShowCreateRace(Race race = null)
         {
-            _navigationService.Navigate<CreateRaceViewModel>();
+            _navigationService.Navigate<CreateRaceViewModel, Race>(race);
         }
     }
 }

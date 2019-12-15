@@ -118,13 +118,18 @@ namespace Hurace.RaceControl.ViewModels
             set => SetProperty(ref _selectedLocation, value, () => { _race.Location = SelectedLocation; });
         }
 
-        public IEnumerable<Tuple<Enum, string>> RaceTypes => EnumHelper.GetAllValuesAndDescriptions<RaceType>();
+        public IEnumerable<RaceType> RaceTypes => Enum.GetValues(typeof(RaceType)).Cast<RaceType>();
 
-        public IEnumerable<Tuple<Enum, string>> Genders => EnumHelper.GetAllValuesAndDescriptions<Gender>();
+        public IEnumerable<Gender> Genders => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
         public override async void Prepare(Race race)
         {
             await base.Initialize();
+
+            if (race == null)
+            {
+                race = new Race(){Date = DateTime.Now, Gender = Gender.Male, RaceType = RaceType.Slalom, Status = RaceStatus.Ready};
+            }
 
             _race = race;
             Name = _race.Name;
