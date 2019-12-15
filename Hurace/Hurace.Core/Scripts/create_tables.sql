@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS country (
     id   INTEGER PRIMARY KEY,
     code TEXT    NOT NULL UNIQUE,
@@ -29,8 +31,8 @@ CREATE TABLE IF NOT EXISTS race (
 
 CREATE TABLE IF NOT EXISTS run (
     id             INTEGER PRIMARY KEY,
-    skier_id       INTEGER REFERENCES skier (id),
-    race_id        INTEGER REFERENCES race (id),
+    skier_id       INTEGER REFERENCES skier (id) ON DELETE CASCADE,
+    race_id        INTEGER REFERENCES race  (id) ON DELETE CASCADE,
     run_number     INTEGER NOT NULL,
     start_position INTEGER,
     status         TEXT,
@@ -44,7 +46,7 @@ CREATE TABLE IF NOT EXISTS sensor_measurement (
     id           INTEGER PRIMARY KEY,
     sensor_id    INTEGER NOT NULL,
     interim_time REAL    NOT NULL,
-    run_id       INTEGER REFERENCES run (id)
+    run_id       INTEGER REFERENCES run (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS skier (
