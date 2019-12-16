@@ -13,7 +13,7 @@ namespace Hurace.Core.Daos
         {
         }
 
-        public async Task<IEnumerable<Race>> SearchRaces(string nameSubstring)
+        public async Task<IEnumerable<Race>> FindByName(string nameSubstring)
         {
             using var connection = ConnectionFactory.CreateConnection();
             return await connection.Query<Race>(@"

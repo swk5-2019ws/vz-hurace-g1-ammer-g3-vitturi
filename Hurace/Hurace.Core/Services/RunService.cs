@@ -9,7 +9,7 @@ namespace Hurace.Core.Services
         {
         }
 
-        public async Task SetRunStatus(Race race, int runNumber, Skier skier, RunStatus status)
+        public async Task UpdateRunStatus(Race race, int runNumber, Skier skier, RunStatus status)
         {
             Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier).ConfigureAwait(false);
             run.Status = status;

@@ -15,7 +15,7 @@ namespace Hurace.Core.Daos
         {
         }
 
-        public async Task<IEnumerable<Skier>> SearchSkiers(string? nameSubstring = null, Country? country = null,
+        public async Task<IEnumerable<Skier>> FindByFilters(string? nameSubstring = null, Country? country = null,
             Gender? gender = null)
         {
             using var connection = ConnectionFactory.CreateConnection();

@@ -11,9 +11,10 @@ namespace Hurace.Core.Services
         {
         }
 
-        public async Task CreateRace(Race race)
+        public async Task CreateRace(Race race, IList<Skier> skiers)
         {
             await DaoProvider.RaceDao.Insert(race).ConfigureAwait(false);
+            await CreateStartList(race, 1, skiers).ConfigureAwait(false);
         }
 
         public async Task EditRace(Race race)
@@ -23,7 +24,7 @@ namespace Hurace.Core.Services
 
         public async Task<IEnumerable<Race>> SearchRaces(string nameSubstring)
         {
-            return await DaoProvider.RaceDao.SearchRaces(nameSubstring).ConfigureAwait(false);
+            return await DaoProvider.RaceDao.FindByName(nameSubstring).ConfigureAwait(false);
         }
 
         public async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)

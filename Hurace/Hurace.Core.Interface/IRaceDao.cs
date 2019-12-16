@@ -8,7 +8,7 @@ namespace Hurace.Core.Interface
 {
     public interface IRaceDao : IDataObjectDao<Race>
     {
-        Task<IEnumerable<Race>> SearchRaces(string nameSubstring);
+        Task<IEnumerable<Race>> FindByName(string nameSubstring);
         Task<IEnumerable<Race>> GetLastRaces(int count);
     }
 }

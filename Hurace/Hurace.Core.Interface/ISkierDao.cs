@@ -8,7 +8,7 @@ namespace Hurace.Core.Interface
 {
     public interface ISkierDao : IDataObjectDao<Skier>
     {
-        Task<IEnumerable<Skier>> SearchSkiers(string? nameSubstring = null, Country? country = null,
+        Task<IEnumerable<Skier>> FindByFilters(string? nameSubstring = null, Country? country = null,
             Gender? gender = null);
     }
 }
