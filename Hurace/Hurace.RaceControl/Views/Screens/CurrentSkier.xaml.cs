@@ -15,13 +15,14 @@ using Windows.UI.Xaml.Navigation;
 using Hurace.RaceControl.ViewModels.Screens;
 using MvvmCross.Platforms.Uap.Presenters.Attributes;
 using MvvmCross.Platforms.Uap.Views;
+using MvvmCross.Presenters;
+using MvvmCross.Presenters.Hints;
 using MvvmCross.ViewModels;
 
 
 namespace Hurace.RaceControl.Views.Screens
 {
     [MvxViewFor(typeof(CurrentSkierViewModel))]
-    [MvxDialogViewPresentation]
     public sealed partial class CurrentSkier : MvxWindowsPage
     {
         public CurrentSkier()

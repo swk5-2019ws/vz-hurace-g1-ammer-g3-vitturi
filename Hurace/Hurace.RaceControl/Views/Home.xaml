@@ -13,11 +13,71 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+    xmlns:domain="using:Hurace.Domain"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <mvxview:MvxWindowsPage.Resources>
-        <helpers:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
-        <helpers:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
+        <converter:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
+        <converter:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
+        <converter:AutoSuggestQueryParameterConverter x:Key="AutoSuggestQueryParameterConverter" />
+        <converters:StringFormatConverter x:Key="StringFormatConverter" />
+
+        <DataTemplate x:Key="RaceViewTemplate" x:DataType="domain:Race">
+            <Grid Margin="0,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="PointerEntered">
+                        <core:CallMethodAction TargetObject="{Binding ElementName=NameOffsetRight}"
+                                               MethodName="StartAnimation" />
+                        <core:CallMethodAction TargetObject="{Binding ElementName=DescriptionOffsetRight}"
+                                               MethodName="StartAnimation" />
+                    </core:EventTriggerBehavior>
+                    <core:EventTriggerBehavior EventName="PointerExited">
+                        <core:CallMethodAction TargetObject="{Binding ElementName=NameOffsetLeft}"
+                                               MethodName="StartAnimation" />
+                        <core:CallMethodAction TargetObject="{Binding ElementName=DescriptionOffsetLeft}"
+                                               MethodName="StartAnimation" />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+                <controls:ImageEx x:Name="RaceImage" Grid.RowSpan="2" Stretch="UniformToFill" Width="32"
+                                  Height="32" Margin="6,6,12,6" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
+                                  PlaceholderSource="/Assets/RacePicturePlaceholder.jpg"
+                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.jpg}"
+                                  CornerRadius="18" />
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{x:Bind Name}" Style="{ThemeResource BaseTextBlockStyle}">
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:Offset x:Name="NameOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False"
+                                          OffsetX="2.5" OffsetY="-2" EasingMode="EaseOut" EasingType="Cubic" />
+                        <behaviors:Offset x:Name="NameOffsetLeft" Duration="400" Delay="0" AutomaticallyStart="False"
+                                          OffsetX="0" OffsetY="0" EasingMode="EaseOut" EasingType="Cubic" />
+                    </interactivity:Interaction.Behaviors>
+                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" Style="{ThemeResource BodyTextBlockStyle}">
+                    <Run
+                        Text="{x:Bind Date, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM.yyyy}'}" />
+                    <Run Text="in" />
+                    <Run Text="{x:Bind Location.Name, Mode=OneWay }" />
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:Offset x:Name="DescriptionOffsetRight" Duration="400" Delay="0"
+                                          AutomaticallyStart="False" OffsetX="2.5" OffsetY="3" EasingMode="EaseOut"
+                                          EasingType="Cubic" />
+                        <behaviors:Offset x:Name="DescriptionOffsetLeft" Duration="400" Delay="0"
+                                          AutomaticallyStart="False" OffsetX="0" OffsetY="0" EasingMode="EaseOut"
+                                          EasingType="Cubic" />
+                    </interactivity:Interaction.Behaviors>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
     </mvxview:MvxWindowsPage.Resources>
 
     <Grid>
@@ -75,8 +135,18 @@
             </Image.Source>
         </Image>
 
-        <AutoSuggestBox x:Name="Search" Grid.Row="0" Width="296" PlaceholderText="Search races" Margin="0,68,24,0"
-                        QueryIcon="Find" />
+        <AutoSuggestBox x:Name="Search" Grid.Row="0" ItemsSource="{Binding SearchRaces, Mode=OneWay}"
+                        Text="{Binding RaceSearchText, Mode=TwoWay}" ItemTemplate="{StaticResource RaceViewTemplate}"
+                        Width="296" PlaceholderText="Search races" Margin="0,68,24,0"
+                        QueryIcon="Find">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="QuerySubmitted">
+                    <core:InvokeCommandAction Command="{Binding RaceSearchQueryCommand}"
+                                              InputConverter="{StaticResource AutoSuggestQueryParameterConverter}" />
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+        </AutoSuggestBox>
+
         <TextBlock Grid.Row="1" VerticalAlignment="Top" Style="{ThemeResource SubtitleTextBlockStyle}"
                    FontWeight="Medium" Margin="24,12,0,0" Text="Races" />
 
@@ -103,12 +173,16 @@
                     <Grid x:Name="RaceItem" Margin="10,0">
                         <interactivity:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="PointerEntered">
-                                <core:CallMethodAction TargetObject="{Binding ElementName=RaceStatusOffsetRight}" MethodName="StartAnimation"/>
-                                <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleUp}" MethodName="StartAnimation"/>
+                                <core:CallMethodAction TargetObject="{Binding ElementName=RaceStatusOffsetRight}"
+                                                       MethodName="StartAnimation" />
+                                <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleUp}"
+                                                       MethodName="StartAnimation" />
                             </core:EventTriggerBehavior>
                             <core:EventTriggerBehavior EventName="PointerExited">
-                                <core:CallMethodAction TargetObject="{Binding ElementName=RaceStatusOffsetLeft}" MethodName="StartAnimation"/>
-                                <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleDown}" MethodName="StartAnimation"/>
+                                <core:CallMethodAction TargetObject="{Binding ElementName=RaceStatusOffsetLeft}"
+                                                       MethodName="StartAnimation" />
+                                <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleDown}"
+                                                       MethodName="StartAnimation" />
                             </core:EventTriggerBehavior>
                         </interactivity:Interaction.Behaviors>
                         <Grid.RowDefinitions>
@@ -122,10 +196,13 @@
                                           PlaceholderSource="/Assets/RacePicturePlaceholder.png"
                                           Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}">
                             <interactivity:Interaction.Behaviors>
-                                <behaviors:Scale x:Name="PhotoScaleUp" Duration="250" Delay="0" AutomaticallyStart="False"
-                                                 ScaleX="1.05" ScaleY="1.05" CenterX="80" CenterY="80" EasingMode="EaseOut"
+                                <behaviors:Scale x:Name="PhotoScaleUp" Duration="250" Delay="0"
+                                                 AutomaticallyStart="False"
+                                                 ScaleX="1.05" ScaleY="1.05" CenterX="80" CenterY="80"
+                                                 EasingMode="EaseOut"
                                                  EasingType="Cubic" />
-                                <behaviors:Scale x:Name="PhotoScaleDown" Duration="250" Delay="0" AutomaticallyStart="False"
+                                <behaviors:Scale x:Name="PhotoScaleDown" Duration="250" Delay="0"
+                                                 AutomaticallyStart="False"
                                                  ScaleX="1" ScaleY="1" CenterX="80" CenterY="80" EasingMode="EaseOut"
                                                  EasingType="Cubic" />
                             </interactivity:Interaction.Behaviors>
@@ -138,8 +215,12 @@
                                        VerticalAlignment="Top"
                                        Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
                             <interactivity:Interaction.Behaviors>
-                                <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="5" OffsetY="-5" EasingMode="EaseOut" EasingType="Cubic" />
-                                <behaviors:Offset x:Name="RaceStatusOffsetLeft"  Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="0" OffsetY="0" EasingMode="EaseOut"  EasingType="Cubic" />
+                                <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0"
+                                                  AutomaticallyStart="False" OffsetX="5" OffsetY="-5"
+                                                  EasingMode="EaseOut" EasingType="Cubic" />
+                                <behaviors:Offset x:Name="RaceStatusOffsetLeft" Duration="400" Delay="0"
+                                                  AutomaticallyStart="False" OffsetX="0" OffsetY="0"
+                                                  EasingMode="EaseOut" EasingType="Cubic" />
                             </interactivity:Interaction.Behaviors>
                         </Border>
 

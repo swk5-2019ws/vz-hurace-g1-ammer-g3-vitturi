@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Hurace.Domain;
 
-namespace Hurace.RaceControl.Helpers
+namespace Hurace.RaceControl.Helpers.Converter
 {
     public class RaceStatusToColorConverter : IValueConverter
     {

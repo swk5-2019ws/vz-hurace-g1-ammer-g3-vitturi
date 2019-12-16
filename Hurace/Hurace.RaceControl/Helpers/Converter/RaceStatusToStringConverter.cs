@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Data;
 using Hurace.Domain;
 
-namespace Hurace.RaceControl.Helpers
+namespace Hurace.RaceControl.Helpers.Converter
 {
     public class RaceStatusToStringConverter : IValueConverter
     {

@@ -12,13 +12,14 @@
     xmlns:helpers="using:Hurace.RaceControl.Helpers"
     xmlns:domain="using:Hurace.Domain"
     xmlns:viewModels="using:Hurace.RaceControl.ViewModels"
+    xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
-        <helpers:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
-        <helpers:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
-        <helpers:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
+        <converter:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
+        <converter:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
+        <converter:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
 
         <DataTemplate x:Key="SkierViewTemplate" x:DataType="domain:Skier">
             <Grid>

@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Core\App.cs" />
     <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
+    <Compile Include="Helpers\Converter\AutoSuggestQueryParameterConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToColorConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToStringConverter.cs" />
     <Compile Include="Helpers\Converter\RaceTypeToStringConverter.cs" />
