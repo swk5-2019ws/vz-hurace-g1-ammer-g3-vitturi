@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurace.RaceControl", "Hurac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurace.Timer", "Hurace.Timer\Hurace.Timer.csproj", "{3A49C5AD-9C7E-4C8D-AB8A-DAC926B71D5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hurace.Simulator", "Hurace.Simulator\Hurace.Simulator.csproj", "{9344A010-997C-4143-88E7-6525085DE922}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,6 +203,26 @@ Global
 		{3A49C5AD-9C7E-4C8D-AB8A-DAC926B71D5B}.Release|x64.Build.0 = Release|Any CPU
 		{3A49C5AD-9C7E-4C8D-AB8A-DAC926B71D5B}.Release|x86.ActiveCfg = Release|Any CPU
 		{3A49C5AD-9C7E-4C8D-AB8A-DAC926B71D5B}.Release|x86.Build.0 = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|x64.Build.0 = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Debug|x86.Build.0 = Debug|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|ARM.Build.0 = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|ARM64.Build.0 = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|x64.ActiveCfg = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|x64.Build.0 = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|x86.ActiveCfg = Release|Any CPU
+		{9344A010-997C-4143-88E7-6525085DE922}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
