@@ -138,7 +138,7 @@
                                        VerticalAlignment="Top"
                                        Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
                             <interactivity:Interaction.Behaviors>
-                                <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="10" OffsetY="12" EasingMode="EaseOut" EasingType="Cubic" />
+                                <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="5" OffsetY="-5" EasingMode="EaseOut" EasingType="Cubic" />
                                 <behaviors:Offset x:Name="RaceStatusOffsetLeft"  Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="0" OffsetY="0" EasingMode="EaseOut"  EasingType="Cubic" />
                             </interactivity:Interaction.Behaviors>
                         </Border>

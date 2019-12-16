@@ -31,7 +31,7 @@ namespace Hurace.RaceControl.ViewModels
 
         public void ShowScreens()
         {
-            _navigationService.Navigate<ScreensViewModel>();
+            _navigationService.Navigate<ScreenSelectionViewModel>();
         }
 
         public void ShowCreateRace(Race race = null)
