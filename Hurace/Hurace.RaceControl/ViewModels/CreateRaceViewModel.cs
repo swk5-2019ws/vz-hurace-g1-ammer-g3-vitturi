@@ -33,6 +33,7 @@ namespace Hurace.RaceControl.ViewModels
         private string _skierSearchText;
 
         private string _website;
+        private RaceStatus _status;
 
         public CreateRaceViewModel(ILocationDao locationDao, ISkierDao skierDao)
         {
@@ -68,6 +69,12 @@ namespace Hurace.RaceControl.ViewModels
         {
             get => _date;
             set => SetProperty(ref _date, value, () => { _race.Date = Date.DateTime; });
+        }
+
+        public RaceStatus Status
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
         }
 
         public string Name
@@ -118,13 +125,18 @@ namespace Hurace.RaceControl.ViewModels
             set => SetProperty(ref _selectedLocation, value, () => { _race.Location = SelectedLocation; });
         }
 
-        public IEnumerable<Tuple<Enum, string>> RaceTypes => EnumHelper.GetAllValuesAndDescriptions<RaceType>();
+        public IEnumerable<RaceType> RaceTypes => Enum.GetValues(typeof(RaceType)).Cast<RaceType>();
 
-        public IEnumerable<Tuple<Enum, string>> Genders => EnumHelper.GetAllValuesAndDescriptions<Gender>();
+        public IEnumerable<Gender> Genders => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
         public override async void Prepare(Race race)
         {
             await base.Initialize();
+
+            if (race == null)
+            {
+                race = new Race(){Date = DateTime.Now, Gender = Gender.Male, RaceType = RaceType.Slalom, Status = RaceStatus.Ready};
+            }
 
             _race = race;
             Name = _race.Name;
@@ -136,6 +148,7 @@ namespace Hurace.RaceControl.ViewModels
             NumberOfSensors = _race.NumberOfSensors;
             PictureUrl = _race.PictureUrl;
             SelectedLocation = _race.Location;
+            Status = _race.Status;
 
             var locations = await _locationDao.FindAll();
             Locations.SwitchTo(locations);

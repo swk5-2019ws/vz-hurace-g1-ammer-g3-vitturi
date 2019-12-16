@@ -120,9 +120,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\App.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
-    <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\RaceStatusToColorConverter.cs" />
+    <Compile Include="Helpers\RaceStatusToStringConverter.cs" />
+    <Compile Include="Helpers\RaceTypeToStringConverter.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
     <Compile Include="ViewModels\ScreenViewModel.cs" />
     <Compile Include="ViewModels\StartListViewModel.cs" />

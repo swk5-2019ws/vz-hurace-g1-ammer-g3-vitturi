@@ -16,6 +16,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
         <converters:StringFormatConverter x:Key="StringFormatConverter" />
+        <helpers:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
+        <helpers:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
+        <helpers:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
 
         <DataTemplate x:Key="SkierViewTemplate" x:DataType="domain:Skier">
             <Grid>
@@ -60,9 +63,9 @@
                         <SwipeControl.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem x:Name="DeleteSwipeItem"
-                                           Background="Red" 
-                                           Command="{x:Bind DeleteCommand}" 
-                                           CommandParameter="{x:Bind StartPosition}"/>
+                                           Background="Red"
+                                           Command="{x:Bind DeleteCommand}"
+                                           CommandParameter="{x:Bind StartPosition}" />
                             </SwipeItems>
                         </SwipeControl.RightItems>
                         <Grid VerticalAlignment="Center">
@@ -77,27 +80,27 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.RowSpan="2" Margin="10,0,30,0" FontWeight="SemiBold"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                                   Text="{x:Bind StartPosition, Mode=OneWay}" />
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Text="{x:Bind StartPosition, Mode=OneWay}" />
                             <controls:ImageEx x:Name="PersonPicture" Grid.Column="1" Grid.RowSpan="2"
-                                          Stretch="UniformToFill" Width="32"
-                                          Height="32" Margin="6" VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"
-                                          PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
-                                          PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
-                                          Source="{x:Bind Skier.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
-                                          CornerRadius="18" />
+                                              Stretch="UniformToFill" Width="32"
+                                              Height="32" Margin="6" VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
+                                              PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
+                                              Source="{x:Bind Skier.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
+                                              CornerRadius="18" />
                             <TextBlock Grid.Column="2" Grid.Row="0" Style="{ThemeResource BaseTextBlockStyle}"
-                                   Margin="12,6,0,0">
-                            <Run Text="{x:Bind Skier.FirstName}" />
-                            <Run Text="{x:Bind Skier.LastName}" />
+                                       Margin="12,6,0,0">
+                                <Run Text="{x:Bind Skier.FirstName}" />
+                                <Run Text="{x:Bind Skier.LastName}" />
                             </TextBlock>
                             <TextBlock Grid.Column="2" Grid.Row="1" Text="{x:Bind Skier.Country.Code}" x:Phase="2"
-                                   Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                                       Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
                             <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton"
-                                      IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
-                                      Command="{x:Bind DeleteCommand}"
-                                      CommandParameter="{x:Bind StartPosition}" />
+                                          IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
+                                          Command="{x:Bind DeleteCommand}"
+                                          CommandParameter="{x:Bind StartPosition}" />
                         </Grid>
                     </SwipeControl>
                 </Grid>
@@ -122,6 +125,13 @@
                               animations:Connected.Key="raceImageBack" PlaceholderStretch="UniformToFill"
                               IsCacheEnabled="True" PlaceholderSource="/Assets/RacePicturePlaceholder.png"
                               Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}" />
+            <Border Grid.Row="0" Grid.Column="0" Height="30"
+                    Background="{Binding Status, Converter={StaticResource RaceStatusToColorConverter}}"
+                    CornerRadius="0,0,0,5" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <TextBlock Margin="5,0,5,0" FontSize="20" Foreground="White" HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
+            </Border>
 
             <Grid x:Name="DescriptionRoot" Grid.Column="1" VerticalAlignment="Stretch" Margin="24,0,0,0"
                   Visibility="Visible" animations:Connected.AnchorElement="{x:Bind RaceImage}">
@@ -179,11 +189,17 @@
                                     SuggestionChosen="LocationAutoSuggestBox_SuggestionChosen"
                                     PlaceholderText="Type a location name" Header="Location:" />
                     <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding RaceTypes}"
-                              SelectedValue="{Binding RaceType, Mode=TwoWay}"
-                              Grid.Row="3" DisplayMemberPath="Item2" SelectedValuePath="Item1" Header="Race type:" />
+                              SelectedItem="{Binding RaceType, Mode=TwoWay}" PlaceholderText="Pick a race type"
+                              Grid.Row="3" Header="Race type:">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource RaceTypeToStringConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Genders}"
-                              SelectedValue="{Binding Gender, Mode=TwoWay}"
-                              Grid.Row="4" DisplayMemberPath="Item2" SelectedValuePath="Item1" Header="Gender:" />
+                              SelectedItem="{Binding Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
+                              Grid.Row="4" Header="Gender:" />
                     <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5"
                              Text="{Binding NumberOfSensors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Grid.Row="6" Text="Additional information"
