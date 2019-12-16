@@ -121,11 +121,15 @@
     </Compile>
     <Compile Include="Core\App.cs" />
     <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
-    <Compile Include="Helpers\RaceStatusToColorConverter.cs" />
-    <Compile Include="Helpers\RaceStatusToStringConverter.cs" />
-    <Compile Include="Helpers\RaceTypeToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceStatusToColorConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceStatusToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceTypeToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\ScreenTypeToStringConverter.cs" />
+    <Compile Include="Helpers\ScreenType.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
-    <Compile Include="ViewModels\ScreenViewModel.cs" />
+    <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />
+    <Compile Include="ViewModels\Screens\CurrentResultViewModel.cs" />
+    <Compile Include="ViewModels\Screens\CurrentSkierViewModel.cs" />
     <Compile Include="ViewModels\StartListViewModel.cs" />
     <Compile Include="ViewModels\StartListEntryViewModel.cs" />
     <Compile Include="Views\CreateRace.xaml.cs">
@@ -142,8 +146,14 @@
     <Compile Include="Helpers\Setup.cs" />
     <Compile Include="ViewModels\NavigationRootViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Views\Screens.xaml.cs">
-      <DependentUpon>Screens.xaml</DependentUpon>
+    <Compile Include="Views\ScreenSelection.xaml.cs">
+      <DependentUpon>ScreenSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Screens\CurrentResult.xaml.cs">
+      <DependentUpon>CurrentResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Screens\CurrentSkier.xaml.cs">
+      <DependentUpon>CurrentSkier.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -163,6 +173,9 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\CurrentResult.png" />
+    <Content Include="Assets\CurrentSkier.png" />
+    <Content Include="Assets\FutureScreens.png" />
     <Content Include="Assets\HomeBackground.jpg" />
     <Content Include="Assets\RacePicturePlaceholder.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -242,7 +255,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Screens.xaml">
+    <Page Include="Views\ScreenSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Screens\CurrentResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Screens\CurrentSkier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -272,6 +293,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross">
       <Version>6.4.1</Version>

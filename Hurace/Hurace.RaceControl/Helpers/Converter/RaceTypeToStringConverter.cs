@@ -4,20 +4,18 @@ using Hurace.Domain;
 
 namespace Hurace.RaceControl.Helpers
 {
-    public class RaceStatusToStringConverter : IValueConverter
+    internal class RaceTypeToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch ((RaceStatus) value)
+            switch ((RaceType) value)
             {
-                case RaceStatus.Finished:
-                    return "Finished";
-                case RaceStatus.InProgress:
-                    return "In Progress";
-                case RaceStatus.Ready:
-                    return "Ready";
+                case RaceType.Slalom:
+                    return "Slalom";
+                case RaceType.SuperSlalom:
+                    return "Super Slalom";
                 default:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException("value not supported");
             }
         }
 

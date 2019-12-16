@@ -1,0 +1,77 @@
+﻿<views:MvxWindowsPage
+    x:Class="Hurace.RaceControl.Views.ScreenSelection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Hurace.RaceControl.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="using:MvvmCross.Platforms.Uap.Views"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
+    xmlns:helpers="using:Hurace.RaceControl.Helpers"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <views:MvxWindowsPage.Resources>
+        <converter:ScreenTypeToStringConverter x:Key="ScreenTypeToStringConverter" />
+
+        <DataTemplate x:Key="ScreensTemplate" x:DataType="helpers:ScreenType">
+            <Grid CornerRadius="30" Width="300">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="PointerEntered">
+                        <core:CallMethodAction TargetObject="{Binding ElementName=TextOffsetRight}" MethodName="StartAnimation"/>
+                        <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleUp}" MethodName="StartAnimation"/>
+                    </core:EventTriggerBehavior>
+                    <core:EventTriggerBehavior EventName="PointerExited">
+                        <core:CallMethodAction TargetObject="{Binding ElementName=TextOffsetLeft}" MethodName="StartAnimation"/>
+                        <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleDown}" MethodName="StartAnimation"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+                <Image Grid.Row="0"
+                       Source="{x:Bind Converter={StaticResource ScreenTypeToStringConverter}}"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:Scale x:Name="PhotoScaleUp" Duration="250" Delay="0" AutomaticallyStart="False"
+                                         ScaleX="1.1" ScaleY="1.1" CenterX="150" CenterY="150" EasingMode="EaseOut"
+                                         EasingType="Cubic" />
+                        <behaviors:Scale x:Name="PhotoScaleDown" Duration="250" Delay="0" AutomaticallyStart="False"
+                                         ScaleX="1" ScaleY="1" CenterX="150" CenterY="150" EasingMode="EaseOut"
+                                         EasingType="Cubic" />
+                    </interactivity:Interaction.Behaviors>
+                </Image>
+                <controls:DropShadowPanel Grid.Row="0" VerticalAlignment="Top" Margin="10,2,0,0" BlurRadius="20.0"
+                                          OffsetX="0.0" OffsetY="10.0" Color="#d9d9d9">
+                    <TextBlock Foreground="White" TextWrapping="Wrap" FontSize="30" FontWeight="Bold"
+                               Text="{x:Bind Converter={StaticResource ScreenTypeToStringConverter}}" />
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:Offset x:Name="TextOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="8" OffsetY="8" EasingMode="EaseOut" EasingType="Cubic" />
+                        <behaviors:Offset x:Name="TextOffsetLeft"  Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="0" OffsetY="0" EasingMode="EaseOut"  EasingType="Cubic" />
+                    </interactivity:Interaction.Behaviors>
+                </controls:DropShadowPanel>
+            </Grid>
+        </DataTemplate>
+    </views:MvxWindowsPage.Resources>
+
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Screens" Height="52" Margin="20,20,0,0" Style="{ThemeResource SubtitleTextBlockStyle}" />
+        <controls:AdaptiveGridView Name="AdaptiveGridViewControl"
+                                   Grid.Row="1"
+                                   Height="1200"
+                                   OneRowModeEnabled="False"
+                                   ItemHeight="200"
+                                   DesiredWidth="350"
+                                   SelectionMode="Single"
+                                   IsItemClickEnabled="True"
+                                   ItemTemplate="{StaticResource ScreensTemplate}"
+                                   ItemsSource="{Binding ScreenTypes}" ItemClickCommand="{Binding ScreenSelectCommand}">
+        </controls:AdaptiveGridView>
+    </Grid>
+</views:MvxWindowsPage>

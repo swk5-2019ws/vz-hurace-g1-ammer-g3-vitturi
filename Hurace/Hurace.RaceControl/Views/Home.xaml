@@ -10,6 +10,9 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:mvxview="using:MvvmCross.Platforms.Uap.Views"
     xmlns:helpers="using:Hurace.RaceControl.Helpers"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <mvxview:MvxWindowsPage.Resources>
@@ -98,6 +101,16 @@
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="RaceItem" Margin="10,0">
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="PointerEntered">
+                                <core:CallMethodAction TargetObject="{Binding ElementName=RaceStatusOffsetRight}" MethodName="StartAnimation"/>
+                                <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleUp}" MethodName="StartAnimation"/>
+                            </core:EventTriggerBehavior>
+                            <core:EventTriggerBehavior EventName="PointerExited">
+                                <core:CallMethodAction TargetObject="{Binding ElementName=RaceStatusOffsetLeft}" MethodName="StartAnimation"/>
+                                <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleDown}" MethodName="StartAnimation"/>
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="200" />
                             <RowDefinition Height="*" />
@@ -107,7 +120,16 @@
                         <controls:ImageEx x:Name="Image" Grid.Row="0" Stretch="UniformToFill" Height="190" Width="190"
                                           PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
                                           PlaceholderSource="/Assets/RacePicturePlaceholder.png"
-                                          Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}" />
+                                          Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}">
+                            <interactivity:Interaction.Behaviors>
+                                <behaviors:Scale x:Name="PhotoScaleUp" Duration="250" Delay="0" AutomaticallyStart="False"
+                                                 ScaleX="1.05" ScaleY="1.05" CenterX="80" CenterY="80" EasingMode="EaseOut"
+                                                 EasingType="Cubic" />
+                                <behaviors:Scale x:Name="PhotoScaleDown" Duration="250" Delay="0" AutomaticallyStart="False"
+                                                 ScaleX="1" ScaleY="1" CenterX="80" CenterY="80" EasingMode="EaseOut"
+                                                 EasingType="Cubic" />
+                            </interactivity:Interaction.Behaviors>
+                        </controls:ImageEx>
                         <Border Grid.Row="0" Height="20"
                                 Background="{Binding Status, Converter={StaticResource RaceStatusToColorConverter}}"
                                 Margin="0,5,0,0" CornerRadius="0,0,0,5" VerticalAlignment="Top"
@@ -115,6 +137,10 @@
                             <TextBlock Margin="5,0,5,0" Foreground="White" HorizontalAlignment="Right"
                                        VerticalAlignment="Top"
                                        Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
+                            <interactivity:Interaction.Behaviors>
+                                <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="5" OffsetY="-5" EasingMode="EaseOut" EasingType="Cubic" />
+                                <behaviors:Offset x:Name="RaceStatusOffsetLeft"  Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="0" OffsetY="0" EasingMode="EaseOut"  EasingType="Cubic" />
+                            </interactivity:Interaction.Behaviors>
                         </Border>
 
                         <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Width="180">
