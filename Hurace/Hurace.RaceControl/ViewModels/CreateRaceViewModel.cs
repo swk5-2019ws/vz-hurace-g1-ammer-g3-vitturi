@@ -56,7 +56,7 @@ namespace Hurace.RaceControl.ViewModels
                 if (!string.IsNullOrWhiteSpace(value))
                     SetProperty(ref _skierSearchText, value, async () =>
                     {
-                        var skiers = await _skierDao.SearchSkiers(SkierSearchText, null, Gender);
+                        var skiers = await _skierDao.FindByFilters(SkierSearchText, null, Gender);
                         var filteredSkiers = skiers.Where(skier => StartListEntries.All(i => i.Skier.Id != skier.Id));
                         SearchSkiers.SwitchTo(filteredSkiers);
                     });
