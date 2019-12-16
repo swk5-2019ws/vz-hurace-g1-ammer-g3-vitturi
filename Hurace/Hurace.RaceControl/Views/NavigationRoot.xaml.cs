@@ -30,6 +30,7 @@ namespace Hurace.RaceControl.Views
                     ViewModel.ShowHome();
                     break;
                 case "Screens":
+                    NavView.Header = "Screens";
                     ViewModel.ShowScreens();
                     break;
                 case "Create race":

@@ -5,7 +5,7 @@ using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views
 {
-    [MvxViewFor(typeof(ScreenViewModel))]
+    [MvxViewFor(typeof(ScreensViewModel))]
     [MvxSplitViewPresentation(SplitPanePosition.Content)]
     public sealed partial class Screens : MvxWindowsPage
     {

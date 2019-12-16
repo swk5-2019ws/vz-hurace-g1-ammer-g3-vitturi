@@ -19,7 +19,7 @@ namespace Hurace.RaceControl.Helpers
                 case RaceStatus.Ready:
                     return new SolidColorBrush(Color.FromArgb(255, 52, 152, 219));
                 default:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException("value not supported");
             }
         }
 

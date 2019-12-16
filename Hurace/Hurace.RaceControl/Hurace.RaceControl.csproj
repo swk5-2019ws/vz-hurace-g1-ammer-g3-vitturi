@@ -121,11 +121,13 @@
     </Compile>
     <Compile Include="Core\App.cs" />
     <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
-    <Compile Include="Helpers\RaceStatusToColorConverter.cs" />
-    <Compile Include="Helpers\RaceStatusToStringConverter.cs" />
-    <Compile Include="Helpers\RaceTypeToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceStatusToColorConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceStatusToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceTypeToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\ScreenTypeToStringConverter.cs" />
+    <Compile Include="Helpers\ScreenType.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
-    <Compile Include="ViewModels\ScreenViewModel.cs" />
+    <Compile Include="ViewModels\ScreensViewModel.cs" />
     <Compile Include="ViewModels\StartListViewModel.cs" />
     <Compile Include="ViewModels\StartListEntryViewModel.cs" />
     <Compile Include="Views\CreateRace.xaml.cs">
@@ -163,6 +165,9 @@
     <Content Include="Assets\BadgeLogo.scale-150.png" />
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\CurrentResult.png" />
+    <Content Include="Assets\CurrentSkier.png" />
+    <Content Include="Assets\FutureScreens.png" />
     <Content Include="Assets\HomeBackground.jpg" />
     <Content Include="Assets\RacePicturePlaceholder.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
