@@ -9,6 +9,7 @@ using Windows.Storage;
 using Hurace.Core;
 using Hurace.Core.Daos;
 using Hurace.Core.Interface;
+using Hurace.Core.Services;
 using MvvmCross;
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
@@ -26,9 +27,17 @@ namespace Hurace.RaceControl.Core
             var customConnectionString = connectionString.Replace(databaseName, databasePath, StringComparison.CurrentCulture);
 
             var connectionFactory = new ConnectionFactory(Environment.Production, customConnectionString);
-            Mvx.IoCProvider.RegisterSingleton<IRaceDao>(new RaceDao(connectionFactory));
-            Mvx.IoCProvider.RegisterSingleton<ILocationDao>(new LocationDao(connectionFactory));
-            Mvx.IoCProvider.RegisterSingleton<ISkierDao>(new SkierDao(connectionFactory));
+            var locationDao = new LocationDao(connectionFactory);
+            var skierDao = new SkierDao(connectionFactory);
+            var countryDao = new CountryDao(connectionFactory);
+            var raceDao = new RaceDao(connectionFactory);
+            var runDao = new RunDao(connectionFactory);
+            var sensorMeasurementDao = new SensorMeasurementDao(connectionFactory);
+
+            var daoProvider = new DaoProvider(countryDao, locationDao, raceDao, runDao, sensorMeasurementDao, skierDao);
+            Mvx.IoCProvider.RegisterSingleton<RaceService>(new RaceService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<LocationService>(new LocationService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<SkierService>(new SkierService(daoProvider));
 
             RegisterAppStart<ViewModels.NavigationRootViewModel>();
         }

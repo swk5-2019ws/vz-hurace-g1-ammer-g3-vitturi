@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Hurace.Core.Interface;
+using Hurace.Core.Services;
 using Hurace.Domain;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
@@ -9,17 +10,17 @@ namespace Hurace.RaceControl.ViewModels
 {
     public class HomeViewModel : MvxViewModel
     {
-        private const int SHOWN_RACES = 10;
+        private const int SHOWN_RACES = 15;
         private readonly IMvxNavigationService _navigationService;
 
-        private readonly IRaceDao _raceDao;
+        private readonly RaceService _raceService;
 
         private string _raceSearchText;
 
-        public HomeViewModel(IMvxNavigationService navigationService, IRaceDao raceDao)
+        public HomeViewModel(IMvxNavigationService navigationService, RaceService raceService)
         {
             _navigationService = navigationService;
-            _raceDao = raceDao;
+            _raceService = raceService;
         }
 
         public MvxObservableCollection<Race> Races { get; } = new MvxObservableCollection<Race>();
@@ -36,7 +37,7 @@ namespace Hurace.RaceControl.ViewModels
                 if (!string.IsNullOrWhiteSpace(value))
                     SetProperty(ref _raceSearchText, value, async () =>
                     {
-                        var races = await _raceDao.SearchRaces(RaceSearchText);
+                        var races = await _raceService.SearchRaces(RaceSearchText);
                         SearchRaces.SwitchTo(races);
                     });
             }
@@ -46,7 +47,7 @@ namespace Hurace.RaceControl.ViewModels
         public override async Task Initialize()
         {
             await base.Initialize();
-            var races = await _raceDao.GetLastRaces(SHOWN_RACES);
+            var races = await _raceService.GetLastRaces(SHOWN_RACES);
             Races.AddRange(races);
             RaceSearchQueryCommand = new MvxCommand<Race>(ShowCreateRace);
         }

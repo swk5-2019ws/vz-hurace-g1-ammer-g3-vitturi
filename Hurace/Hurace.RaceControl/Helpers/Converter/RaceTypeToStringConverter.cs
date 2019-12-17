@@ -15,7 +15,7 @@ namespace Hurace.RaceControl.Helpers.Converter
                 case RaceType.SuperSlalom:
                     return "Super Slalom";
                 default:
-                    throw new NotSupportedException("value not supported");
+                    throw new ArgumentOutOfRangeException(nameof(value));
             }
         }
 

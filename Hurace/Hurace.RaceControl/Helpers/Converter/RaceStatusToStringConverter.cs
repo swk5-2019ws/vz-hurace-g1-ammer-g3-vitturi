@@ -17,7 +17,7 @@ namespace Hurace.RaceControl.Helpers.Converter
                 case RaceStatus.Ready:
                     return "Ready";
                 default:
-                    throw new NotSupportedException("value not supported");
+                    throw new ArgumentOutOfRangeException(nameof(value));
             }
         }
 

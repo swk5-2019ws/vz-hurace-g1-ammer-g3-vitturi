@@ -17,9 +17,9 @@ namespace Hurace.Core.Services
             await DaoProvider.SkierDao.Update(skier).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Skier>> GetSkiers(Gender gender)
+        public async Task<IEnumerable<Skier>> GetSkiers(Gender gender, string? nameSubstring = null)
         {
-            return await DaoProvider.SkierDao.FindByFilters(gender: gender).ConfigureAwait(false);
+            return await DaoProvider.SkierDao.FindByFilters(gender: gender, nameSubstring: nameSubstring).ConfigureAwait(false);
         }
     }
 }

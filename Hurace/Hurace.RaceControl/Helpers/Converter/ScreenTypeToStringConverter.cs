@@ -19,7 +19,7 @@ namespace Hurace.RaceControl.Helpers.Converter
                     case ScreenType.FutureScreens:
                         return "More screens in the future";
                     default:
-                        throw new NotSupportedException("Type not supported");
+                        throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
             if (targetType == typeof(ImageSource))
@@ -32,10 +32,10 @@ namespace Hurace.RaceControl.Helpers.Converter
                     case ScreenType.FutureScreens:
                         return new BitmapImage(new Uri("ms-appx:///Assets/FutureScreens.png"));
                     default:
-                        throw new NotSupportedException("Type not supported");
+                        throw new ArgumentOutOfRangeException(nameof(value));
                 }
 
-            throw new NotSupportedException("Type not supported");
+            throw new ArgumentOutOfRangeException(nameof(targetType));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

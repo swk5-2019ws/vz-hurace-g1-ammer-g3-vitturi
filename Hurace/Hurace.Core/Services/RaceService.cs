@@ -50,5 +50,10 @@ namespace Hurace.Core.Services
             await DaoProvider.RunDao.DeleteAllRunsForRace(race, runNumber).ConfigureAwait(false);
             await CreateStartList(race, runNumber, skiers).ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Race>> GetLastRaces(int shownRaces)
+        {
+            return await DaoProvider.RaceDao.GetLastRaces(shownRaces).ConfigureAwait(false);
+        }
     }
 }

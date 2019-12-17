@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using Hurace.Core.Interface;
+using Hurace.Core.Services;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
 using MvvmCross.ViewModels;
@@ -11,8 +12,8 @@ namespace Hurace.RaceControl.ViewModels
 {
     public class CreateRaceViewModel : MvxViewModel<Race>
     {
-        private readonly ILocationDao _locationDao;
-        private readonly ISkierDao _skierDao;
+        private readonly LocationService _locationService;
+        private readonly SkierService _skierService;
         private DateTimeOffset _date;
 
         private string _description;
@@ -35,10 +36,10 @@ namespace Hurace.RaceControl.ViewModels
         private string _website;
         private RaceStatus _status;
 
-        public CreateRaceViewModel(ILocationDao locationDao, ISkierDao skierDao)
+        public CreateRaceViewModel(LocationService locationService, SkierService skierService)
         {
-            _locationDao = locationDao;
-            _skierDao = skierDao;
+            _locationService = locationService;
+            _skierService = skierService;
         }
 
         public MvxObservableCollection<Location> Locations { get; } = new MvxObservableCollection<Location>();
@@ -56,7 +57,7 @@ namespace Hurace.RaceControl.ViewModels
                 if (!string.IsNullOrWhiteSpace(value))
                     SetProperty(ref _skierSearchText, value, async () =>
                     {
-                        var skiers = await _skierDao.FindByFilters(SkierSearchText, null, Gender);
+                        var skiers = await _skierService.GetSkiers(Gender, SkierSearchText);
                         var filteredSkiers = skiers.Where(skier => StartListEntries.All(i => i.Skier.Id != skier.Id));
                         SearchSkiers.SwitchTo(filteredSkiers);
                     });
@@ -150,7 +151,7 @@ namespace Hurace.RaceControl.ViewModels
             SelectedLocation = _race.Location;
             Status = _race.Status;
 
-            var locations = await _locationDao.FindAll();
+            var locations = await _locationService.GetLocations();
             Locations.SwitchTo(locations);
             StartListEntries.CollectionChanged += RunsOnCollectionChanged;
         }
