@@ -8,10 +8,16 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Margin="24,35,0,0">
-        <StackPanel Margin="12,0,0,25">
+    <Grid Margin="36,35,0,0" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="0,0,0,25">
             <TextBlock Text="About this app" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <TextBlock Text="{Binding VersionDescription}" Margin="0,8,0,0" />
         </StackPanel>
+
+        <Button Grid.Row="1" Command="{Binding OpenSimulatorCommand}">Open simulator</Button>
     </Grid>
 </views:MvxWindowsPage>

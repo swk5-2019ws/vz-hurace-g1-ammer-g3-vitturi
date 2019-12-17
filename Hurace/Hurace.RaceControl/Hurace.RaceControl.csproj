@@ -133,6 +133,7 @@
     <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentResultViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentSkierViewModel.cs" />
+    <Compile Include="ViewModels\SimulatorViewModel.cs" />
     <Compile Include="ViewModels\StartListViewModel.cs" />
     <Compile Include="ViewModels\StartListEntryViewModel.cs" />
     <Compile Include="Views\CreateRace.xaml.cs">
@@ -160,6 +161,9 @@
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Simulator.xaml.cs">
+      <DependentUpon>Simulator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StartList.xaml.cs">
       <DependentUpon>StartList.xaml</DependentUpon>
@@ -271,6 +275,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Simulator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
