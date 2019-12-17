@@ -1,4 +1,4 @@
-﻿using MvvmCross;
+﻿using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Platforms.Uap.Core;
 using MvvmCross.Platforms.Uap.Presenters;
 using MvvmCross.Platforms.Uap.Views;

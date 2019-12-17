@@ -1,6 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
+using Hurace.RaceControl.Helpers.MvvmCross;
 using Hurace.RaceControl.ViewModels;
 using MvvmCross.Platforms.Uap.Presenters.Attributes;
 using MvvmCross.ViewModels;

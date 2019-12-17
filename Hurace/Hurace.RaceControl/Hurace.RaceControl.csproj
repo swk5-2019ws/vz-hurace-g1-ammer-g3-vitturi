@@ -120,14 +120,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\App.cs" />
-    <Compile Include="Helpers\BaseApplicationMvxPage.cs" />
+    <Compile Include="Helpers\Converter\RaceStatusToVisibilityConverter.cs" />
+    <Compile Include="Helpers\MvvmCross\BaseApplicationMvxPage.cs" />
     <Compile Include="Helpers\Converter\AutoSuggestQueryParameterConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToColorConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToStringConverter.cs" />
     <Compile Include="Helpers\Converter\RaceTypeToStringConverter.cs" />
     <Compile Include="Helpers\Converter\ScreenTypeToStringConverter.cs" />
-    <Compile Include="Helpers\CustomMvxWindowsViewPresenter.cs" />
-    <Compile Include="Helpers\MvxWindowPresentationAttribute.cs" />
+    <Compile Include="Helpers\MvvmCross\CustomMvxWindowsViewPresenter.cs" />
+    <Compile Include="Helpers\MvvmCross\MvxWindowPresentationAttribute.cs" />
     <Compile Include="Helpers\ScreenType.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
     <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />

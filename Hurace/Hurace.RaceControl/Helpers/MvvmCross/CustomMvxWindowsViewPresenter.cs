@@ -12,7 +12,7 @@ using MvvmCross.Presenters;
 using MvvmCross.ViewModels;
 using MvvmCross.Views;
 
-namespace Hurace.RaceControl.Helpers
+namespace Hurace.RaceControl.Helpers.MvvmCross
 {
     public class CustomMvxWindowsViewPresenter : MvxWindowsViewPresenter
     {
@@ -42,7 +42,8 @@ namespace Hurace.RaceControl.Helpers
                     var viewsContainer = Mvx.IoCProvider.Resolve<IMvxViewsContainer>();
 
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.High,
-                        async () => {
+                        async () =>
+                        {
                             var appWindow = await AppWindow.TryCreateAsync();
                             var appWindowContentFrame = new Frame();
                             appWindowContentFrame.Navigate(viewType, requestText);

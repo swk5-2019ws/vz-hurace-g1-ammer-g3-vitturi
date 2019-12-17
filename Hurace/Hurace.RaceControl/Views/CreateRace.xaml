@@ -13,6 +13,7 @@
     xmlns:domain="using:Hurace.Domain"
     xmlns:viewModels="using:Hurace.RaceControl.ViewModels"
     xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
@@ -20,6 +21,7 @@
         <converter:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
         <converter:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
         <converter:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
+        <converter:RaceStatusToVisibilityConverter x:Key="RaceStatusToBoolConverter" />
 
         <DataTemplate x:Key="SkierViewTemplate" x:DataType="domain:Skier">
             <Grid>
@@ -158,7 +160,8 @@
                            Text="{Binding Description, Mode=OneWay}" />
                 <StackPanel Grid.Row="3" Spacing="20" Orientation="Horizontal" Margin="0,10,0,0">
                     <Button>Save</Button>
-                    <Button>Start</Button>
+                    <Button Visibility="{Binding Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='StartButton'}">Start</Button>
+                    <Button Visibility="{Binding Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='ControlButton'}">Control</Button>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -179,7 +182,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" Header="Name:" PlaceholderText="Name"
+                    <TextBox Grid.Row="0" Header="Name:" PlaceholderText="Name" extensions:TextBoxRegex.ValidationType="Characters" extensions:TextBoxRegex.ValidationMode="Dynamic"
                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <CalendarDatePicker HorizontalAlignment="Stretch" Grid.Row="1" Header="Race date:"
                                         PlaceholderText="Choose your race date"
@@ -201,7 +204,7 @@
                     <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Genders}"
                               SelectedItem="{Binding Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
                               Grid.Row="4" Header="Gender:" />
-                    <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5"
+                    <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5" extensions:TextBoxRegex.ValidationType="Number" extensions:TextBoxRegex.ValidationMode="Dynamic"
                              Text="{Binding NumberOfSensors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Grid.Row="6" Text="Additional information"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
@@ -224,11 +227,12 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Race list" Margin="0,0,0,20"
                            Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <AutoSuggestBox HorizontalAlignment="Stretch" Margin="0,0,0,10" Grid.Row="1"
+                <AutoSuggestBox HorizontalAlignment="Stretch" Margin="0,0,0,10" Grid.Row="1" Name="SkierAutoSuggestBox"
                                 ItemsSource="{Binding SearchSkiers, Mode=OneWay}"
                                 Text="{Binding SkierSearchText, Mode=TwoWay}"
                                 QuerySubmitted="SkierAutoSuggestBox_QuerySubmitted"
                                 SuggestionChosen="SkierAutoSuggestBox_SuggestionChosen"
+                                Visibility="{Binding Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='SkierAutoSuggestBox'}"
                                 ItemTemplate="{StaticResource SkierViewTemplate}" QueryIcon="Find" />
                 <ListView x:Name="RunListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2"
                           CanDragItems="True"

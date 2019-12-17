@@ -216,7 +216,7 @@
                                        Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
                             <interactivity:Interaction.Behaviors>
                                 <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0"
-                                                  AutomaticallyStart="False" OffsetX="5" OffsetY="-5"
+                                                  AutomaticallyStart="False" OffsetX="5.5" OffsetY="-4"
                                                   EasingMode="EaseOut" EasingType="Cubic" />
                                 <behaviors:Offset x:Name="RaceStatusOffsetLeft" Duration="400" Delay="0"
                                                   AutomaticallyStart="False" OffsetX="0" OffsetY="0"

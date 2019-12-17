@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Hurace.RaceControl.Helpers;
+using Hurace.RaceControl.Helpers.MvvmCross;
 using Hurace.RaceControl.ViewModels;
 using MvvmCross.Platforms.Uap.Views;
 using MvvmCross.ViewModels;
