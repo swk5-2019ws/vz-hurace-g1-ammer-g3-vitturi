@@ -1,4 +1,7 @@
-﻿using MvvmCross.Platforms.Uap.Core;
+﻿using MvvmCross;
+using MvvmCross.Platforms.Uap.Core;
+using MvvmCross.Platforms.Uap.Presenters;
+using MvvmCross.Platforms.Uap.Views;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Helpers
@@ -8,6 +11,11 @@ namespace Hurace.RaceControl.Helpers
         protected override IMvxApplication CreateApp()
         {
             return new Core.App();
+        }
+
+        protected override IMvxWindowsViewPresenter CreateViewPresenter(IMvxWindowsFrame rootFrame)
+        {
+            return new CustomMvxWindowsViewPresenter(rootFrame);
         }
     }
 }

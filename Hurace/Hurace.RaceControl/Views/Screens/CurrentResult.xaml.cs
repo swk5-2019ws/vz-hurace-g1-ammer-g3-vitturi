@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.ViewModels.Screens;
 using MvvmCross.Platforms.Uap.Presenters.Attributes;
 using MvvmCross.Platforms.Uap.Views;
@@ -20,7 +21,7 @@ using MvvmCross.ViewModels;
 namespace Hurace.RaceControl.Views.Screens
 {
     [MvxViewFor(typeof(CurrentResultViewModel))]
-    [MvxDialogViewPresentation]
+    [MvxWindowPresentation]
     public sealed partial class CurrentResult : MvxWindowsPage
     {
         public CurrentResult()

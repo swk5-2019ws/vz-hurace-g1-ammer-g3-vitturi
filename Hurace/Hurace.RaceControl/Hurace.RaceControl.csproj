@@ -126,6 +126,8 @@
     <Compile Include="Helpers\Converter\RaceStatusToStringConverter.cs" />
     <Compile Include="Helpers\Converter\RaceTypeToStringConverter.cs" />
     <Compile Include="Helpers\Converter\ScreenTypeToStringConverter.cs" />
+    <Compile Include="Helpers\CustomMvxWindowsViewPresenter.cs" />
+    <Compile Include="Helpers\MvxWindowPresentationAttribute.cs" />
     <Compile Include="Helpers\ScreenType.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
     <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />
