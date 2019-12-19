@@ -51,8 +51,8 @@
                 <controls:ImageEx x:Name="RaceImage" Grid.RowSpan="2" Stretch="UniformToFill" Width="32"
                                   Height="32" Margin="6,6,12,6" VerticalAlignment="Center" HorizontalAlignment="Center"
                                   PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
-                                  PlaceholderSource="/Assets/RacePicturePlaceholder.jpg"
-                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.jpg}"
+                                  PlaceholderSource="/Assets/RacePicturePlaceholder.png"
+                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}"
                                   CornerRadius="18" />
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{x:Bind Name}" Style="{ThemeResource BaseTextBlockStyle}">
                     <interactivity:Interaction.Behaviors>

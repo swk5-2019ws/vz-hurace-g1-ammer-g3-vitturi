@@ -22,6 +22,7 @@
         <converter:RaceStatusToStringConverter x:Key="RaceStatusToStringConverter" />
         <converter:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
         <converter:RaceStatusToVisibilityConverter x:Key="RaceStatusToBoolConverter" />
+        <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter"/>
 
         <DataTemplate x:Key="SkierViewTemplate" x:DataType="domain:Skier">
             <Grid>
@@ -147,13 +148,16 @@
                 <TextBlock Grid.Row="0" Style="{ThemeResource SubheaderTextBlockStyle}"
                            Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
                            Text="{Binding Name, Mode=OneWay}" />
-                <TextBlock Grid.Row="1" Style="{ThemeResource TitleTextBlockStyle}"
-                           Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}">
-                    <Run
-                        Text="{Binding Date, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM.yyyy}'}" />
-                    <Run Text="in" />
-                    <Run Text="{Binding SelectedLocation.Name, Mode=OneWay }" />
-                </TextBlock>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+                               Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}">
+                        <Run
+                            Text="{Binding Date, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM.yyyy}'}" />
+                        <Run Text="in" />
+                        <Run Text="{Binding SelectedLocation.Name, Mode=OneWay }" />
+                    </TextBlock>
+                    <Image HorizontalAlignment="Right" Margin="10,0,0,0" Stretch="Fill" Height="20" Width="30" Source="{Binding SelectedLocation.Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}"/>
+                </StackPanel>
                 <TextBlock Grid.Row="2" Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}"
                            Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
                            HorizontalAlignment="Left" FontSize="14" MaxWidth="500" TextWrapping="Wrap"

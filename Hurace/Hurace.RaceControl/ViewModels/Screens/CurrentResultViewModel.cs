@@ -64,16 +64,16 @@ namespace Hurace.RaceControl.ViewModels.Screens
             RaceType = RaceType.SuperSlalom;
             PictureUrl =
                 "https://images.unsplash.com/photo-1498576260462-eefc9d0ce9f7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit";
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test1", LastName = "Test1", Country = new Country(){Code = "AUT"}} });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test2", LastName = "Test2", Country = new Country() { Code = "USA" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test3", LastName = "Test3", Country = new Country() { Code = "NZL" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test4", LastName = "Test4", Country = new Country() { Code = "AUT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test5", LastName = "Test5", Country = new Country() { Code = "AUT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test6", LastName = "Test6", Country = new Country() { Code = "GER" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test7", LastName = "Test7", Country = new Country() { Code = "AUT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test8", LastName = "Test8", Country = new Country() { Code = "USA" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test9", LastName = "Test9", Country = new Country() { Code = "AUT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test10", LastName = "Test10", Country = new Country() { Code = "AUT" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test1", LastName = "Test1", Country = new Country(){Code = "AT"}} });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test2", LastName = "Test2", Country = new Country() { Code = "US" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test3", LastName = "Test3", Country = new Country() { Code = "UA" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test4", LastName = "Test4", Country = new Country() { Code = "AT" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test5", LastName = "Test5", Country = new Country() { Code = "TC" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test6", LastName = "Test6", Country = new Country() { Code = "TV" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test7", LastName = "Test7", Country = new Country() { Code = "AT" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test8", LastName = "Test8", Country = new Country() { Code = "US" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test9", LastName = "Test9", Country = new Country() { Code = "AT" } } });
+            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test10", LastName = "Test10", Country = new Country() { Code = "EH" } } });
         }
     }
 }

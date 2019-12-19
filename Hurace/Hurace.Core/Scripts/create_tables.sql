@@ -3,7 +3,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS country (
     id   INTEGER PRIMARY KEY,
     code TEXT    NOT NULL UNIQUE,
-    CHECK (LENGTH(code) = 3)
+    CHECK (LENGTH(code) = 2)
 );
 
 CREATE TABLE IF NOT EXISTS location (
