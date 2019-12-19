@@ -24,9 +24,13 @@ using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views.Screens
 {
+    public abstract class CurrentSkierAbstract : BaseApplicationMvxPage<CurrentSkierViewModel>
+    {
+    }
+
     [MvxViewFor(typeof(CurrentSkierViewModel))]
     [MvxWindowPresentation]
-    public sealed partial class CurrentSkier : MvxWindowsPage
+    public sealed partial class CurrentSkier : CurrentSkierAbstract
     {
         public CurrentSkier()
         {
