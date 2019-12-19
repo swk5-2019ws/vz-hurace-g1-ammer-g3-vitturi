@@ -1,4 +1,4 @@
-﻿<views:MvxWindowsPage
+﻿<local:CurrentSkierAbstract
     x:Class="Hurace.RaceControl.Views.Screens.CurrentSkier"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,10 +6,134 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
+    xmlns:domain="using:Hurace.Domain"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <views:MvxWindowsPage.Resources>
+        <converter:StringToUpperCaseConverter x:Key="StringToUpperCaseConverter" />
+        <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter" />
+        <converter:TimeSpanToBrushConverter x:Key="TimeSpanToBrushConverter" />
+        <converter:StringToAbbreviationConverter x:Key="StringToAbbreviationConverter" />
 
+        <AcrylicBrush x:Key="BlackAcrylicBackgroundBrush" BackgroundSource="HostBackdrop"
+                      TintOpacity="0.7" TintColor="#FF000000" FallbackColor="#FF000000" />
+    </views:MvxWindowsPage.Resources>
     <Grid>
-        <TextBlock Text="CurrentSkier"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="{ThemeResource BlackAcrylicBackgroundBrush}" Height="200">
+            <Grid x:Name="SkierHeader">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <controls:ImageEx Stretch="UniformToFill" Width="160" Height="160" Margin="20,0,20,0" Grid.Column="0"
+                                  Grid.RowSpan="2"
+                                  PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
+                                  PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.png"
+                                  Source="{x:Bind ViewModel.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.png}"
+                                  CornerRadius="100" />
+                <Image Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" Margin="30,54,0,0" Stretch="Fill"
+                       Height="40" Width="60"
+                       Source="{x:Bind ViewModel.CountryCode, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                <TextBlock Grid.Column="2" Grid.Row="0" Foreground="White" HorizontalAlignment="Left"
+                           Margin="20,40,22,0" FontSize="50"
+                           Text="{x:Bind ViewModel.FirstName, Converter={StaticResource StringToUpperCaseConverter}}" />
+                <TextBlock Grid.Column="3" Grid.Row="0" Foreground="White" FontSize="50" FontWeight="Bold"
+                           Margin="0,40,0,0"
+                           Text="{x:Bind ViewModel.LastName, Converter={StaticResource StringToUpperCaseConverter}}" />
+                <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="26,0,0,0" Foreground="White"
+                           FontSize="50" FontWeight="Bold"
+                           Text="{x:Bind ViewModel.StartNumber}" />
+            </Grid>
+        </Border>
+        <Grid x:Name="SkierTime" Grid.Row="1">
+            <Image Stretch="UniformToFill">
+                <Image.Source>
+                    <BitmapImage UriSource="ms-appx:///Assets/HomeBackground.jpg" />
+                </Image.Source>
+            </Image>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <ListView Grid.Row="0" ItemsSource="{x:Bind ViewModel.SensorMeasurements}" SelectionMode="None"
+                          Grid.ColumnSpan="2" HorizontalAlignment="Right">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="domain:SensorMeasurement">
+                            <Grid Width="180" Margin="0,0,-10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" CornerRadius="3,0,0,3"
+                                        Background="{x:Bind InterimTime, Converter={StaticResource TimeSpanToBrushConverter}}"
+                                        Width="7" />
+                                <Border Grid.Column="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                                    <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
+                                               Margin="5,7,40,7" HorizontalAlignment="Right"
+                                               Text="{x:Bind InterimTime}" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <ListView Grid.Row="1" VerticalAlignment="Bottom" ItemsSource="{x:Bind ViewModel.Runs}"
+                          SelectionMode="None" Grid.Column="0"
+                          HorizontalAlignment="Left">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="domain:Run">
+                            <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                                  CornerRadius="0,10,10,0" Width="350" Margin="-12,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{x:Bind RunNumber}" Foreground="#005D7f" FontSize="25"
+                                           FontWeight="Bold" Margin="40,0,10,5" />
+                                <Image Grid.Column="1" Width="30" Height="25"
+                                       Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                                <TextBlock Grid.Column="2" FontSize="22" FontWeight="SemiBold" Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Text="{x:Bind Skier.FirstName, Converter={StaticResource StringToAbbreviationConverter}}" />
+                                <TextBlock Grid.Column="3" FontSize="22" FontWeight="SemiBold" Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Text="{x:Bind Skier.LastName, Converter={StaticResource StringToUpperCaseConverter}}" />
+                                <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                           FontSize="22" FontWeight="SemiBold" Margin="10,0,0,0" Width="80"
+                                           Text="{x:Bind TotalTime}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Border Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,50"
+                        CornerRadius="10,0,0,10" HorizontalAlignment="Right"
+                        Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    <TextBlock Text="{x:Bind ViewModel.ElapsedTime}" FontSize="30" FontWeight="Bold" Margin="70,0,70,0" />
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
-</views:MvxWindowsPage>
+</local:CurrentSkierAbstract>
