@@ -1,4 +1,4 @@
-﻿<views:MvxWindowsPage
+﻿<local:CurrentResultAbstract
     x:Class="Hurace.RaceControl.Views.Screens.CurrentResult"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,10 +6,108 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:MvvmCross.Platforms.Uap.Views"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
+    xmlns:domain="using:Hurace.Domain"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <views:MvxWindowsPage.Resources>
+        <AcrylicBrush x:Key="OrangeAcrylicBrush" BackgroundSource="Backdrop" TintOpacity="0.8" TintColor="#FF9300" FallbackColor="#FF9300" />
+        <AcrylicBrush x:Key="BlueAcrylicBrush" BackgroundSource="Backdrop" TintOpacity="0.8" TintColor="#225C92" FallbackColor="#225C92" />
+        <LinearGradientBrush x:Key="OrangeGradientBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#F5CD27" Offset="1.0" />
+            <GradientStop Color="#D38A2B" Offset="0.0" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="BlueGradientBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#203C60" Offset="0.0" />
+            <GradientStop Color="#01020C" Offset="1.0" />
+        </LinearGradientBrush>
+        <converter:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
+        <converter:StringToUpperCaseConverter  x:Key="StringToUpperCaseConverter"/>
+    </views:MvxWindowsPage.Resources>
 
     <Grid>
-        <TextBlock Text="CurrentResult"></TextBlock>
+        <ParallaxView Source="{x:Bind ResultList}" VerticalShift="500">
+            <controls:ImageEx Stretch="UniformToFill" PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
+                              PlaceholderSource="/Assets/CurrentResultPlaceholder.jpg"
+                              Source="{x:Bind ViewModel.PictureUrl, TargetNullValue=/Assets/CurrentResultPlaceholder.jpg}" />
+        </ParallaxView>
+
+        <ListView x:Name="ResultList" Margin="30,30,30,0" ItemsSource="{x:Bind ViewModel.Runs}" SelectionMode="None">
+            <ListView.Header>
+                <controls:ScrollHeader Mode="QuickReturn">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" CornerRadius="10,10,0,0" Margin="0,0,0,5" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Margin="0,0,20,0" HorizontalAlignment="Right" FontSize="50" Text="{x:Bind ViewModel.Name, Converter={StaticResource StringToUpperCaseConverter}}"></TextBlock>
+                            <TextBlock Grid.Row="1" Margin="0,-10,20,5" HorizontalAlignment="Right" FontSize="30" Text="{x:Bind ViewModel.Location.Name, Converter={StaticResource StringToUpperCaseConverter}}"></TextBlock>
+                        </Grid>
+                        <Border Grid.Row="1" Margin="0,0,0,5" Background="{ThemeResource OrangeAcrylicBrush}">
+                            <TextBlock Margin="0,0,20,5" FontSize="20" HorizontalAlignment="Right">
+                                <Run Text="{x:Bind ViewModel.RaceType, Converter={StaticResource RaceTypeToStringConverter}}"></Run>
+                                <Run Text="{x:Bind ViewModel.Gender}"></Run>
+                            </TextBlock>
+                        </Border>
+                        <Grid Grid.Row="2" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Left">
+                                <Run Text="RESULT"></Run>
+                                <Run Text="{x:Bind ViewModel.RunNumber}"></Run>
+                                <Run Text="RUN"></Run>
+                            </TextBlock>
+                            <TextBlock Margin="0,5,20,5" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" Text="TIME"></TextBlock>
+                        </Grid>
+                    </Grid>
+                </controls:ScrollHeader>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="domain:Run">
+                    <Grid VerticalAlignment="Center" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" MinWidth="150" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Margin="-12,0,0,0" Background="{StaticResource OrangeGradientBrush}">
+                            <TextBlock Margin="15,0,15,0" Padding="20,5,20,5" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind RunNumber}" />
+                        </Border>
+                        <Border Grid.Column="1" Background="{StaticResource BlueAcrylicBrush}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Margin="15,0,0,0" FontSize="22" Foreground="White" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Stretch">
+                                    <Run Text="{x:Bind Skier.FirstName}"></Run>
+                                    <Run Text="{x:Bind Skier.LastName, Converter={StaticResource StringToUpperCaseConverter}}"></Run>
+                                </TextBlock>
+                                <TextBlock VerticalAlignment="Center" Foreground="White" Grid.Column="1" FontSize="22" Margin="0,0,20,0" Text="{x:Bind Skier.Country.Code}" />
+                            </Grid>
+                        </Border>
+                        <Border Grid.Column="2" Margin="0,0,-12,0" Background="{StaticResource BlueGradientBrush}">
+                            <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" Foreground="White" FontSize="22" HorizontalAlignment="Right" Text="{x:Bind TotalTime}" />
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="0,-11,0,0"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
-</views:MvxWindowsPage>
+</local:CurrentResultAbstract>

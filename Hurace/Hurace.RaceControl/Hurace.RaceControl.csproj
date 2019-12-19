@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Core\App.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converter\StringToUpperCaseConverter.cs" />
     <Compile Include="Helpers\MvvmCross\BaseApplicationMvxPage.cs" />
     <Compile Include="Helpers\Converter\AutoSuggestQueryParameterConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToColorConverter.cs" />
@@ -182,6 +183,7 @@
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\BadgeLogo.scale-400.png" />
     <Content Include="Assets\CurrentResult.png" />
+    <Content Include="Assets\CurrentResultPlaceholder.jpg" />
     <Content Include="Assets\CurrentSkier.png" />
     <Content Include="Assets\FutureScreens.png" />
     <Content Include="Assets\HomeBackground.jpg" />
