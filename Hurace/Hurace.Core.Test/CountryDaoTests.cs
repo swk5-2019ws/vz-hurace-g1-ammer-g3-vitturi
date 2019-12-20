@@ -14,7 +14,7 @@ namespace Hurace.Core.Test
 
             Country country = new Country
             {
-                Code = "AUT",
+                Code = "AT",
             };
             country.Id = await countryDao.Insert(country);
 
@@ -30,7 +30,7 @@ namespace Hurace.Core.Test
             foreach (var _ in await countryDao.FindAll())
                 Assert.True(false, "FindAll should return an empty collection");
 
-            Country country = new Country {Code = "AUT"};
+            Country country = new Country {Code = "AT"};
             await countryDao.Insert(country);
             foreach (var _ in await countryDao.FindAll())
                 return;
@@ -43,7 +43,7 @@ namespace Hurace.Core.Test
             ConnectionFactory connectionFactory = new ConnectionFactory(Environment.Testing);
             ICountryDao countryDao = new CountryDao(connectionFactory);
 
-            Country country = new Country {Code = "AUT"};
+            Country country = new Country {Code = "AT"};
             country.Id = await countryDao.Insert(country);
 
             Country countryFound = await countryDao.FindById(country.Id);
@@ -56,10 +56,10 @@ namespace Hurace.Core.Test
             ConnectionFactory connectionFactory = new ConnectionFactory(Environment.Testing);
             ICountryDao countryDao = new CountryDao(connectionFactory);
 
-            Country country = new Country {Code = "BEF"};
+            Country country = new Country {Code = "DE"};
             country.Id = await countryDao.Insert(country);
 
-            country.Code = "AFT";
+            country.Code = "IT";
             await countryDao.Update(country);
             Country countryAfter = await countryDao.FindById(country.Id);
             Assert.Equal(country.Code, countryAfter.Code);
@@ -71,7 +71,7 @@ namespace Hurace.Core.Test
             ConnectionFactory connectionFactory = new ConnectionFactory(Environment.Testing);
             ICountryDao countryDao = new CountryDao(connectionFactory);
 
-            Country country = new Country {Code = "AUT"};
+            Country country = new Country {Code = "AT"};
             country.Id = await countryDao.Insert(country);
             Assert.True(country.Id > 0);
         }
@@ -82,7 +82,7 @@ namespace Hurace.Core.Test
             ConnectionFactory connectionFactory = new ConnectionFactory(Environment.Testing);
             ICountryDao countryDao = new CountryDao(connectionFactory);
 
-            Country country = new Country {Code = "AUT"};
+            Country country = new Country {Code = "AT"};
             country.Id = await countryDao.Insert(country);
             Assert.NotNull(await countryDao.FindById(country.Id));
 
