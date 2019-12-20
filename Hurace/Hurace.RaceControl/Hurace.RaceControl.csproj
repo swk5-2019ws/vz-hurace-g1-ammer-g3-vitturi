@@ -139,7 +139,7 @@
     <Compile Include="ViewModels\Screens\CurrentResultViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentSkierViewModel.cs" />
     <Compile Include="ViewModels\SimulatorViewModel.cs" />
-    <Compile Include="ViewModels\StartListViewModel.cs" />
+    <Compile Include="ViewModels\ControlRaceViewModel.cs" />
     <Compile Include="ViewModels\StartListEntryViewModel.cs" />
     <Compile Include="Views\CreateRace.xaml.cs">
       <DependentUpon>CreateRace.xaml</DependentUpon>
@@ -170,8 +170,8 @@
     <Compile Include="Views\Simulator.xaml.cs">
       <DependentUpon>Simulator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StartList.xaml.cs">
-      <DependentUpon>StartList.xaml</DependentUpon>
+    <Compile Include="Views\ControlRace.xaml.cs">
+      <DependentUpon>ControlRace.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -537,7 +537,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StartList.xaml">
+    <Page Include="Views\ControlRace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -6,6 +6,8 @@ using Hurace.Core.Interface;
 using Hurace.Core.Services;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
+using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
@@ -35,9 +37,11 @@ namespace Hurace.RaceControl.ViewModels
 
         private string _website;
         private RaceStatus _status;
+        private IMvxNavigationService _navigationService;
 
-        public CreateRaceViewModel(LocationService locationService, SkierService skierService)
+        public CreateRaceViewModel(IMvxNavigationService navigationService, LocationService locationService, SkierService skierService)
         {
+            _navigationService = navigationService;
             _locationService = locationService;
             _skierService = skierService;
         }
@@ -130,6 +134,8 @@ namespace Hurace.RaceControl.ViewModels
 
         public IEnumerable<Gender> Genders => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
+        public MvxCommand OpenRaceControlCommand { get; set; }
+
         public override async void Prepare(Race race)
         {
             await base.Initialize();
@@ -154,6 +160,7 @@ namespace Hurace.RaceControl.ViewModels
             var locations = await _locationService.GetLocations();
             Locations.SwitchTo(locations);
             StartListEntries.CollectionChanged += RunsOnCollectionChanged;
+            OpenRaceControlCommand = new MvxCommand(() => _navigationService.Navigate<ControlRaceViewModel>());
         }
 
         private void RunsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
