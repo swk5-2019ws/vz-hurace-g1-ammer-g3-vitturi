@@ -21,7 +21,7 @@ namespace Hurace.Core.Test
                 Birthdate = DateTime.Today,
                 Gender = Gender.Male,
                 Country = country,
-                PictureUrl = null,
+                PictureUrl = "http://fb.me/john.jpg",
                 Archived = false,
             };
             skier.Id = await skierDao.Insert(skier);
