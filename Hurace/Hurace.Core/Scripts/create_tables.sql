@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS run (
 CREATE TABLE IF NOT EXISTS sensor_measurement (
     id           INTEGER PRIMARY KEY,
     sensor_id    INTEGER NOT NULL,
-    interim_time REAL    NOT NULL,
+    timestamp    REAL    NOT NULL,
     run_id       INTEGER REFERENCES run (id) ON DELETE CASCADE
 );
 

@@ -18,7 +18,7 @@ namespace Hurace.Core.Test
             SensorMeasurement sensorMeasurement = new SensorMeasurement
             {
                 SensorId = 1,
-                InterimTime = 11.2,
+                Timestamp = 1576850015.1111,
                 Run = run,
             };
             sensorMeasurement.Id = await sensorMeasurementDao.Insert(sensorMeasurement);
@@ -50,7 +50,7 @@ namespace Hurace.Core.Test
             SensorMeasurement sensorMeasurement = await InsertSensorMeasurement(connectionFactory);
 
             SensorMeasurement sensorMeasurementFound = await sensorMeasurementDao.FindById(sensorMeasurement.Id);
-            Assert.Equal(sensorMeasurement.InterimTime, sensorMeasurementFound.InterimTime);
+            Assert.Equal(sensorMeasurement.Timestamp, sensorMeasurementFound.Timestamp);
         }
 
         [Fact]
@@ -60,11 +60,11 @@ namespace Hurace.Core.Test
             ISensorMeasurementDao sensorMeasurementDao = new SensorMeasurementDao(connectionFactory);
 
             SensorMeasurement sensorMeasurement = await InsertSensorMeasurement(connectionFactory);
-            sensorMeasurement.InterimTime = 10.5;
+            sensorMeasurement.Timestamp = 1576850015.2222;
             await sensorMeasurementDao.Update(sensorMeasurement);
 
             SensorMeasurement sensorMeasurementAfter = await sensorMeasurementDao.FindById(sensorMeasurement.Id);
-            Assert.Equal(sensorMeasurement.InterimTime, sensorMeasurementAfter.InterimTime);
+            Assert.Equal(sensorMeasurement.Timestamp, sensorMeasurementAfter.Timestamp);
         }
 
         [Fact]

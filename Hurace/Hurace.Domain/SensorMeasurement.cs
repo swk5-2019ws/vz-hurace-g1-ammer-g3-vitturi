@@ -9,8 +9,8 @@ namespace Hurace.Domain
         [Column("sensor_id")]
         public int SensorId { get; set; }
 
-        [Column("interim_time")]
-        public double InterimTime { get; set; }
+        [Column("timestamp")]
+        public double Timestamp { get; set; }
 
         [ForeignKey("run_id")]
         public Run Run { get; set; }

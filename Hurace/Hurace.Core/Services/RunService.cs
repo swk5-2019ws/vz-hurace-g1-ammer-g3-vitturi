@@ -30,20 +30,22 @@ namespace Hurace.Core.Services
 
         public async Task<IList<TimeSpan>> GetInterimTimes(Race race, int runNumber, Skier skier)
         {
-            Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier).ConfigureAwait(false);
-            var sensorMeasurements =
-                await DaoProvider.SensorMeasurementDao.GetMeasurementForRun(run).ConfigureAwait(false);
+            Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier);
+            var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementForRun(run)).ToArray();
 
             IList<TimeSpan> interimTimes = new List<TimeSpan>();
-            foreach (var sensorMeasurement in sensorMeasurements)
-            {
-                int seconds = (int) sensorMeasurement.InterimTime;
-                int milliseconds = (int) ((sensorMeasurement.InterimTime - seconds) * 1000);
 
-                interimTimes.Add(new TimeSpan(
-                    days: 0, hours: 0, minutes: 0,
-                    seconds, milliseconds)
-                );
+            if (sensorMeasurements.Length == 0)
+            {
+                return interimTimes;
+            }
+
+            double lastTimestamp = sensorMeasurements[0].Timestamp;
+            for (int i = 1; i < sensorMeasurements.Length; i++)
+            {
+                var interimTime = sensorMeasurements[i].Timestamp - lastTimestamp;
+                interimTimes.Add(TimeSpan.FromSeconds(interimTime));
+                lastTimestamp = sensorMeasurements[i].Timestamp;
             }
 
             return interimTimes;
