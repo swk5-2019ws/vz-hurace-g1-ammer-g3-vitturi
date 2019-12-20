@@ -56,13 +56,12 @@ namespace Hurace.Core.Daos
             transaction.Commit();
         }
 
-        public async Task<Run> GetCurrentRun(Race race)
+        public async Task<Run> GetCurrentRun()
         {
             using var connection = ConnectionFactory.CreateConnection();
             var currentRuns = await connection.Query<Run>(@"
                 SELECT * FROM run
-                WHERE race_id = @RaceId
-                AND status = @Status",
+                WHERE status = @Status",
                 new {Status = RunStatus.InProgress}
             ).ConfigureAwait(false);
             return currentRuns.First();

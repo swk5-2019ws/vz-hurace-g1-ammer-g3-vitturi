@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hurace.Domain;
 using Hurace.Timer;
@@ -15,9 +16,10 @@ namespace Hurace.Core.Services
         public event SensorMeasurementAddedHandler SensorMeasurementAdded;
 
         public event RunStatusChangedHandler RunStatusChanged;
-        
+
         public RunService(DaoProvider daoProvider, IRaceClock raceClock) : base(daoProvider)
         {
+            raceClock.TimingTriggered += HandleNewSensorMeasurement;
         }
 
         public async Task UpdateRunStatus(Race race, int runNumber, Skier skier, RunStatus status)
@@ -31,7 +33,7 @@ namespace Hurace.Core.Services
         public async Task<IList<TimeSpan>> GetInterimTimes(Race race, int runNumber, Skier skier)
         {
             Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier);
-            var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementForRun(run)).ToArray();
+            var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementsForRun(run)).ToArray();
 
             IList<TimeSpan> interimTimes = new List<TimeSpan>();
 
@@ -49,6 +51,41 @@ namespace Hurace.Core.Services
             }
 
             return interimTimes;
+        }
+
+        private void HandleNewSensorMeasurement(int sensorId, DateTime time)
+        {
+            Task.WaitAll(HandleNewSensorMeasurementAsync(sensorId, time));
+        }
+
+        private async Task HandleNewSensorMeasurementAsync(int sensorId, DateTime time)
+        {
+            var run = await DaoProvider.RunDao.GetCurrentRun();
+            if (run == null) return;
+
+            var sensorMeasurement = new SensorMeasurement
+            {
+                SensorId = sensorId,
+                Run = run,
+                Timestamp = time.Millisecond / 1000.0
+            };
+
+            var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementsForRun(run)).ToArray();
+
+            if (
+                // First measurement
+                (sensorId == 0 && sensorMeasurements.Length == 0) ||
+
+                // Sequential measurement
+                (sensorId == sensorMeasurements.Last().SensorId + 1)
+            )
+            {
+                await DaoProvider.SensorMeasurementDao.Insert(sensorMeasurement);
+
+                var interimTime = sensorMeasurement.Timestamp - sensorMeasurements.Last().Timestamp;
+                var timeSpan = TimeSpan.FromMilliseconds(interimTime * 1000);
+                SensorMeasurementAdded?.Invoke(run.Race, run.RunNumber, run.Skier, timeSpan);
+            }
         }
     }
 }

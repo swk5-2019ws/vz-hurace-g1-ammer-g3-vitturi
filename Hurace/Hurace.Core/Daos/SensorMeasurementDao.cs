@@ -12,7 +12,7 @@ namespace Hurace.Core.Daos
         {
         }
 
-        public async Task<IEnumerable<SensorMeasurement>> GetMeasurementForRun(Run run)
+        public async Task<IEnumerable<SensorMeasurement>> GetMeasurementsForRun(Run run)
         {
             using var connection = ConnectionFactory.CreateConnection();
             return await connection.Query<SensorMeasurement>(@"

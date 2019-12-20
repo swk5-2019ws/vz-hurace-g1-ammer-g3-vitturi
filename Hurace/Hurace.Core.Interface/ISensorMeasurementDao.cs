@@ -7,6 +7,6 @@ namespace Hurace.Core.Interface
 {
     public interface ISensorMeasurementDao : IDataObjectDao<SensorMeasurement>
     {
-        Task<IEnumerable<SensorMeasurement>> GetMeasurementForRun(Run run);
+        Task<IEnumerable<SensorMeasurement>> GetMeasurementsForRun(Run run);
     }
 }

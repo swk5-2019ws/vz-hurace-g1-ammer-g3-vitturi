@@ -10,6 +10,6 @@ namespace Hurace.Core.Interface
         Task<Run> GetBySkierAndRace(Race race, int runNumber, Skier skier);
         Task<IEnumerable<Run>> GetAllRunsForRace(Race race, int runNumber);
         Task DeleteAllRunsForRace(Race race, int runNumber);
-        Task<Run> GetCurrentRun(Race race);
+        Task<Run> GetCurrentRun();
     }
 }

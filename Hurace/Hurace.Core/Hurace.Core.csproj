@@ -15,6 +15,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
+    <ProjectReference Include="..\Hurace.Timer\Hurace.Timer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
