@@ -12,7 +12,7 @@
         <NavigationView x:Name="NavView" ItemInvoked="NavView_ItemInvoked" IsBackEnabled="True"
                         BackRequested="NavigationView_BackRequested">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Races" IsSelected="True">
+                <NavigationViewItem Content="Races" IsSelected="True" >
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4A;" />
                     </NavigationViewItem.Icon>

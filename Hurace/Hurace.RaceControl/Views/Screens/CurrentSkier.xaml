@@ -84,12 +84,12 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" CornerRadius="3,0,0,3"
-                                        Background="{x:Bind InterimTime, Converter={StaticResource TimeSpanToBrushConverter}}"
+                                        Background="{x:Bind Timestamp, Converter={StaticResource TimeSpanToBrushConverter}}"
                                         Width="7" />
                                 <Border Grid.Column="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
                                     <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
                                                Margin="5,7,40,7" HorizontalAlignment="Right"
-                                               Text="{x:Bind InterimTime}" />
+                                               Text="{x:Bind Timestamp}" />
                                 </Border>
                             </Grid>
                         </DataTemplate>

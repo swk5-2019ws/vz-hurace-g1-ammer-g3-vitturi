@@ -10,8 +10,11 @@ using Hurace.Core;
 using Hurace.Core.Daos;
 using Hurace.Core.Interface;
 using Hurace.Core.Services;
+using Hurace.RaceControl.Helpers.MvvmCross;
+using Hurace.Simulator;
 using MvvmCross;
 using MvvmCross.IoC;
+using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Core
@@ -35,9 +38,13 @@ namespace Hurace.RaceControl.Core
             var sensorMeasurementDao = new SensorMeasurementDao(connectionFactory);
 
             var daoProvider = new DaoProvider(countryDao, locationDao, raceDao, runDao, sensorMeasurementDao, skierDao);
+            var messengerHub = new MvxMessengerHub();
+            Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(messengerHub);
+            Mvx.IoCProvider.RegisterSingleton<IDialogService>(new DialogService(messengerHub));
             Mvx.IoCProvider.RegisterSingleton<RaceService>(new RaceService(daoProvider));
             Mvx.IoCProvider.RegisterSingleton<LocationService>(new LocationService(daoProvider));
             Mvx.IoCProvider.RegisterSingleton<SkierService>(new SkierService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<RunService>(new RunService(daoProvider, new SimulatorRaceClock()));
 
             RegisterAppStart<ViewModels.NavigationRootViewModel>();
         }

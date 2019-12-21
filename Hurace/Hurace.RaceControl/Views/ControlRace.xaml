@@ -13,10 +13,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
         <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter" />
+        <converter:RunStatusToColorConverter x:Key="RunStatusToColorConverter" />
 
         <DataTemplate x:Key="RunViewTemplate" x:DataType="domain:Run">
             <UserControl PointerEntered="Run_PointerEntered" PointerExited="RunEntry_PointerExited">
-                <Grid>
+                <Grid Background="{x:Bind Status, Converter={StaticResource RunStatusToColorConverter}}">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="HoveringStates">
                             <VisualState x:Name="HoverButtonsHidden" />
@@ -32,7 +33,7 @@
                     <SwipeControl x:Name="ListViewSwipeContainer">
                         <SwipeControl.RightItems>
                             <SwipeItems Mode="Execute">
-                                <SwipeItem Background="Red" CommandParameter="{x:Bind StartPosition}" />
+                                <SwipeItem Background="Red" CommandParameter="{x:Bind Skier}" />
                             </SwipeItems>
                         </SwipeControl.RightItems>
                         <Grid>
@@ -42,31 +43,31 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" FontWeight="Bold"
-                                       Text="{x:Bind RunNumber}" />
+                                       Text="{x:Bind StartPosition}" />
                             <controls:ImageEx x:Name="PersonPicture" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
                                               Stretch="UniformToFill" Width="32"
-                                              Height="32" Margin="6" VerticalAlignment="Center"
-                                              HorizontalAlignment="Center"
+                                              Height="32" Margin="40,6,0,6" VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
                                               PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
                                               PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
                                               Source="{x:Bind Skier.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
                                               CornerRadius="18" />
                             <TextBlock Grid.Column="2" Grid.Row="0" Style="{ThemeResource BaseTextBlockStyle}"
-                                       Margin="12,5,0,0">
+                                       Margin="30,5,0,0" HorizontalAlignment="Left">
                                 <Run Text="{x:Bind Skier.FirstName}" />
                                 <Run Text="{x:Bind Skier.LastName}" />
                             </TextBlock>
-                            <Image Grid.Column="2" Grid.Row="1" x:Phase="2" Margin="-90,-10,0,0" Stretch="Fill"
-                                   Height="10" Width="15"
+                            <Image Grid.Column="2" Grid.Row="1" x:Phase="2" Stretch="Fill"
+                                   Height="10" Width="15" HorizontalAlignment="Left" Margin="30,0,0,0"
                                    Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
                             <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton" Label="Disqualify"
                                           IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
-                                          CommandParameter="{x:Bind StartPosition}">
+                                          CommandParameter="{x:Bind Skier}">
                                 <AppBarButton.Icon>
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDAE;" />
                                 </AppBarButton.Icon>
@@ -96,22 +97,22 @@
                     Background="Transparent" IsOpen="True"
                     IsSticky="True" OverflowButtonVisibility="Collapsed">
             <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Label="First run"
-                          Command="{x:Bind ViewModel.ShowFirstRun}">
+                          Command="{x:Bind ViewModel.ShowFirstRunCommand}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF146;" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Label="Second run"
-                          Command="{x:Bind ViewModel.ShowSecondRun}">
+                          Command="{x:Bind ViewModel.ShowSecondRunCommand}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF147;" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Icon="Play" Label="Start run"
-                          Command="{x:Bind ViewModel.StartRun}" />
+                          Command="{x:Bind ViewModel.StartCurrentRunCommand}" />
             <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Icon="Stop" Label="Stop race"
-                          Command="{x:Bind ViewModel.StopRace}" />
+                          Command="{x:Bind ViewModel.EndRaceCommand}" />
         </CommandBar>
 
         <TextBlock Text="{x:Bind ViewModel.Name}" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" FontSize="30"

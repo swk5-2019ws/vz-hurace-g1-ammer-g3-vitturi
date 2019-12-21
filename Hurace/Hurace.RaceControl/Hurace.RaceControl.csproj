@@ -121,10 +121,13 @@
     </Compile>
     <Compile Include="Core\App.cs" />
     <Compile Include="Helpers\Converter\CountryCodeToImagePathConverter.cs" />
+    <Compile Include="Helpers\Converter\RaceStatusToEnabledConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converter\RunStatusToColorConverter.cs" />
     <Compile Include="Helpers\Converter\StringToAbbreviationConverter.cs" />
     <Compile Include="Helpers\Converter\StringToUpperCaseConverter.cs" />
     <Compile Include="Helpers\Converter\TimeSpanToBrushConverter.cs" />
+    <Compile Include="Helpers\MvvmCross\DialogMessage.cs" />
     <Compile Include="Helpers\MvvmCross\BaseApplicationMvxPage.cs" />
     <Compile Include="Helpers\Converter\AutoSuggestQueryParameterConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToColorConverter.cs" />
@@ -132,7 +135,11 @@
     <Compile Include="Helpers\Converter\RaceTypeToStringConverter.cs" />
     <Compile Include="Helpers\Converter\ScreenTypeToStringConverter.cs" />
     <Compile Include="Helpers\MvvmCross\CustomMvxWindowsViewPresenter.cs" />
+    <Compile Include="Helpers\MvvmCross\DialogService.cs" />
+    <Compile Include="Helpers\MvvmCross\IDialogService.cs" />
     <Compile Include="Helpers\MvvmCross\MvxWindowPresentationAttribute.cs" />
+    <Compile Include="Helpers\MvvmCross\StartListUpdateMessage.cs" />
+    <Compile Include="Helpers\RaceValidator.cs" />
     <Compile Include="Helpers\ScreenType.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
     <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />
@@ -543,6 +550,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation">
+      <Version>8.6.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
       <Version>2.9.8</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -566,6 +576,9 @@
     <PackageReference Include="MvvmCross">
       <Version>6.4.1</Version>
     </PackageReference>
+    <PackageReference Include="MvvmCross.Plugin.Messenger">
+      <Version>4.4.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hurace.Core.Interface\Hurace.Core.Interface.csproj">
@@ -579,6 +592,14 @@
     <ProjectReference Include="..\Hurace.Domain\Hurace.Domain.csproj">
       <Project>{2543cf21-3b17-4546-b14d-a00031db71c0}</Project>
       <Name>Hurace.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hurace.Simulator\Hurace.Simulator.csproj">
+      <Project>{9344a010-997c-4143-88e7-6525085de922}</Project>
+      <Name>Hurace.Simulator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hurace.Timer\Hurace.Timer.csproj">
+      <Project>{3a49c5ad-9c7e-4c8d-ab8a-dac926b71d5b}</Project>
+      <Name>Hurace.Timer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

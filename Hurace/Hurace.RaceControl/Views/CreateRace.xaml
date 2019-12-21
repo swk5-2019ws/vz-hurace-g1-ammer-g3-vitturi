@@ -23,6 +23,7 @@
         <converter:RaceStatusToColorConverter x:Key="RaceStatusToColorConverter" />
         <converter:RaceStatusToVisibilityConverter x:Key="RaceStatusToBoolConverter" />
         <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter" />
+        <converter:RaceStatusToEnabledConverter x:Key="RaceStatusToEnabledConverter" />
 
         <DataTemplate x:Key="SkierViewTemplate" x:DataType="domain:Skier">
             <Grid>
@@ -38,7 +39,7 @@
                                   Height="32" Margin="6" VerticalAlignment="Center" HorizontalAlignment="Center"
                                   PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
                                   PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
-                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
+                                  Source="{x:Bind PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
                                   CornerRadius="18" />
                 <TextBlock Grid.Column="1" Grid.Row="0" Style="{ThemeResource BaseTextBlockStyle}"
                            Margin="12,6,0,0">
@@ -63,12 +64,12 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <SwipeControl x:Name="ListViewSwipeContainer">
+                    <SwipeControl x:Name="ListViewSwipeContainer" IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}">
                         <SwipeControl.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem x:Name="DeleteSwipeItem"
                                            Background="Red"
-                                           Command="{x:Bind DeleteCommand}"
+                                           Command="{x:Bind DeleteStartListEntryCommand}"
                                            CommandParameter="{x:Bind StartPosition}" />
                             </SwipeItems>
                         </SwipeControl.RightItems>
@@ -103,8 +104,8 @@
                                        Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
                             <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton"
                                           IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
-                                          Command="{x:Bind DeleteCommand}"
-                                          CommandParameter="{x:Bind StartPosition}" />
+                                          Command="{x:Bind DeleteStartListEntryCommand}" IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}"
+                                          CommandParameter="{x:Bind StartPosition}" Icon="Delete" Label="Delete" />
                         </Grid>
                     </SwipeControl>
                 </Grid>
@@ -118,6 +119,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <controls:InAppNotification x:Name="DialogEventNotification"
+                                    ShowDismissButton="True"
+                                    VerticalOffset="100"
+                                    HorizontalOffset="0"
+                                    Canvas.ZIndex="1000" Grid.Row="1" VerticalAlignment="Bottom"/>
+
         <Grid Grid.Row="0" Background="{StaticResource SystemAccentColorBrush}" Padding="24,52,24,24" Height="348">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -128,13 +135,13 @@
                               Width="272"
                               animations:Connected.Key="raceImageBack" PlaceholderStretch="UniformToFill"
                               IsCacheEnabled="True" PlaceholderSource="/Assets/RacePicturePlaceholder.png"
-                              Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}" />
+                              Source="{x:Bind ViewModel.PictureUrl, Mode=OneWay, TargetNullValue=/Assets/RacePicturePlaceholder.png}" />
             <Border Grid.Row="0" Grid.Column="0" Height="30"
-                    Background="{Binding Status, Converter={StaticResource RaceStatusToColorConverter}}"
+                    Background="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToColorConverter}}"
                     CornerRadius="0,0,0,5" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <TextBlock Margin="5,0,5,0" FontSize="20" Foreground="White" HorizontalAlignment="Right"
                            VerticalAlignment="Top"
-                           Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
+                           Text="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToStringConverter}}" />
             </Border>
 
             <Grid x:Name="DescriptionRoot" Grid.Column="1" VerticalAlignment="Stretch" Margin="24,0,0,0"
@@ -147,32 +154,32 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Style="{ThemeResource SubheaderTextBlockStyle}"
                            Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
-                           Text="{Binding Name, Mode=OneWay}" />
+                           Text="{x:Bind ViewModel.Name, Mode=OneWay}" />
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <TextBlock Style="{ThemeResource TitleTextBlockStyle}"
                                Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}">
                         <Run
-                            Text="{Binding Date, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM.yyyy}'}" />
+                            Text="{x:Bind ViewModel.Date, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:dd.MM.yyyy}'}" />
                         <Run Text="in" />
-                        <Run Text="{Binding SelectedLocation.Name, Mode=OneWay }" />
+                        <Run Text="{x:Bind ViewModel.SelectedLocation.Name, Mode=OneWay }" />
                     </TextBlock>
                     <Image HorizontalAlignment="Right" Margin="10,4,0,0" Stretch="Fill" Height="20" Width="30"
-                           Source="{Binding SelectedLocation.Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                           Source="{x:Bind ViewModel.SelectedLocation.Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
                 </StackPanel>
                 <TextBlock Grid.Row="2" Margin="0,10,0,0" Style="{ThemeResource BodyTextBlockStyle}"
                            Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
                            HorizontalAlignment="Left" FontSize="14" MaxWidth="500" TextWrapping="Wrap"
-                           Text="{Binding Description, Mode=OneWay}" />
+                           Text="{x:Bind ViewModel.Description, Mode=OneWay}" />
                 <StackPanel Grid.Row="3" Spacing="20" Orientation="Horizontal" Margin="0,10,0,0">
-                    <Button>Save</Button>
+                    <Button Command="{x:Bind ViewModel.SaveRaceCommand}">Save</Button>
                     <Button
-                        Visibility="{Binding Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='StartButton'}"
-                        Command="{Binding OpenRaceControlCommand}">
+                        Visibility="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='StartButton'}"
+                        Command="{x:Bind ViewModel.OpenRaceControlCommand}">
                         Start
                     </Button>
                     <Button
-                        Visibility="{Binding Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='ControlButton'}"
-                        Command="{Binding OpenRaceControlCommand}">
+                        Visibility="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='ControlButton'}"
+                        Command="{x:Bind ViewModel.OpenRaceControlCommand}">
                         Control
                     </Button>
                 </StackPanel>
@@ -196,19 +203,17 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Header="Name:" PlaceholderText="Name"
-                             extensions:TextBoxRegex.ValidationType="Characters"
-                             extensions:TextBoxRegex.ValidationMode="Dynamic"
-                             Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{x:Bind ViewModel.Name, Mode=TwoWay}" />
                     <CalendarDatePicker HorizontalAlignment="Stretch" Grid.Row="1" Header="Race date:"
                                         PlaceholderText="Choose your race date"
                                         DateFormat="{}{dayofweek.full}‎, ‎{month.full}‎ ‎{day.integer}‎, ‎{year.full}"
-                                        Date="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <AutoSuggestBox Grid.Row="2" TextChanged="LocationAutoSuggestBox_TextChanged"
+                                        Date="{x:Bind ViewModel.Date, Mode=TwoWay}" />
+                    <AutoSuggestBox x:Name="LocationSuggestBox" Grid.Row="2" TextChanged="LocationAutoSuggestBox_TextChanged"
                                     QuerySubmitted="LocationAutoSuggestBox_QuerySubmitted"
                                     SuggestionChosen="LocationAutoSuggestBox_SuggestionChosen"
                                     PlaceholderText="Type a location name" Header="Location:" />
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding RaceTypes}"
-                              SelectedItem="{Binding RaceType, Mode=TwoWay}" PlaceholderText="Pick a race type"
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.RaceTypes}"
+                              SelectedItem="{x:Bind ViewModel.RaceType, Mode=TwoWay}" PlaceholderText="Pick a race type"
                               Grid.Row="3" Header="Race type:">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -216,24 +221,24 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding Genders}"
-                              SelectedItem="{Binding Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Genders}"
+                              SelectedItem="{x:Bind ViewModel.Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
                               Grid.Row="4" Header="Gender:" />
                     <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5"
                              extensions:TextBoxRegex.ValidationType="Number"
                              extensions:TextBoxRegex.ValidationMode="Dynamic"
-                             Text="{Binding NumberOfSensors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{x:Bind ViewModel.NumberOfSensors, Mode=TwoWay}" />
                     <TextBlock Grid.Row="6" Text="Additional information"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                     <TextBox HorizontalAlignment="Stretch" Grid.Row="7" Header="Website URL:"
                              PlaceholderText="Website"
-                             Text="{Binding Website, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{x:Bind ViewModel.Website, Mode=TwoWay}" />
                     <TextBox Grid.Row="8" Header="Image URL:" PlaceholderText="Image Url"
-                             Text="{Binding PictureUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{x:Bind ViewModel.PictureUrl, Mode=TwoWay}" />
                     <TextBox Grid.Row="9" Header="Details:" PlaceholderText="Details" MinHeight="150"
                              HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto"
                              TextWrapping="Wrap" AcceptsReturn="True"
-                             Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{x:Bind ViewModel.Description, Mode=TwoWay}" />
                 </Grid>
             </ScrollViewer>
             <Grid Grid.Column="1" Margin="50,30,50,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -252,8 +257,8 @@
                                 Visibility="{Binding Status, Converter={StaticResource RaceStatusToBoolConverter}, ConverterParameter='SkierAutoSuggestBox'}"
                                 ItemTemplate="{StaticResource SkierViewTemplate}" QueryIcon="Find" />
                 <ListView x:Name="RunListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2"
-                          CanDragItems="True"
-                          CanReorderItems="True" AllowDrop="True" SelectionMode="Single"
+                          CanDragItems="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToEnabledConverter}}"
+                          CanReorderItems="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToEnabledConverter}}" AllowDrop="True" SelectionMode="Single"
                           ItemsSource="{Binding StartListEntries}"
                           ItemTemplate="{StaticResource StartListEntryViewTemplate}">
                     <ListView.HeaderTemplate>

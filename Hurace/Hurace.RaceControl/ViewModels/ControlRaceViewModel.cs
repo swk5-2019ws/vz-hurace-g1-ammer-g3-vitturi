@@ -1,13 +1,28 @@
-﻿using Hurace.Domain;
+﻿using System.Linq;
+using Hurace.Core.Services;
+using Hurace.Domain;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
 {
-    public class ControlRaceViewModel : MvxViewModel
+    public class ControlRaceViewModel : MvxViewModel<Race>
     {
         private string _name;
         private int _displayRunNumber;
+        private RunService _runService;
+        private RaceService _raceService;
+        private IMvxNavigationService _navigationService;
+
+        private Race Race { get; set; }
+
+        public ControlRaceViewModel(IMvxNavigationService navigationService, RunService runService, RaceService raceService)
+        {
+            _navigationService = navigationService;
+            _runService = runService;
+            _raceService = raceService;
+        }
 
         public string Name
         {
@@ -35,35 +50,51 @@ namespace Hurace.RaceControl.ViewModels
 
         public MvxObservableCollection<Run> NextRuns { get; } = new MvxObservableCollection<Run>();
 
-        public override void Prepare()
+        public MvxCommand ShowFirstRunCommand { get; set; }
+
+        public MvxCommand ShowSecondRunCommand { get; set; }
+
+        public MvxCommand StartCurrentRunCommand { get; set; }
+
+        public MvxCommand EndRaceCommand { get; set; }
+
+        public MvxCommand<Skier> DisqualifySkierCommand { get; set; }
+
+        public override async void Prepare(Race race)
         {
             base.Prepare();
-            Name = "Kitzbühl Slalom";
+            Race = race;
+            Name = Race.Name;
             DisplayRunNumber = 1;
 
-            CurrentRun.Add(new Run() { RunNumber = 11, Skier = new Skier() { FirstName = "Test11", LastName = "Test11", Country = new Country() { Code = "AT" } } });
+            ShowFirstRunCommand = new MvxCommand(() => SwitchRun(1));
+            ShowSecondRunCommand = new MvxCommand(() => SwitchRun(2));
+            StartCurrentRunCommand = new MvxCommand(async () =>
+                {
+                    await _runService.UpdateRunStatus(Race, DisplayRunNumber, NextRuns[0].Skier, RunStatus.InProgress);
+                    SwitchRun(DisplayRunNumber);
+                }, () => NextRuns.Count > 0);
+            EndRaceCommand = new MvxCommand(async () =>
+            {
+                Race.Status = RaceStatus.Finished;
+                await _raceService.EditRace(Race);
+                await _navigationService.Navigate<CreateRaceViewModel, Race>(race);
+            });
+            DisqualifySkierCommand = new MvxCommand<Skier>(async skier =>
+            {
+                await _runService.UpdateRunStatus(Race, DisplayRunNumber, skier, RunStatus.Disqualified);
+                SwitchRun(DisplayRunNumber);
+            });
+            SwitchRun(DisplayRunNumber);
+        }
 
-            FinishedRuns.Add(new Run() { RunNumber = 1, Skier = new Skier() { FirstName = "Test1", LastName = "Test1", Country = new Country() { Code = "AT" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 2, Skier = new Skier() { FirstName = "Test2", LastName = "Test2", Country = new Country() { Code = "US" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 3, Skier = new Skier() { FirstName = "Test3", LastName = "Test3", Country = new Country() { Code = "UA" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 4, Skier = new Skier() { FirstName = "Test4", LastName = "Test4", Country = new Country() { Code = "AT" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 5, Skier = new Skier() { FirstName = "Test5", LastName = "Test5", Country = new Country() { Code = "TC" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 6, Skier = new Skier() { FirstName = "Test6", LastName = "Test6", Country = new Country() { Code = "TV" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 7, Skier = new Skier() { FirstName = "Test7", LastName = "Test7", Country = new Country() { Code = "AT" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 8, Skier = new Skier() { FirstName = "Test8", LastName = "Test8", Country = new Country() { Code = "US" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 9, Skier = new Skier() { FirstName = "Test9", LastName = "Test9", Country = new Country() { Code = "AT" } } });
-            FinishedRuns.Add(new Run() { RunNumber = 10, Skier = new Skier() { FirstName = "Test10", LastName = "Test10", Country = new Country() { Code = "EH" } } });
-
-            NextRuns.Add(new Run() { RunNumber = 12, Skier = new Skier() { FirstName = "Test12", LastName = "Test12", Country = new Country() { Code = "AT" } } });
-            NextRuns.Add(new Run() { RunNumber = 13, Skier = new Skier() { FirstName = "Test13", LastName = "Test13", Country = new Country() { Code = "US" } } });
-            NextRuns.Add(new Run() { RunNumber = 14, Skier = new Skier() { FirstName = "Test14", LastName = "Test14", Country = new Country() { Code = "UA" } } });
-            NextRuns.Add(new Run() { RunNumber = 15, Skier = new Skier() { FirstName = "Test15", LastName = "Test15", Country = new Country() { Code = "AT" } } });
-            NextRuns.Add(new Run() { RunNumber = 16, Skier = new Skier() { FirstName = "Test16", LastName = "Test16", Country = new Country() { Code = "TC" } } });
-            NextRuns.Add(new Run() { RunNumber = 17, Skier = new Skier() { FirstName = "Test17", LastName = "Test17", Country = new Country() { Code = "TV" } } });
-            NextRuns.Add(new Run() { RunNumber = 18, Skier = new Skier() { FirstName = "Test18", LastName = "Test18", Country = new Country() { Code = "AT" } } });
-            NextRuns.Add(new Run() { RunNumber = 19, Skier = new Skier() { FirstName = "Test19", LastName = "Test19", Country = new Country() { Code = "US" } } });
-            NextRuns.Add(new Run() { RunNumber = 20, Skier = new Skier() { FirstName = "Test20", LastName = "Test20", Country = new Country() { Code = "AT" } } });
-            NextRuns.Add(new Run() { RunNumber = 21, Skier = new Skier() { FirstName = "Test21", LastName = "Test21", Country = new Country() { Code = "EH" } } });
+        private async void SwitchRun(int runNumber)
+        {
+            var runs = await _runService.GetAllRunsForRace(Race, runNumber);
+            FinishedRuns.SwitchTo(runs.Where(run => run.Status == RunStatus.Completed || run.Status == RunStatus.Disqualified || run.Status == RunStatus.Unfinished || run.Status == RunStatus.NotStarted));
+            NextRuns.SwitchTo(runs.Where(run => run.Status == RunStatus.Ready));
+            CurrentRun.SwitchTo(runs.Where(run => run.Status == RunStatus.InProgress));
+            StartCurrentRunCommand.RaiseCanExecuteChanged();
         }
     }
 }
