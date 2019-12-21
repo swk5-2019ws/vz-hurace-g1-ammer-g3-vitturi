@@ -79,18 +79,18 @@ VALUES
     (30, 'Zauchensee', 5);
 
 INSERT INTO race
-    (id, date, description, name, number_of_sensors, website, picture_url, gender, location_id, race_type, status)
+    (id, date, description, name, number_of_sensors, website, picture_url, gender, location_id, race_type, status, completed_runs)
 VALUES
-    (1, '2019-01-26', 'Yearly slalom competition', 'Kitzbühel Slalom', 5, 'hahnenkamm.com', NULL, 'Male', 14, 'Slalom', 'Finished'),
-    (2, '2019-01-29', 'Schladming slalom at night', 'Schladming Slalom', 5, 'thenightrace.at', NULL, 'Female', 22, 'Slalom', 'Finished'),
-    (3, '2019-01-20', 'Winter sports in Wengen', 'Wengen Giant Slalom', 5, NULL, NULL, 'Male', 27, 'SuperSlalom', 'Finished'),
-    (4, '2019-01-12', 'January'' giant slalom', 'Adelboden Giant Slalom', 5, 'weltcup-adelboden.ch', NULL, 'Male', 1, 'SuperSlalom', 'Ready'),
-    (5, '2019-01-13', 'World cup slalom competition', 'Adelboden Slalom', 5, 'weltcup-adelboden.ch', NULL, 'Male', 1, 'Slalom', 'Ready'),
-    (6, '2019-01-06', 'Newyear''s slalom race', 'La Thuile', 5, 'snowqueentrophy.com', NULL, 'Male', 15, 'Slalom', 'Ready'),
-    (7, '2019-01-08', 'Female skiing competition', 'Flachau Slalom', 5, 'skiweltcup-flachau.at', NULL, 'Female', 10, 'Slalom', 'Ready'),
-    (8, '2018-12-21', 'Giant slalom female race', 'Courchevel Giant Slalom', 5, 'sportcourchevel.com', NULL, 'Female', 8, 'SuperSlalom', 'Ready'),
-    (9, '2018-12-22', NULL, 'Courchevel Slalom', 5, 'sportcourchevel.com', NULL, 'Male', 8, 'Slalom', 'Ready'),
-    (10, '2019-03-05', 'End season''s slalom competition', 'Lake Louise', 5, 'sportcourchevel.com', NULL, 'Male', 16, 'Slalom', 'Ready');
+    (1, '2019-01-26', 'Yearly slalom competition', 'Kitzbühel Slalom', 5, 'hahnenkamm.com', NULL, 'Male', 14, 'Slalom', 'Finished', 2),
+    (2, '2019-01-29', 'Schladming slalom at night', 'Schladming Slalom', 5, 'thenightrace.at', NULL, 'Female', 22, 'Slalom', 'Finished', 2),
+    (3, '2019-01-20', 'Winter sports in Wengen', 'Wengen Giant Slalom', 5, NULL, NULL, 'Male', 27, 'SuperSlalom', 'Finished', 2),
+    (4, '2019-01-12', 'January'' giant slalom', 'Adelboden Giant Slalom', 5, 'weltcup-adelboden.ch', NULL, 'Male', 1, 'SuperSlalom', 'Ready',0 ),
+    (5, '2019-01-13', 'World cup slalom competition', 'Adelboden Slalom', 5, 'weltcup-adelboden.ch', NULL, 'Male', 1, 'Slalom', 'Ready', 0),
+    (6, '2019-01-06', 'Newyear''s slalom race', 'La Thuile', 5, 'snowqueentrophy.com', NULL, 'Male', 15, 'Slalom', 'Ready', 0),
+    (7, '2019-01-08', 'Female skiing competition', 'Flachau Slalom', 5, 'skiweltcup-flachau.at', NULL, 'Female', 10, 'Slalom', 'Ready', 0),
+    (8, '2018-12-21', 'Giant slalom female race', 'Courchevel Giant Slalom', 5, 'sportcourchevel.com', NULL, 'Female', 8, 'SuperSlalom', 'Ready', 0),
+    (9, '2018-12-22', NULL, 'Courchevel Slalom', 5, 'sportcourchevel.com', NULL, 'Male', 8, 'Slalom', 'Ready', 0),
+    (10, '2019-03-05', 'End season''s slalom competition', 'Lake Louise', 5, 'sportcourchevel.com', NULL, 'Male', 16, 'Slalom', 'Ready', 0);
 
 INSERT INTO skier
     (id, archived, birthdate, first_name, last_name, gender, picture_url, country_id)
