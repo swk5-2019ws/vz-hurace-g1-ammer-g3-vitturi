@@ -41,6 +41,9 @@ namespace Hurace.Domain
         [Column("number_of_sensors")]
         public int NumberOfSensors { get; set; }
 
+        [Column("completed_runs")]
+        public int CompletedRuns { get; set; }
+
         [Column("status")]
         public RaceStatus Status { get; set; }
     }
