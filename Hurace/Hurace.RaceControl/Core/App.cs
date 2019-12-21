@@ -10,6 +10,7 @@ using Hurace.Core;
 using Hurace.Core.Daos;
 using Hurace.Core.Interface;
 using Hurace.Core.Services;
+using Hurace.Simulator;
 using MvvmCross;
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
@@ -38,6 +39,7 @@ namespace Hurace.RaceControl.Core
             Mvx.IoCProvider.RegisterSingleton<RaceService>(new RaceService(daoProvider));
             Mvx.IoCProvider.RegisterSingleton<LocationService>(new LocationService(daoProvider));
             Mvx.IoCProvider.RegisterSingleton<SkierService>(new SkierService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<RunService>(new RunService(daoProvider, new SimulatorRaceClock()));
 
             RegisterAppStart<ViewModels.NavigationRootViewModel>();
         }

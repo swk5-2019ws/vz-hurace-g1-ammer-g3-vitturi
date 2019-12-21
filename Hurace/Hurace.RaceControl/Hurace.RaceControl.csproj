@@ -580,6 +580,14 @@
       <Project>{2543cf21-3b17-4546-b14d-a00031db71c0}</Project>
       <Name>Hurace.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hurace.Simulator\Hurace.Simulator.csproj">
+      <Project>{9344a010-997c-4143-88e7-6525085de922}</Project>
+      <Name>Hurace.Simulator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hurace.Timer\Hurace.Timer.csproj">
+      <Project>{3a49c5ad-9c7e-4c8d-ab8a-dac926b71d5b}</Project>
+      <Name>Hurace.Timer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
