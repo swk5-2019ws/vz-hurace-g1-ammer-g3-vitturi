@@ -21,9 +21,9 @@ namespace Hurace.RaceControl.ViewModels.Screens
             StartNumber = 10;
             CountryCode = "AT";
             ElapsedTime = TimeSpan.Parse("00:00:5:45");
-            SensorMeasurements.Add(new SensorMeasurement {InterimTime = 0.18});
-            SensorMeasurements.Add(new SensorMeasurement {InterimTime = -0.05});
-            SensorMeasurements.Add(new SensorMeasurement {InterimTime = -0.33});
+            SensorMeasurements.Add(new SensorMeasurement {Timestamp = 0.18});
+            SensorMeasurements.Add(new SensorMeasurement { Timestamp = -0.05});
+            SensorMeasurements.Add(new SensorMeasurement { Timestamp = -0.33});
             Runs.Add(new Run
             {
                 Skier = new Skier {FirstName = "Test1", LastName = "Test1", Country = new Country {Code = "ES"}},

@@ -1,4 +1,4 @@
-﻿<views:MvxWindowsPage
+﻿<local:ScreenSelectionAbstract
     x:Class="Hurace.RaceControl.Views.ScreenSelection"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -71,7 +71,7 @@
                                    SelectionMode="Single"
                                    IsItemClickEnabled="True"
                                    ItemTemplate="{StaticResource ScreensTemplate}"
-                                   ItemsSource="{Binding ScreenTypes}" ItemClickCommand="{Binding ScreenSelectCommand}">
+                                   ItemsSource="{x:Bind ViewModel.ScreenTypes}" ItemClickCommand="{x:Bind ViewModel.ScreenSelectCommand}">
         </controls:AdaptiveGridView>
     </Grid>
-</views:MvxWindowsPage>
+</local:ScreenSelectionAbstract>

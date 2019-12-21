@@ -37,10 +37,10 @@ namespace Hurace.Core.Services
 
         public async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)
         {
-            IEnumerable<Run> runs = new List<Run>();
-            for (int i = 0; i < skiers.Count; i++)
+            IList<Run> runs = new List<Run>();
+            for (var i = 0; i < skiers.Count; i++)
             {
-                runs.Append(new Run
+                runs.Add(new Run
                 {
                     Race = race,
                     Status = RunStatus.Ready,

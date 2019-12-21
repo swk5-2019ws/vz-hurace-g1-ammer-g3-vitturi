@@ -199,7 +199,7 @@ namespace Hurace.Core.Mapper
                         var parsedEnum = Enum.Parse(propertyInfo.PropertyType, (string) reader[AttributeParser.GetColumnName(propertyInfo)]);
                         propertyInfo.SetValue(entity, parsedEnum);
                     }
-                    else
+                    else if (!reader.IsDBNull(reader.GetOrdinal(AttributeParser.GetColumnName(propertyInfo))))
                     {
                         var value = Convert.ChangeType(reader[AttributeParser.GetColumnName(propertyInfo)],
                             propertyInfo.PropertyType,

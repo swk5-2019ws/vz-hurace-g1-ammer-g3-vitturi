@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Hurace.Core.Interface;
 using Hurace.Core.Services;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
+using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
@@ -15,12 +16,15 @@ namespace Hurace.RaceControl.ViewModels
     public class CreateRaceViewModel : MvxViewModel<Race>
     {
         private readonly LocationService _locationService;
+        private readonly IMvxNavigationService _navigationService;
         private readonly SkierService _skierService;
         private DateTimeOffset _date;
 
         private string _description;
+        private readonly IDialogService _dialogService;
 
         private Gender _gender;
+        private bool _isNewRace;
 
         private string _name;
 
@@ -28,22 +32,32 @@ namespace Hurace.RaceControl.ViewModels
 
         private string _pictureUrl;
         private Race _race;
+        private readonly RaceService _raceService;
 
         private RaceType _raceType;
+        private readonly RunService _runService;
 
         private Location _selectedLocation;
 
         private string _skierSearchText;
+        private RaceStatus _status;
+
+        private MvxSubscriptionToken _token;
 
         private string _website;
-        private RaceStatus _status;
-        private IMvxNavigationService _navigationService;
+        private readonly RaceValidator raceValidator = new RaceValidator();
 
-        public CreateRaceViewModel(IMvxNavigationService navigationService, LocationService locationService, SkierService skierService)
+        public CreateRaceViewModel(IMvxNavigationService navigationService, IDialogService dialogService,
+            IMvxMessenger messenger,
+            LocationService locationService, SkierService skierService, RaceService raceService, RunService runService)
         {
             _navigationService = navigationService;
+            _dialogService = dialogService;
             _locationService = locationService;
             _skierService = skierService;
+            _raceService = raceService;
+            _runService = runService;
+            Messenger = messenger;
         }
 
         public MvxObservableCollection<Location> Locations { get; } = new MvxObservableCollection<Location>();
@@ -52,6 +66,8 @@ namespace Hurace.RaceControl.ViewModels
             new MvxObservableCollection<StartListEntryViewModel>();
 
         public MvxObservableCollection<Skier> SearchSkiers { get; } = new MvxObservableCollection<Skier>();
+
+        public IMvxMessenger Messenger { get; }
 
         public string SkierSearchText
         {
@@ -73,7 +89,11 @@ namespace Hurace.RaceControl.ViewModels
         public DateTimeOffset Date
         {
             get => _date;
-            set => SetProperty(ref _date, value, () => { _race.Date = Date.DateTime; });
+            set => SetProperty(ref _date, value, () =>
+            {
+                _race.Date = Date.DateTime;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public RaceStatus Status
@@ -85,49 +105,81 @@ namespace Hurace.RaceControl.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value, () => { _race.Name = Name; });
+            set => SetProperty(ref _name, value, () =>
+            {
+                _race.Name = Name;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public Gender Gender
         {
             get => _gender;
-            set => SetProperty(ref _gender, value, () => { _race.Gender = Gender; });
+            set => SetProperty(ref _gender, value, () =>
+            {
+                _race.Gender = Gender;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public RaceType RaceType
         {
             get => _raceType;
-            set => SetProperty(ref _raceType, value, () => { _race.RaceType = RaceType; });
+            set => SetProperty(ref _raceType, value, () =>
+            {
+                _race.RaceType = RaceType;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public string Description
         {
             get => _description;
-            set => SetProperty(ref _description, value, () => { _race.Description = Description; });
+            set => SetProperty(ref _description, value, () =>
+            {
+                _race.Description = Description;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public string Website
         {
             get => _website;
-            set => SetProperty(ref _website, value, () => { _race.Website = Website; });
+            set => SetProperty(ref _website, value, () =>
+            {
+                _race.Website = Website;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public string PictureUrl
         {
             get => _pictureUrl;
-            set => SetProperty(ref _pictureUrl, value, () => { _race.PictureUrl = PictureUrl; });
+            set => SetProperty(ref _pictureUrl, value, () =>
+            {
+                _race.PictureUrl = PictureUrl;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public int NumberOfSensors
         {
             get => _numberOfSensors;
-            set => SetProperty(ref _numberOfSensors, value, () => { _race.NumberOfSensors = NumberOfSensors; });
+            set => SetProperty(ref _numberOfSensors, value, () =>
+            {
+                _race.NumberOfSensors = NumberOfSensors;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public Location SelectedLocation
         {
             get => _selectedLocation;
-            set => SetProperty(ref _selectedLocation, value, () => { _race.Location = SelectedLocation; });
+            set => SetProperty(ref _selectedLocation, value, () =>
+            {
+                _race.Location = SelectedLocation;
+                SaveRaceCommand.RaiseCanExecuteChanged();
+            });
         }
 
         public IEnumerable<RaceType> RaceTypes => Enum.GetValues(typeof(RaceType)).Cast<RaceType>();
@@ -136,14 +188,49 @@ namespace Hurace.RaceControl.ViewModels
 
         public MvxCommand OpenRaceControlCommand { get; set; }
 
+        public MvxCommand SaveRaceCommand { get; set; }
+
         public override async void Prepare(Race race)
         {
             await base.Initialize();
 
             if (race == null)
             {
-                race = new Race(){Date = DateTime.Now, Gender = Gender.Male, RaceType = RaceType.Slalom, Status = RaceStatus.Ready};
+                _isNewRace = true;
+                race = new Race
+                {
+                    Date = DateTime.Now, Gender = Gender.Male, RaceType = RaceType.Slalom, Status = RaceStatus.Ready,
+                    NumberOfSensors = 2
+                };
             }
+
+            OpenRaceControlCommand = new MvxCommand(async () =>
+            {
+                race.Status = RaceStatus.InProgress;
+                await _raceService.EditRace(race);
+                _navigationService.Navigate<ControlRaceViewModel>();
+            }, () => StartListEntries.Count > 2);
+
+            _token = Messenger.Subscribe<StartListUpdateMessage>(message =>
+            {
+                StartListEntries.RemoveAt(message.StartPosition - 1);
+            });
+
+            SaveRaceCommand = new MvxCommand(async () =>
+            {
+                var skiers = StartListEntries.Select(entry => entry.Skier).ToList();
+                if (_isNewRace)
+                {
+                    await _raceService.CreateRace(race, skiers);
+                    await _navigationService.Navigate<HomeViewModel>();
+                }
+                else
+                {
+                    await _raceService.EditRace(race);
+                    await _raceService.EditStartList(race, 1, skiers);
+                    _dialogService.Alert(DialogEvent.RaceEditSuccess);
+                }
+            }, () => raceValidator.Validate(race).IsValid);
 
             _race = race;
             Name = _race.Name;
@@ -158,17 +245,25 @@ namespace Hurace.RaceControl.ViewModels
             Status = _race.Status;
 
             var locations = await _locationService.GetLocations();
+            var runs = (await _runService.GetAllRunsForRace(race, 1));
+            if (runs.Any())
+            {
+                var startListEntries = runs.Select(entry =>
+                    new StartListEntryViewModel(Messenger) { Skier = entry.Skier, StartPosition = entry.StartPosition, RaceStatus = Status});
+                StartListEntries.SwitchTo(startListEntries);
+            }
             Locations.SwitchTo(locations);
             StartListEntries.CollectionChanged += RunsOnCollectionChanged;
-            OpenRaceControlCommand = new MvxCommand(() => _navigationService.Navigate<ControlRaceViewModel>());
         }
 
         private void RunsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            OpenRaceControlCommand.RaiseCanExecuteChanged();
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Remove:
                     ReorderIndex = e.OldStartingIndex;
+                    ReorderRuns(ReorderIndex);
                     break;
                 case NotifyCollectionChangedAction.Add:
                     if (ReorderIndex == -1)

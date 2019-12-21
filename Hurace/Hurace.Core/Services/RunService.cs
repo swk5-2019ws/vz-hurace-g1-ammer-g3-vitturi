@@ -53,6 +53,11 @@ namespace Hurace.Core.Services
             return interimTimes;
         }
 
+        public async Task<IEnumerable<Run>> GetAllRunsForRace(Race race, int runNumber)
+        {
+            return await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber);
+        }
+
         private void HandleNewSensorMeasurement(int sensorId, DateTime time)
         {
             Task.WaitAll(HandleNewSensorMeasurementAsync(sensorId, time));

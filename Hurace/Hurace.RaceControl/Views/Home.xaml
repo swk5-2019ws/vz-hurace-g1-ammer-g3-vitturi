@@ -52,7 +52,7 @@
                                   Height="32" Margin="6,6,12,6" VerticalAlignment="Center" HorizontalAlignment="Center"
                                   PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
                                   PlaceholderSource="/Assets/RacePicturePlaceholder.png"
-                                  Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}"
+                                  Source="{x:Bind PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}"
                                   CornerRadius="18" />
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="{x:Bind Name}" Style="{ThemeResource BaseTextBlockStyle}">
                     <interactivity:Interaction.Behaviors>
@@ -135,13 +135,13 @@
             </Image.Source>
         </Image>
 
-        <AutoSuggestBox x:Name="Search" Grid.Row="0" ItemsSource="{Binding SearchRaces, Mode=OneWay}"
-                        Text="{Binding RaceSearchText, Mode=TwoWay}" ItemTemplate="{StaticResource RaceViewTemplate}"
+        <AutoSuggestBox x:Name="Search" Grid.Row="0" ItemsSource="{x:Bind ViewModel.SearchRaces, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.RaceSearchText, Mode=TwoWay}" ItemTemplate="{StaticResource RaceViewTemplate}"
                         Width="296" PlaceholderText="Search races" Margin="0,68,24,0"
                         QueryIcon="Find">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="QuerySubmitted">
-                    <core:InvokeCommandAction Command="{Binding RaceSearchQueryCommand}"
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.RaceSearchQueryCommand}"
                                               InputConverter="{StaticResource AutoSuggestQueryParameterConverter}" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
@@ -152,7 +152,7 @@
 
 
         <GridView Grid.Row="1" x:Name="HomeFeedGrid" IsItemClickEnabled="True"
-                  ItemsSource="{Binding Races}"
+                  ItemsSource="{x:Bind ViewModel.Races}"
                   ItemClick="HomeFeedGrid_OnItemClick"
                   ItemContainerTransitions="{x:Null}"
                   ScrollViewer.HorizontalScrollMode="Auto"
@@ -169,7 +169,7 @@
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="domain:Race">
                     <Grid x:Name="RaceItem" Margin="10,0">
                         <interactivity:Interaction.Behaviors>
                             <core:EventTriggerBehavior EventName="PointerEntered">
@@ -194,7 +194,7 @@
                         <controls:ImageEx x:Name="Image" Grid.Row="0" Stretch="UniformToFill" Height="190" Width="190"
                                           PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
                                           PlaceholderSource="/Assets/RacePicturePlaceholder.png"
-                                          Source="{Binding PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}">
+                                          Source="{x:Bind PictureUrl, TargetNullValue=/Assets/RacePicturePlaceholder.png}">
                             <interactivity:Interaction.Behaviors>
                                 <behaviors:Scale x:Name="PhotoScaleUp" Duration="250" Delay="0"
                                                  AutomaticallyStart="False"
@@ -208,12 +208,12 @@
                             </interactivity:Interaction.Behaviors>
                         </controls:ImageEx>
                         <Border Grid.Row="0" Height="20"
-                                Background="{Binding Status, Converter={StaticResource RaceStatusToColorConverter}}"
+                                Background="{x:Bind Status, Converter={StaticResource RaceStatusToColorConverter}}"
                                 Margin="0,5,0,0" CornerRadius="0,0,0,5" VerticalAlignment="Top"
                                 HorizontalAlignment="Right">
                             <TextBlock Margin="5,0,5,0" Foreground="White" HorizontalAlignment="Right"
                                        VerticalAlignment="Top"
-                                       Text="{Binding Status, Converter={StaticResource RaceStatusToStringConverter}}" />
+                                       Text="{x:Bind Status, Converter={StaticResource RaceStatusToStringConverter}}" />
                             <interactivity:Interaction.Behaviors>
                                 <behaviors:Offset x:Name="RaceStatusOffsetRight" Duration="400" Delay="0"
                                                   AutomaticallyStart="False" OffsetX="5.5" OffsetY="-4"
@@ -225,9 +225,9 @@
                         </Border>
 
                         <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Width="180">
-                            <TextBlock Text="{Binding Name}" Style="{ThemeResource BodyTextBlockStyle}"
+                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource BodyTextBlockStyle}"
                                        FontWeight="Medium" TextWrapping="NoWrap" />
-                            <TextBlock Text="{Binding Description}" />
+                            <TextBlock Text="{x:Bind Description}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

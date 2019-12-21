@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Hurace.Domain;
+using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
+using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
@@ -14,6 +16,14 @@ namespace Hurace.RaceControl.ViewModels
     {
         private int _startPosition;
         private Skier _skier;
+        private IMvxMessenger _messenger;
+        private RaceStatus _raceStatus;
+
+        public StartListEntryViewModel(IMvxMessenger messenger)
+        {
+            _messenger = messenger;
+            DeleteStartListEntryCommand = new MvxCommand<int>(startPosition => _messenger.Publish(new StartListUpdateMessage(this, startPosition)));
+        }
 
         public int StartPosition
         {
@@ -27,6 +37,12 @@ namespace Hurace.RaceControl.ViewModels
             set => SetProperty(ref _skier, value);
         }
 
-        public ICommand DeleteCommand { get; set; }
+        public RaceStatus RaceStatus
+        {
+            get => _raceStatus;
+            set => SetProperty(ref _raceStatus, value);
+        }
+
+        public MvxCommand<int> DeleteStartListEntryCommand { get; set; }
     }
 }

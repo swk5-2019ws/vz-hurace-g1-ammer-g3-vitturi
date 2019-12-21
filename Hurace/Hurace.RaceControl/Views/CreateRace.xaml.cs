@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.Devices.Input;
 using Windows.UI.Xaml;
@@ -8,7 +9,10 @@ using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using Hurace.RaceControl.ViewModels;
+using MvvmCross;
+using MvvmCross.IoC;
 using MvvmCross.Platforms.Uap.Presenters.Attributes;
+using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views
@@ -21,14 +25,33 @@ namespace Hurace.RaceControl.Views
     [MvxSplitViewPresentation(SplitPanePosition.Content)]
     public sealed partial class CreateRace : CreateRaceAbstract
     {
+        private MvxSubscriptionToken _token;
         private const string EmptyLocationMessage = "No locations found!";
-        private readonly StandardUICommand deleteCommand;
 
         public CreateRace()
         {
             InitializeComponent();
-            deleteCommand = new StandardUICommand(StandardUICommandKind.Delete);
-            deleteCommand.ExecuteRequested += DeleteCommand_ExecuteRequested;
+        }
+
+        protected override void OnViewModelSet()
+        {
+            base.OnViewModelSet();
+            var messenger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            _token = messenger.Subscribe<DialogMessage>(message =>
+            {
+                try
+                {
+                    DialogEventNotification.Show("The race was updated successfully!", 2000);
+                }
+                catch (ArgumentException e)
+                {
+                    // see: https://github.com/windows-toolkit/WindowsCommunityToolkit/issues/2899
+                }
+            });
+            if (ViewModel.SelectedLocation != null)
+            {
+                LocationSuggestBox.Text = ViewModel.SelectedLocation.Name;
+            }
         }
 
         private void TextBoxNumber_OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
@@ -40,8 +63,7 @@ namespace Hurace.RaceControl.Views
         {
             if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
 
-            var locations = ViewModel.Locations.Where(loc => loc.Name.Contains(sender.Text))
-                .Select(loc => loc.Name).ToList();
+            var locations = ViewModel.Locations.Where(loc => loc.Name.Contains(sender.Text)).Select(loc => loc.Name).ToList();
             sender.ItemsSource = locations.Count == 0 ? new List<string> {EmptyLocationMessage} : locations;
         }
 
@@ -73,20 +95,12 @@ namespace Hurace.RaceControl.Views
             if (args.ChosenSuggestion != null)
             {
                 sender.Text = string.Empty;
-                ViewModel.StartListEntries.Add(new StartListEntryViewModel
+                var messenger = ViewModel.Messenger;
+                ViewModel.StartListEntries.Add(new StartListEntryViewModel(messenger)
                 {
                     Skier = (Skier) args.ChosenSuggestion, StartPosition = ViewModel.StartListEntries.Count + 1,
-                    DeleteCommand = deleteCommand
+                    RaceStatus = ViewModel.Status
                 });
-            }
-        }
-
-        private void DeleteCommand_ExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
-        {
-            if (args.Parameter != null)
-            {
-                var startPosition = (int) args.Parameter;
-                ViewModel.StartListEntries.RemoveAt(startPosition - 1);
             }
         }
 
