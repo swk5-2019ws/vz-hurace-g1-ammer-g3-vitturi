@@ -9,6 +9,8 @@ namespace Hurace.Core.Services
 {
     public class RunService : Service
     {
+        public delegate void LeaderBoardUpdateHandler(Race race, int runNumber, IEnumerable<Run> runs);
+
         public delegate void SensorMeasurementAddedHandler(Race race, int runNumber, Skier skier, TimeSpan timeSpan);
 
         public delegate void RunStatusChangedHandler(Race race, int runNumber, Skier skier, RunStatus runStatus);
@@ -17,6 +19,8 @@ namespace Hurace.Core.Services
 
         public event RunStatusChangedHandler RunStatusChanged;
 
+        public event LeaderBoardUpdateHandler LeaderBoardUpdated;
+
         public RunService(DaoProvider daoProvider, IRaceClock raceClock) : base(daoProvider)
         {
             raceClock.TimingTriggered += HandleNewSensorMeasurement;
@@ -24,9 +28,9 @@ namespace Hurace.Core.Services
 
         public async Task UpdateRunStatus(Race race, int runNumber, Skier skier, RunStatus status)
         {
-            Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier).ConfigureAwait(false);
+            Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier);
             run.Status = status;
-            await DaoProvider.RunDao.Update(run).ConfigureAwait(false);
+            await DaoProvider.RunDao.Update(run);
             RunStatusChanged?.Invoke(race, runNumber, skier, status);
         }
 
@@ -91,6 +95,34 @@ namespace Hurace.Core.Services
                 var timeSpan = TimeSpan.FromMilliseconds(interimTime * 1000);
                 SensorMeasurementAdded?.Invoke(run.Race, run.RunNumber, run.Skier, timeSpan);
             }
+
+            // Last measurement
+            if (sensorId == run.Race.NumberOfSensors - 1)
+            {
+                run.TotalTime = sensorMeasurement.Timestamp - sensorMeasurements[0].Timestamp;
+                await DaoProvider.RunDao.Update(run);
+
+                var newLeaderBoard = await GetLeaderBoard(run.Race, run.RunNumber);
+                LeaderBoardUpdated?.Invoke(run.Race, run.RunNumber, newLeaderBoard);
+            }
+        }
+
+        public async Task<IEnumerable<Run>> GetLeaderBoard(Race race, int runNumber)
+        {
+            var runs = (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber)).ToArray();
+            Array.Sort(runs, (x, y) =>
+            {
+                int timeX = (int) (x.TotalTime * 1000);
+                int timeY = (int) (y.TotalTime * 1000);
+
+                // Push unfinished runs to the bottom
+                if (timeX == 0) timeX = int.MaxValue;
+                if (timeY == 0) timeY = int.MaxValue;
+
+                return timeX.CompareTo(timeY);
+            });
+
+            return runs;
         }
     }
 }

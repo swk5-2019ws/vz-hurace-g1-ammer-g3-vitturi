@@ -7,11 +7,7 @@ namespace Hurace.Core.Services
 {
     public class RaceService : Service
     {
-        public delegate void LeaderBoardUpdateHandler(IList<Run> runs);
-
         public delegate void RaceStatusChangedHandler(RaceStatus raceStatus);
-
-        public event LeaderBoardUpdateHandler LeaderBoardUpdated;
 
         public event RaceStatusChangedHandler RaceStatusChanged;
 
