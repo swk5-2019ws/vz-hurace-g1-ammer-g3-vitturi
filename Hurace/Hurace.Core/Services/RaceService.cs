@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,6 +31,28 @@ namespace Hurace.Core.Services
                 RaceStatusChanged?.Invoke(race, race.Status);
             }
         }
+
+        public async Task CompleteRun(Race race, int runNumber)
+        {
+            race.CompletedRuns = runNumber;
+            await DaoProvider.RaceDao.Update(race).ConfigureAwait(false);
+
+            if (runNumber >= 1)
+            {
+                // Create inverted start list
+                var pastRuns = await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber).ConfigureAwait(false);
+                var newStartList = new List<Skier>();
+
+                foreach (var pastRun in pastRuns)
+                {
+                    if (pastRun.Status == RunStatus.Completed)
+                    {
+                        newStartList.Prepend(pastRun.Skier);
+                    }
+                }
+
+                await CreateStartList(race, runNumber + 1, newStartList).ConfigureAwait(false);
+            }
         }
 
         public async Task<IEnumerable<Race>> SearchRaces(string nameSubstring)
@@ -37,7 +60,7 @@ namespace Hurace.Core.Services
             return await DaoProvider.RaceDao.FindByName(nameSubstring).ConfigureAwait(false);
         }
 
-        public async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)
+        private async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)
         {
             IList<Run> runs = new List<Run>();
             for (var i = 0; i < skiers.Count; i++)
