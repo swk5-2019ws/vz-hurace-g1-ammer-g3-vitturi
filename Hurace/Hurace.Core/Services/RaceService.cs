@@ -7,7 +7,7 @@ namespace Hurace.Core.Services
 {
     public class RaceService : Service
     {
-        public delegate void RaceStatusChangedHandler(RaceStatus raceStatus);
+        public delegate void RaceStatusChangedHandler(Race race, RaceStatus raceStatus);
 
         public event RaceStatusChangedHandler RaceStatusChanged;
 
@@ -23,7 +23,13 @@ namespace Hurace.Core.Services
 
         public async Task EditRace(Race race)
         {
+            var savedRace = await DaoProvider.RaceDao.FindById(race.Id).ConfigureAwait(false);
             await DaoProvider.RaceDao.Update(race).ConfigureAwait(false);
+            if (race.Status != savedRace.Status)
+            {
+                RaceStatusChanged?.Invoke(race, race.Status);
+            }
+        }
         }
 
         public async Task<IEnumerable<Race>> SearchRaces(string nameSubstring)
