@@ -204,11 +204,12 @@ namespace Hurace.RaceControl.ViewModels
                 };
             }
 
+            _race = race;
             OpenRaceControlCommand = new MvxCommand(async () =>
             {
                 race.Status = RaceStatus.InProgress;
                 await _raceService.EditRace(race);
-                _navigationService.Navigate<ControlRaceViewModel>();
+                await _navigationService.Navigate<ControlRaceViewModel, Race>(_race);
             }, () => StartListEntries.Count > 2);
 
             _token = Messenger.Subscribe<StartListUpdateMessage>(message =>
@@ -232,7 +233,6 @@ namespace Hurace.RaceControl.ViewModels
                 }
             }, () => raceValidator.Validate(race).IsValid);
 
-            _race = race;
             Name = _race.Name;
             Date = _race.Date;
             Gender = _race.Gender;

@@ -123,6 +123,7 @@
     <Compile Include="Helpers\Converter\CountryCodeToImagePathConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToEnabledConverter.cs" />
     <Compile Include="Helpers\Converter\RaceStatusToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converter\RunStatusToColorConverter.cs" />
     <Compile Include="Helpers\Converter\StringToAbbreviationConverter.cs" />
     <Compile Include="Helpers\Converter\StringToUpperCaseConverter.cs" />
     <Compile Include="Helpers\Converter\TimeSpanToBrushConverter.cs" />
