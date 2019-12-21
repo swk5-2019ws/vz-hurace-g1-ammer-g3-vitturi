@@ -9,7 +9,40 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Simulator"></TextBlock>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="Sensor number"/>
+
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 Text="{Binding SensorNumber, Mode=TwoWay}"/>
+        
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="Number of sensors"/>
+
+        <TextBox Grid.Row="1"
+                 Grid.Column="1"
+                 Text="{Binding SensorCount, Mode=TwoWay}"/>
+
+        <Button Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Content="Send Impulse"
+                Command="{Binding SendTimerImpulseCommand}"/>
     </Grid>
 </views:MvxWindowsPage>

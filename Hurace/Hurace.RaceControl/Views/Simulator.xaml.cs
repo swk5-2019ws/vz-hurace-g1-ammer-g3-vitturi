@@ -17,7 +17,7 @@ using Hurace.RaceControl.Helpers.MvvmCross;
 using Hurace.RaceControl.ViewModels;
 using MvvmCross.Platforms.Uap.Views;
 using MvvmCross.ViewModels;
-
+using Hurace.Simulator;
 
 namespace Hurace.RaceControl.Views
 {
@@ -28,6 +28,7 @@ namespace Hurace.RaceControl.Views
         public Simulator()
         {
             this.InitializeComponent();
+            this.DataContext = new SimulatorViewModel(new SimulatorRaceClock());
         }
     }
 }
