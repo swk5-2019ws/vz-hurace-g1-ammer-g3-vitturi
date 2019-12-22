@@ -91,7 +91,7 @@ namespace Hurace.Core.Services
                 (sensorId == 0 && sensorMeasurements.Length == 0) ||
 
                 // Sequential measurement
-                (sensorId == sensorMeasurements.Last().SensorId + 1)
+                (sensorMeasurements.Length > 0 && sensorId == sensorMeasurements.Last().SensorId + 1)
             )
             {
                 await DaoProvider.SensorMeasurementDao.Insert(sensorMeasurement);
