@@ -105,9 +105,12 @@ namespace Hurace.Core.Services
             if (sensorId == run.Race.NumberOfSensors - 1)
             {
                 run.TotalTime = sensorMeasurement.Timestamp - sensorMeasurements[0].Timestamp;
+                run.Status = RunStatus.Completed;
                 await DaoProvider.RunDao.Update(run);
 
                 var newLeaderBoard = await GetLeaderBoard(run.Race, run.RunNumber);
+
+                RunStatusChanged?.Invoke(run.Race, run.RunNumber, run.Skier, run.Status);
                 LeaderBoardUpdated?.Invoke(run.Race, run.RunNumber, newLeaderBoard);
             }
         }
