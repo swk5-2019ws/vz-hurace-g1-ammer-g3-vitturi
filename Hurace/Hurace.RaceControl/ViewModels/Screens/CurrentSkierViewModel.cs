@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Hurace.Core.Services;
 using Hurace.Domain;
 using MvvmCross.ViewModels;
 
@@ -6,49 +9,47 @@ namespace Hurace.RaceControl.ViewModels.Screens
 {
     public class CurrentSkierViewModel : MvxViewModel
     {
+        private const int PreviousSkiers = 2;
+        private const int LeaderboardShownSkiers = 5;
         private string _countryCode;
         private TimeSpan _elapsedTime;
         private string _firstName;
         private string _lastName;
         private string _pictureUrl;
         private int _startNumber;
+        private RunService _runService;
+        private RaceService _raceService;
+        private Race _currentRace;
 
-        public CurrentSkierViewModel()
+        public CurrentSkierViewModel(RunService runService, RaceService raceService)
         {
-            PictureUrl = "https://upload.wikimedia.org/wikipedia/commons/8/8c/Marcel_Hirscher_%28Portrait%29.jpg";
-            FirstName = "Marcel";
-            LastName = "Hirscher";
-            StartNumber = 10;
-            CountryCode = "AT";
-            ElapsedTime = TimeSpan.Parse("00:00:5:45");
-            SensorMeasurements.Add(new SensorMeasurement {Timestamp = 0.18});
-            SensorMeasurements.Add(new SensorMeasurement { Timestamp = -0.05});
-            SensorMeasurements.Add(new SensorMeasurement { Timestamp = -0.33});
-            Runs.Add(new Run
-            {
-                Skier = new Skier {FirstName = "Test1", LastName = "Test1", Country = new Country {Code = "ES"}},
-                RunNumber = 1, TotalTime = 4.5
-            });
-            Runs.Add(new Run
-            {
-                Skier = new Skier {FirstName = "Test2", LastName = "Test2", Country = new Country {Code = "AT"}},
-                RunNumber = 2, TotalTime = 4.6
-            });
-            Runs.Add(new Run
-            {
-                Skier = new Skier {FirstName = "Test3", LastName = "Test3", Country = new Country {Code = "US"}},
-                RunNumber = 3, TotalTime = 4.7
-            });
-            Runs.Add(new Run
-            {
-                Skier = new Skier {FirstName = "Test4", LastName = "Test4", Country = new Country {Code = "EH"}},
-                RunNumber = 4, TotalTime = 4.8
-            });
-            Runs.Add(new Run
-            {
-                Skier = new Skier {FirstName = "Test5", LastName = "Test5", Country = new Country {Code = "IT"}},
-                RunNumber = 5, TotalTime = 4.9
-            });
+            _runService = runService;
+            _raceService = raceService;
+        }
+
+        public override async void Prepare()
+        {
+            base.Prepare();
+            _currentRace = await _raceService.GetCurrentRace();
+            _runService.SensorMeasurementAdded += (race, number, skier, timeSpan) => RefreshRun();
+            RefreshRun();
+        }
+
+        private async void RefreshRun()
+        {
+            var currentRun = await _runService.GetCurrentRun();
+            PictureUrl = currentRun.Skier.PictureUrl;
+            FirstName = currentRun.Skier.FirstName;
+            LastName = currentRun.Skier.LastName;
+            StartNumber = currentRun.StartPosition;
+            CountryCode = currentRun.Skier.Country.Code;
+            var times = await _runService.GetInterimTimes(_currentRace, currentRun.RunNumber, currentRun.Skier);
+            SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel(){TimeSpan = timeSpan}));
+            var runs = await _runService.GetLeaderBoard(_currentRace, currentRun.RunNumber);
+            var currentRunIndex = runs.Select((run, index) => new { run, index }).First(x => x.run.Skier.Id == currentRun.Skier.Id).index;
+            var leaderboardRuns = runs.Skip(currentRunIndex <= PreviousSkiers ? 0 : currentRunIndex - PreviousSkiers)
+                .Take(LeaderboardShownSkiers);
+            Runs.SwitchTo(leaderboardRuns);
         }
 
         public string PictureUrl
@@ -87,8 +88,8 @@ namespace Hurace.RaceControl.ViewModels.Screens
             set => SetProperty(ref _elapsedTime, value);
         }
 
-        public MvxObservableCollection<SensorMeasurement> SensorMeasurements { get; } =
-            new MvxObservableCollection<SensorMeasurement>();
+        public MvxObservableCollection<SensorMeasurementEntryViewModel> SensorMeasurementEntries { get; } =
+            new MvxObservableCollection<SensorMeasurementEntryViewModel>();
 
         public MvxObservableCollection<Run> Runs { get; } = new MvxObservableCollection<Run>();
     }

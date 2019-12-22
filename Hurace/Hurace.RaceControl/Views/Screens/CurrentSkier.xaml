@@ -10,6 +10,8 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
     xmlns:domain="using:Hurace.Domain"
+    xmlns:foundation="using:Windows.Foundation"
+    xmlns:viewModels="using:Hurace.RaceControl.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
@@ -74,22 +76,20 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <ListView Grid.Row="0" ItemsSource="{x:Bind ViewModel.SensorMeasurements}" SelectionMode="None"
+                <ListView Grid.Row="0" ItemsSource="{x:Bind ViewModel.SensorMeasurementEntries}" SelectionMode="None"
                           Grid.ColumnSpan="2" HorizontalAlignment="Right">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="domain:SensorMeasurement">
+                        <DataTemplate x:DataType="viewModels:SensorMeasurementEntryViewModel">
                             <Grid Width="180" Margin="0,0,-10,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="3,0,0,3"
-                                        Background="{x:Bind Timestamp, Converter={StaticResource TimeSpanToBrushConverter}}"
-                                        Width="7" />
+                                <Border Grid.Column="0" CornerRadius="3,0,0,3" Width="7" />
                                 <Border Grid.Column="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
                                     <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
                                                Margin="5,7,40,7" HorizontalAlignment="Right"
-                                               Text="{x:Bind Timestamp}" />
+                                               Text="{x:Bind TimeSpan}" />
                                 </Border>
                             </Grid>
                         </DataTemplate>

@@ -145,6 +145,7 @@
     <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentResultViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentSkierViewModel.cs" />
+    <Compile Include="ViewModels\SensorMeasurementEntryViewModel.cs" />
     <Compile Include="ViewModels\SimulatorControlViewModel.cs" />
     <Compile Include="ViewModels\ControlRaceViewModel.cs" />
     <Compile Include="ViewModels\StartListEntryViewModel.cs" />
