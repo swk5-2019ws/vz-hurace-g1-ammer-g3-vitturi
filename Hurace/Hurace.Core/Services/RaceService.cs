@@ -47,7 +47,7 @@ namespace Hurace.Core.Services
                 {
                     if (pastRun.Status == RunStatus.Completed)
                     {
-                        newStartList.Prepend(pastRun.Skier);
+                        newStartList.Insert(0, pastRun.Skier);
                     }
                 }
 
