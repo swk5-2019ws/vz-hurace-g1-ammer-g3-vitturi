@@ -62,6 +62,11 @@ namespace Hurace.Core.Services
             return await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber);
         }
 
+        public async Task<Run> GetCurrentRun()
+        {
+            return await DaoProvider.RunDao.GetCurrentRun();
+        }
+
         private void HandleNewSensorMeasurement(int sensorId, DateTime time)
         {
             Task.WaitAll(HandleNewSensorMeasurementAsync(sensorId, time));

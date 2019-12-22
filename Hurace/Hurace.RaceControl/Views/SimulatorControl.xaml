@@ -1,5 +1,5 @@
-﻿<views:MvxWindowsPage
-    x:Class="Hurace.RaceControl.Views.Simulator"
+﻿<local:SimulatorAbstract
+    x:Class="Hurace.RaceControl.Views.SimulatorControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hurace.RaceControl.Views"
@@ -28,7 +28,7 @@
 
         <TextBox Grid.Row="0"
                  Grid.Column="1"
-                 Text="{Binding SensorNumber, Mode=TwoWay}"/>
+                 Text="{x:Bind ViewModel.SensorNumber, Mode=TwoWay}"/>
         
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
@@ -37,12 +37,12 @@
 
         <TextBox Grid.Row="1"
                  Grid.Column="1"
-                 Text="{Binding SensorCount, Mode=TwoWay}"/>
+                 Text="{x:Bind ViewModel.SensorCount, Mode=TwoWay}"/>
 
         <Button Grid.Row="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Content="Send Impulse"
-                Command="{Binding SendTimerImpulseCommand}"/>
+                Command="{x:Bind ViewModel.SendTimerImpulseCommand}"/>
     </Grid>
-</views:MvxWindowsPage>
+</local:SimulatorAbstract>

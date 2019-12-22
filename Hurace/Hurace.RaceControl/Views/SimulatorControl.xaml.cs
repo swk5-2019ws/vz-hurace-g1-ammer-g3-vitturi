@@ -21,14 +21,17 @@ using Hurace.Simulator;
 
 namespace Hurace.RaceControl.Views
 {
-    [MvxViewFor(typeof(SimulatorViewModel))]
-    [MvxWindowPresentation]
-    public sealed partial class Simulator : MvxWindowsPage
+    public abstract class SimulatorAbstract : BaseApplicationMvxPage<SimulatorControlViewModel>
     {
-        public Simulator()
+    }
+    [MvxViewFor(typeof(SimulatorControlViewModel))]
+    [MvxWindowPresentation]
+    public sealed partial class SimulatorControl : SimulatorAbstract
+    {
+        public SimulatorControl()
         {
             this.InitializeComponent();
-            this.DataContext = new SimulatorViewModel(new SimulatorRaceClock());
+            this.DataContext = new SimulatorControlViewModel(new SimulatorRaceClock());
         }
     }
 }

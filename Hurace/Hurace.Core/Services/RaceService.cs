@@ -60,6 +60,11 @@ namespace Hurace.Core.Services
             return await DaoProvider.RaceDao.FindByName(nameSubstring).ConfigureAwait(false);
         }
 
+        public async Task<Race> GetCurrentRace()
+        {
+            return await DaoProvider.RaceDao.GetCurrentRace().ConfigureAwait(false);
+        }
+
         private async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)
         {
             IList<Run> runs = new List<Run>();

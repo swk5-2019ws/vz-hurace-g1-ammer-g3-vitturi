@@ -43,7 +43,7 @@ namespace Hurace.RaceControl.Views
                 {
                     DialogEventNotification.Show("The race was updated successfully!", 2000);
                 }
-                catch (ArgumentException e)
+                catch (Exception e)
                 {
                     // see: https://github.com/windows-toolkit/WindowsCommunityToolkit/issues/2899
                 }
