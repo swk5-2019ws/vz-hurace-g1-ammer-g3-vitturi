@@ -95,6 +95,7 @@ namespace Hurace.RaceControl.ViewModels
             FinishedRuns.SwitchTo(runs.Where(run => run.Status == RunStatus.Completed || run.Status == RunStatus.Disqualified || run.Status == RunStatus.Unfinished || run.Status == RunStatus.NotStarted));
             NextRuns.SwitchTo(runs.Where(run => run.Status == RunStatus.Ready));
             CurrentRun.SwitchTo(runs.Where(run => run.Status == RunStatus.InProgress));
+            DisplayRunNumber = runNumber;
             StartCurrentRunCommand.RaiseCanExecuteChanged();
         }
     }

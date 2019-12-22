@@ -43,8 +43,8 @@
                 <controls:ImageEx Stretch="UniformToFill" Width="160" Height="160" Margin="20,0,20,0" Grid.Column="0"
                                   Grid.RowSpan="2"
                                   PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
-                                  PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.png"
-                                  Source="{x:Bind ViewModel.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.png}"
+                                  PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
+                                  Source="{x:Bind ViewModel.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
                                   CornerRadius="100" />
                 <Image Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" Margin="30,54,0,0" Stretch="Fill"
                        Height="40" Width="60"
@@ -110,7 +110,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{x:Bind RunNumber}" Foreground="#005D7f" FontSize="25"
+                                <TextBlock Grid.Column="0" Text="{x:Bind StartPosition}" Foreground="#005D7f" FontSize="25"
                                            FontWeight="Bold" Margin="40,0,10,5" />
                                 <Image Grid.Column="1" Width="30" Height="25"
                                        Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />

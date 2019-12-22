@@ -118,7 +118,7 @@
         <TextBlock Text="{x:Bind ViewModel.Name}" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" FontSize="30"
                    Style="{ThemeResource SubtitleTextBlockStyle}" />
         <TextBlock Grid.Row="2" Grid.Column="0" FontSize="20">
-            <Run Text="{x:Bind ViewModel.DisplayRunNumber}" />
+            <Run Text="{x:Bind ViewModel.DisplayRunNumber, Mode=OneWay}" />
             <Run Text="run" />
         </TextBlock>
         <ListView Margin="0,50,0,0" SelectionMode="None" ItemTemplate="{StaticResource RunViewTemplate}"

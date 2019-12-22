@@ -207,7 +207,10 @@ namespace Hurace.RaceControl.ViewModels
             _race = race;
             OpenRaceControlCommand = new MvxCommand(async () =>
             {
-                race.Status = RaceStatus.InProgress;
+                if (race.Status == RaceStatus.Ready)
+                {
+                    race.Status = RaceStatus.InProgress;
+                }
                 await _raceService.EditRace(race);
                 await _navigationService.Navigate<ControlRaceViewModel, Race>(_race);
             }, () => StartListEntries.Count > 2);
