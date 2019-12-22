@@ -8,6 +8,25 @@ documentclass: scrartcl
 
 # Race Control
 
+The race control is an UWP app which consists of five screens to control all the races. The home screen shows all available races and also offers the possibility to search for a specific range. On the left side you can use the navigation view to navigate through the app.
+
+![Home screen](assets/home.png)
+
+![Create/edit race](assets/edit.png)
+
+![Control race](assets/control.png)
+
+![Current result](assets/current_result.png)
+
+![Current skier](assets/current_skier.png)
+
+## Problems with UWP
+
+* The UWP TextBox does not implement the `INotifyDataErrorInfo` (see [Issue 179](https://github.com/microsoft/microsoft-ui-xaml/issues/179))
+* x:Bind does not support UpdateSourceTrigger
+* x:Bind does not support StringFormat
+* NavigationView does not support Command (see [Issue 944](https://github.com/microsoft/microsoft-ui-xaml/issues/944))
+ 
 # Simulator
 
 The simulator provides a simple way to send time impulses for testing and demonstration purposes. It is composed by an implementation of `IRaceClock` and an view and related view controller.
