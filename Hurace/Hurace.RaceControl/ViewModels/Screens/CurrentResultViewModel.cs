@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hurace.Core.Services;
 using Hurace.Domain;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels.Screens
 {
-    public class CurrentResultViewModel: MvxViewModel
+    public class CurrentResultViewModel : MvxViewModel
     {
         private string _name;
         private Gender _gender;
@@ -16,6 +17,36 @@ namespace Hurace.RaceControl.ViewModels.Screens
         private RaceType _raceType;
         private int _runNumber;
         private string _pictureUrl;
+        private RunService _runService;
+        private RaceService _raceService;
+
+        public CurrentResultViewModel(RaceService raceService, RunService runService)
+        {
+            _raceService = raceService;
+            _runService = runService;
+        }
+
+        public override async void Prepare()
+        {
+            base.Prepare();
+
+            var currentRace = await _raceService.GetCurrentRace();
+            Name = currentRace.Name;
+            Gender = currentRace.Gender;
+            Location = currentRace.Location;
+            RunNumber = currentRace.CompletedRuns >= 1 ? 2 : 1;
+            RaceType = currentRace.RaceType;
+            PictureUrl = currentRace.PictureUrl;
+
+            var runs = await _runService.GetLeaderBoard(currentRace, RunNumber);
+            Runs.SwitchTo(runs);
+
+            _runService.LeaderBoardUpdated += (race, runNumber, leaderboardRuns) =>
+            {
+                RunNumber = runNumber;
+                Runs.SwitchTo(leaderboardRuns);
+            };
+        }
 
         public string Name
         {
@@ -54,26 +85,5 @@ namespace Hurace.RaceControl.ViewModels.Screens
         }
 
         public MvxObservableCollection<Run> Runs { get; set; } = new MvxObservableCollection<Run>();
-
-        public CurrentResultViewModel()
-        {
-            Name = "Ski-Weltcup";
-            Gender = Gender.Female;
-            Location = new Location(){Name = "Sölden"};
-            RunNumber = 1;
-            RaceType = RaceType.SuperSlalom;
-            PictureUrl =
-                "https://images.unsplash.com/photo-1498576260462-eefc9d0ce9f7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit";
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test1", LastName = "Test1", Country = new Country(){Code = "AT"}} });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test2", LastName = "Test2", Country = new Country() { Code = "US" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test3", LastName = "Test3", Country = new Country() { Code = "UA" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test4", LastName = "Test4", Country = new Country() { Code = "AT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test5", LastName = "Test5", Country = new Country() { Code = "TC" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test6", LastName = "Test6", Country = new Country() { Code = "TV" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test7", LastName = "Test7", Country = new Country() { Code = "AT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test8", LastName = "Test8", Country = new Country() { Code = "US" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test9", LastName = "Test9", Country = new Country() { Code = "AT" } } });
-            Runs.Add(new Run() { Skier = new Skier() { FirstName = "Test10", LastName = "Test10", Country = new Country() { Code = "EH" } } });
-        }
     }
 }

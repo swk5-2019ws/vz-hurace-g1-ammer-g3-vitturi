@@ -85,6 +85,7 @@ namespace Hurace.RaceControl.ViewModels
                 await _runService.UpdateRunStatus(Race, DisplayRunNumber, skier, RunStatus.Disqualified);
                 SwitchRun(DisplayRunNumber);
             });
+            _runService.RunStatusChanged += (currentRace, raceNumber, skier, status) => SwitchRun(race.CompletedRuns >= 1 ? 2 : 1);
             SwitchRun(DisplayRunNumber);
         }
 
