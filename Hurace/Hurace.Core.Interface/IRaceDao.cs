@@ -10,5 +10,6 @@ namespace Hurace.Core.Interface
     {
         Task<IEnumerable<Race>> FindByName(string nameSubstring);
         Task<IEnumerable<Race>> GetLastRaces(int count);
+        Task<Race> GetCurrentRace();
     }
 }

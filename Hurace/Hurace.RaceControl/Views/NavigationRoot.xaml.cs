@@ -21,6 +21,11 @@ namespace Hurace.RaceControl.Views
             InitializeComponent();
         }
 
+        /// <summary>
+        /// NavigationView command binding is not supported at the moment: https://github.com/microsoft/microsoft-ui-xaml/issues/944.
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="args">The args</param>
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked) ViewModel.ShowSettings();
@@ -38,6 +43,7 @@ namespace Hurace.RaceControl.Views
                     ViewModel.ShowCreateRace();
                     break;
                 case "Current race":
+                    ViewModel.OpenCurrentRaceCommand.Execute();
                     break;
             }
         }

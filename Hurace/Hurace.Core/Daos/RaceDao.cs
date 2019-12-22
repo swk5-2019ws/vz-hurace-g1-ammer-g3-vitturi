@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hurace.Core.Interface;
@@ -32,6 +33,17 @@ namespace Hurace.Core.Daos
                 LIMIT @Count",
                 new {Count = count}
             ).ConfigureAwait(false);
+        }
+
+        public async Task<Race> GetCurrentRace()
+        {
+            using var connection = ConnectionFactory.CreateConnection();
+            var currentRaces = await connection.Query<Race>(@"
+                SELECT * FROM race
+                WHERE status = @Status",
+                new { Status = RaceStatus.InProgress }
+            ).ConfigureAwait(false);
+            return currentRaces.Any() ? currentRaces.First() : null;
         }
     }
 }

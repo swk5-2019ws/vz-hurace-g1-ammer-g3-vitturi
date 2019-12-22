@@ -24,7 +24,7 @@
                 </NavigationViewItem>
                 <NavigationViewItemHeader Content="Quick Links" />
                 <NavigationViewItem Content="Create race" Icon="Add" />
-                <NavigationViewItem Content="Current race" Icon="Play" IsEnabled="False" />
+                <NavigationViewItem Content="Current race" Icon="Play" IsEnabled="{x:Bind ViewModel.IsRaceActive, Mode=OneWay}" />
             </NavigationView.MenuItems>
         </NavigationView>
     </Grid>
