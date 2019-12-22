@@ -42,7 +42,7 @@ namespace Hurace.RaceControl.ViewModels
 
         public void OpenSimulator()
         {
-            _navigationService.Navigate<SimulatorViewModel>();
+            _navigationService.Navigate<SimulatorControlViewModel>();
         }
     }
 }

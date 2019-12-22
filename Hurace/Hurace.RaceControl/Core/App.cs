@@ -39,12 +39,14 @@ namespace Hurace.RaceControl.Core
 
             var daoProvider = new DaoProvider(countryDao, locationDao, raceDao, runDao, sensorMeasurementDao, skierDao);
             var messengerHub = new MvxMessengerHub();
+            var simulatorRaceClock = new SimulatorRaceClock();
             Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(messengerHub);
             Mvx.IoCProvider.RegisterSingleton<IDialogService>(new DialogService(messengerHub));
             Mvx.IoCProvider.RegisterSingleton<RaceService>(new RaceService(daoProvider));
             Mvx.IoCProvider.RegisterSingleton<LocationService>(new LocationService(daoProvider));
             Mvx.IoCProvider.RegisterSingleton<SkierService>(new SkierService(daoProvider));
-            Mvx.IoCProvider.RegisterSingleton<RunService>(new RunService(daoProvider, new SimulatorRaceClock()));
+            Mvx.IoCProvider.RegisterSingleton<RunService>(new RunService(daoProvider,simulatorRaceClock));
+            Mvx.IoCProvider.RegisterSingleton<SimulatorRaceClock>(simulatorRaceClock);
 
             RegisterAppStart<ViewModels.NavigationRootViewModel>();
         }
