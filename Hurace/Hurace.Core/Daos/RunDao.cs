@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hurace.Core.Interface;
+﻿using Hurace.Core.Interface.Daos;
 using Hurace.Core.Mapper;
 using Hurace.Domain;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hurace.Core.Daos
 {
@@ -38,7 +38,7 @@ namespace Hurace.Core.Daos
                 SELECT * FROM run
                 WHERE race_id = @RaceId
                 AND run_number = @RunNumber",
-                new {RaceId = race.Id, RunNumber = runNumber}
+                new { RaceId = race.Id, RunNumber = runNumber }
             ).ConfigureAwait(false);
         }
 
@@ -62,7 +62,7 @@ namespace Hurace.Core.Daos
             var currentRuns = await connection.Query<Run>(@"
                 SELECT * FROM run
                 WHERE status = @Status",
-                new {Status = RunStatus.InProgress}
+                new { Status = RunStatus.InProgress }
             ).ConfigureAwait(false);
             return currentRuns.First();
         }

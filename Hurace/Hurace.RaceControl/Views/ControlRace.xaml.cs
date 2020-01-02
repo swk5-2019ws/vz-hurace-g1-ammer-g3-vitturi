@@ -1,12 +1,11 @@
-﻿using Windows.Devices.Input;
+﻿using Hurace.RaceControl.Helpers.MvvmCross;
+using Hurace.RaceControl.ViewModels;
+using MvvmCross.Platforms.Uap.Presenters.Attributes;
+using MvvmCross.ViewModels;
+using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Hurace.RaceControl.Helpers.MvvmCross;
-using Hurace.RaceControl.ViewModels;
-using MvvmCross.Platforms.Uap.Presenters.Attributes;
-using MvvmCross.Platforms.Uap.Views;
-using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views
 {

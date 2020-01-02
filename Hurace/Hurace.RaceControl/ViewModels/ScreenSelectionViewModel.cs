@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Hurace.Domain;
-using Hurace.RaceControl.Helpers;
+﻿using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.ViewModels.Screens;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
-using MvvmCross.Presenters.Hints;
 using MvvmCross.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hurace.RaceControl.ViewModels
 {

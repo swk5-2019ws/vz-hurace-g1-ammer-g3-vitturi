@@ -1,10 +1,11 @@
+using Hurace.Core.Interface.Services;
+using Hurace.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hurace.Domain;
 
 namespace Hurace.Core.Services
 {
-    public class LocationService : Service
+    public class LocationService : Service, ILocationService
     {
         public LocationService(DaoProvider daoProvider) : base(daoProvider)
         {

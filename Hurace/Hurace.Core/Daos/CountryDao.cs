@@ -1,4 +1,4 @@
-using Hurace.Core.Interface;
+using Hurace.Core.Interface.Daos;
 using Hurace.Domain;
 
 namespace Hurace.Core.Daos

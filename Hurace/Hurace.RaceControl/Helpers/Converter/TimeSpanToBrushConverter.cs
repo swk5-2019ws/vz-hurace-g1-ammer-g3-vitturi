@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    class TimeSpanToBrushConverter: IValueConverter
+    class TimeSpanToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            double time = (double) value;
+            double time = (double)value;
             var brush = new AcrylicBrush();
             brush.BackgroundSource = AcrylicBackgroundSource.Backdrop;
             brush.TintOpacity = 0.6;

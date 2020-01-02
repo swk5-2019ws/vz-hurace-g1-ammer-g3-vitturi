@@ -1,20 +1,15 @@
+using Hurace.Core.Interface.Services;
+using Hurace.Domain;
+using Hurace.Timer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hurace.Domain;
-using Hurace.Timer;
 
 namespace Hurace.Core.Services
 {
-    public class RunService : Service
+    public class RunService : Service, IRunService
     {
-        public delegate void LeaderBoardUpdateHandler(Race race, int runNumber, IEnumerable<Run> runs);
-
-        public delegate void SensorMeasurementAddedHandler(Race race, int runNumber, Skier skier, TimeSpan timeSpan);
-
-        public delegate void RunStatusChangedHandler(Race race, int runNumber, Skier skier, RunStatus runStatus);
-
         public event SensorMeasurementAddedHandler SensorMeasurementAdded;
 
         public event RunStatusChangedHandler RunStatusChanged;
@@ -120,8 +115,8 @@ namespace Hurace.Core.Services
             var runs = (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber)).ToArray();
             Array.Sort(runs, (x, y) =>
             {
-                int timeX = (int) (x.TotalTime * 1000);
-                int timeY = (int) (y.TotalTime * 1000);
+                int timeX = (int)(x.TotalTime * 1000);
+                int timeY = (int)(y.TotalTime * 1000);
 
                 // Push unfinished runs to the bottom
                 if (timeX == 0) timeX = int.MaxValue;

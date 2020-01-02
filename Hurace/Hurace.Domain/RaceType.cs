@@ -1,6 +1,4 @@
-﻿using Hurace.Core.Mapper.Attributes;
-
-namespace Hurace.Domain
+﻿namespace Hurace.Domain
 {
     public enum RaceType
     {

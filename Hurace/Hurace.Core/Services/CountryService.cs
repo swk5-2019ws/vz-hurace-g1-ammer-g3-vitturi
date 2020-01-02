@@ -1,11 +1,11 @@
-using System.Collections;
+using Hurace.Core.Interface.Services;
+using Hurace.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hurace.Domain;
 
 namespace Hurace.Core.Services
 {
-    public class CountryService : Service
+    public class CountryService : Service, ICountryService
     {
         public CountryService(DaoProvider daoProvider) : base(daoProvider)
         {

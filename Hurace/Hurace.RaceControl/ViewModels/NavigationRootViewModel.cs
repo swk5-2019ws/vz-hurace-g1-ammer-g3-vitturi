@@ -1,16 +1,16 @@
-﻿using System.Threading.Tasks;
-using Hurace.Core.Services;
+﻿using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System.Threading.Tasks;
 
 namespace Hurace.RaceControl.ViewModels
 {
     public class NavigationRootViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
-        private RaceService _raceService;
+        private IRaceService _raceService;
         private bool _isRaceActive;
         private Race _currentRace;
 
@@ -20,7 +20,7 @@ namespace Hurace.RaceControl.ViewModels
             set => SetProperty(ref _isRaceActive, value);
         }
 
-        public NavigationRootViewModel(IMvxNavigationService navigationService, RaceService raceService)
+        public NavigationRootViewModel(IMvxNavigationService navigationService, IRaceService raceService)
         {
             _navigationService = navigationService;
             _raceService = raceService;

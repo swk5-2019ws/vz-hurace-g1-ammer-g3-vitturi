@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hurace.Core.Services;
+﻿using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.ViewModels;
 
@@ -17,10 +12,10 @@ namespace Hurace.RaceControl.ViewModels.Screens
         private RaceType _raceType;
         private int _runNumber;
         private string _pictureUrl;
-        private RunService _runService;
-        private RaceService _raceService;
+        private IRunService _runService;
+        private IRaceService _raceService;
 
-        public CurrentResultViewModel(RaceService raceService, RunService runService)
+        public CurrentResultViewModel(IRaceService raceService, IRunService runService)
         {
             _raceService = raceService;
             _runService = runService;

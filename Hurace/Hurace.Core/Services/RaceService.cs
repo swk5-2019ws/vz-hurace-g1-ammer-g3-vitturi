@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Hurace.Core.Interface.Services;
 using Hurace.Domain;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hurace.Core.Services
 {
-    public class RaceService : Service
+    public class RaceService : Service, IRaceService
     {
-        public delegate void RaceStatusChangedHandler(Race race, RaceStatus raceStatus);
-
         public event RaceStatusChangedHandler RaceStatusChanged;
 
         public RaceService(DaoProvider daoProvider) : base(daoProvider)

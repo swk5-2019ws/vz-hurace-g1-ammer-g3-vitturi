@@ -1,16 +1,16 @@
-﻿using System;
+﻿using MvvmCross;
+using MvvmCross.Platforms.Uap.Presenters;
+using MvvmCross.Platforms.Uap.Views;
+using MvvmCross.Presenters;
+using MvvmCross.ViewModels;
+using MvvmCross.Views;
+using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
-using MvvmCross;
-using MvvmCross.Platforms.Uap.Presenters;
-using MvvmCross.Platforms.Uap.Views;
-using MvvmCross.Presenters;
-using MvvmCross.ViewModels;
-using MvvmCross.Views;
 
 namespace Hurace.RaceControl.Helpers.MvvmCross
 {

@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Hurace.Core;
+﻿using Hurace.Core;
 using Hurace.Core.Daos;
-using Hurace.Core.Interface;
+using Hurace.Core.Interface.Services;
 using Hurace.Core.Services;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using Hurace.Simulator;
 using MvvmCross;
-using MvvmCross.IoC;
 using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Hurace.RaceControl.Core
 {
-    public class App: MvxApplication
+    public class App : MvxApplication
     {
         public override void Initialize()
         {
@@ -42,10 +38,10 @@ namespace Hurace.RaceControl.Core
             var simulatorRaceClock = new SimulatorRaceClock();
             Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(messengerHub);
             Mvx.IoCProvider.RegisterSingleton<IDialogService>(new DialogService(messengerHub));
-            Mvx.IoCProvider.RegisterSingleton<RaceService>(new RaceService(daoProvider));
-            Mvx.IoCProvider.RegisterSingleton<LocationService>(new LocationService(daoProvider));
-            Mvx.IoCProvider.RegisterSingleton<SkierService>(new SkierService(daoProvider));
-            Mvx.IoCProvider.RegisterSingleton<RunService>(new RunService(daoProvider,simulatorRaceClock));
+            Mvx.IoCProvider.RegisterSingleton<IRaceService>(new RaceService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<ILocationService>(new LocationService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<ISkierService>(new SkierService(daoProvider));
+            Mvx.IoCProvider.RegisterSingleton<IRunService>(new RunService(daoProvider, simulatorRaceClock));
             Mvx.IoCProvider.RegisterSingleton<SimulatorRaceClock>(simulatorRaceClock);
 
             RegisterAppStart<ViewModels.NavigationRootViewModel>();

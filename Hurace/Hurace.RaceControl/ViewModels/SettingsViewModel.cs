@@ -1,8 +1,7 @@
-﻿using Windows.ApplicationModel;
-using Hurace.RaceControl.Helpers;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using Windows.ApplicationModel;
 
 namespace Hurace.RaceControl.ViewModels
 {

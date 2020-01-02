@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Hurace.Core.Services;
+﻿using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.ViewModels;
+using System;
+using System.Linq;
 
 namespace Hurace.RaceControl.ViewModels.Screens
 {
@@ -17,11 +16,11 @@ namespace Hurace.RaceControl.ViewModels.Screens
         private string _lastName;
         private string _pictureUrl;
         private int _startNumber;
-        private RunService _runService;
-        private RaceService _raceService;
+        private IRunService _runService;
+        private IRaceService _raceService;
         private Race _currentRace;
 
-        public CurrentSkierViewModel(RunService runService, RaceService raceService)
+        public CurrentSkierViewModel(IRunService runService, IRaceService raceService)
         {
             _runService = runService;
             _raceService = raceService;
@@ -44,7 +43,7 @@ namespace Hurace.RaceControl.ViewModels.Screens
             StartNumber = currentRun.StartPosition;
             CountryCode = currentRun.Skier.Country.Code;
             var times = await _runService.GetInterimTimes(_currentRace, currentRun.RunNumber, currentRun.Skier);
-            SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel(){TimeSpan = timeSpan}));
+            SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel() { TimeSpan = timeSpan }));
             var runs = await _runService.GetLeaderBoard(_currentRace, currentRun.RunNumber);
             var currentRunIndex = runs.Select((run, index) => new { run, index }).First(x => x.run.Skier.Id == currentRun.Skier.Id).index;
             var leaderboardRuns = runs.Skip(currentRunIndex <= PreviousSkiers ? 0 : currentRunIndex - PreviousSkiers)

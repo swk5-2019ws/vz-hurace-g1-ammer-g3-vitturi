@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hurace.Core.Interface;
+﻿using Hurace.Core.Interface.Daos;
 using Hurace.Core.Mapper;
 using Hurace.Domain;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hurace.Core.Daos
 {
@@ -20,7 +19,7 @@ namespace Hurace.Core.Daos
             return await connection.Query<Race>(@"
                 SELECT * FROM race
                 WHERE name LIKE '%' || @NameSubstring || '%'",
-                new {NameSubstring = nameSubstring}
+                new { NameSubstring = nameSubstring }
             ).ConfigureAwait(false);
         }
 
@@ -31,7 +30,7 @@ namespace Hurace.Core.Daos
                 SELECT * FROM race
                 ORDER BY date DESC
                 LIMIT @Count",
-                new {Count = count}
+                new { Count = count }
             ).ConfigureAwait(false);
         }
 

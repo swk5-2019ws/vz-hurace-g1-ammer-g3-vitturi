@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MvvmCross.Plugins.Messenger;
+﻿using MvvmCross.Plugins.Messenger;
 
 namespace Hurace.RaceControl.Helpers
 {
-    class DialogMessage: MvxMessage
+    class DialogMessage : MvxMessage
     {
         public DialogMessage(object sender, DialogEvent dialogEvent) : base(sender)
         {

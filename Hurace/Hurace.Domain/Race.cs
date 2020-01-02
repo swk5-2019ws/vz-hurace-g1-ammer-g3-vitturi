@@ -1,5 +1,5 @@
-﻿using System;
-using Hurace.Core.Mapper.Attributes;
+﻿using Hurace.Core.Mapper.Attributes;
+using System;
 
 namespace Hurace.Domain
 {
@@ -20,7 +20,7 @@ namespace Hurace.Domain
 
         [Column("race_type")]
         public RaceType RaceType { get; set; }
-        
+
         [Column("description")]
         public string Description { get; set; }
 
@@ -29,11 +29,12 @@ namespace Hurace.Domain
 
         private string _pictureUrl;
 
-        [Column("picture_url")] 
+        [Column("picture_url")]
         public string PictureUrl
         {
-            get => _pictureUrl; 
-            set {
+            get => _pictureUrl;
+            set
+            {
                 _pictureUrl = value.Length == 0 ? null : value;
             }
         }

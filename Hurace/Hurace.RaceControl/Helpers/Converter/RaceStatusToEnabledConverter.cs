@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI;
+﻿using Hurace.Domain;
+using System;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
-using Hurace.Domain;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    public class RaceStatusToEnabledConverter: IValueConverter
+    public class RaceStatusToEnabledConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MvvmCross;
-using MvvmCross.IoC;
-using MvvmCross.Plugins.Messenger;
+﻿using MvvmCross.Plugins.Messenger;
 
 namespace Hurace.RaceControl.Helpers.MvvmCross
 {
-    class DialogService: IDialogService
+    class DialogService : IDialogService
     {
         private IMvxMessenger _messenger;
 

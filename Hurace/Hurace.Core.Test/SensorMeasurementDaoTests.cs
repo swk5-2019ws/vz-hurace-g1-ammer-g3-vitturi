@@ -1,6 +1,5 @@
-using System;
 using Hurace.Core.Daos;
-using Hurace.Core.Interface;
+using Hurace.Core.Interface.Daos;
 using Hurace.Domain;
 using System.Threading.Tasks;
 using Xunit;

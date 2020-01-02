@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Hurace.Domain;
+﻿using Hurace.Domain;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugins.Messenger;
@@ -12,7 +6,7 @@ using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
 {
-    public class StartListEntryViewModel: MvxViewModel
+    public class StartListEntryViewModel : MvxViewModel
     {
         private int _startPosition;
         private Skier _skier;

@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using Hurace.Core.Interface;
-using Hurace.Core.Services;
+﻿using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System.Threading.Tasks;
 
 namespace Hurace.RaceControl.ViewModels
 {
@@ -13,11 +12,11 @@ namespace Hurace.RaceControl.ViewModels
         private const int SHOWN_RACES = 15;
         private readonly IMvxNavigationService _navigationService;
 
-        private readonly RaceService _raceService;
+        private readonly IRaceService _raceService;
 
         private string _raceSearchText;
 
-        public HomeViewModel(IMvxNavigationService navigationService, RaceService raceService)
+        public HomeViewModel(IMvxNavigationService navigationService, IRaceService raceService)
         {
             _navigationService = navigationService;
             _raceService = raceService;

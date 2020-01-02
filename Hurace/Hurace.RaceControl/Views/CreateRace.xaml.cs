@@ -1,19 +1,18 @@
-﻿using System;
+﻿using Hurace.Domain;
+using Hurace.RaceControl.Helpers;
+using Hurace.RaceControl.Helpers.MvvmCross;
+using Hurace.RaceControl.ViewModels;
+using MvvmCross;
+using MvvmCross.Platforms.Uap.Presenters.Attributes;
+using MvvmCross.Plugins.Messenger;
+using MvvmCross.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Devices.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Hurace.Domain;
-using Hurace.RaceControl.Helpers;
-using Hurace.RaceControl.Helpers.MvvmCross;
-using Hurace.RaceControl.ViewModels;
-using MvvmCross;
-using MvvmCross.IoC;
-using MvvmCross.Platforms.Uap.Presenters.Attributes;
-using MvvmCross.Plugins.Messenger;
-using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views
 {
@@ -64,7 +63,7 @@ namespace Hurace.RaceControl.Views
             if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
 
             var locations = ViewModel.Locations.Where(loc => loc.Name.Contains(sender.Text)).Select(loc => loc.Name).ToList();
-            sender.ItemsSource = locations.Count == 0 ? new List<string> {EmptyLocationMessage} : locations;
+            sender.ItemsSource = locations.Count == 0 ? new List<string> { EmptyLocationMessage } : locations;
         }
 
         private void LocationAutoSuggestBox_SuggestionChosen(AutoSuggestBox sender,
@@ -98,7 +97,8 @@ namespace Hurace.RaceControl.Views
                 var messenger = ViewModel.Messenger;
                 ViewModel.StartListEntries.Add(new StartListEntryViewModel(messenger)
                 {
-                    Skier = (Skier) args.ChosenSuggestion, StartPosition = ViewModel.StartListEntries.Count + 1,
+                    Skier = (Skier)args.ChosenSuggestion,
+                    StartPosition = ViewModel.StartListEntries.Count + 1,
                     RaceStatus = ViewModel.Status
                 });
             }

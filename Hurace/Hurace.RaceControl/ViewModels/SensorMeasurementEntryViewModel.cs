@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MvvmCross.ViewModels;
+﻿using MvvmCross.ViewModels;
+using System;
 
 namespace Hurace.RaceControl.ViewModels
 {
-    public class SensorMeasurementEntryViewModel: MvxViewModel
+    public class SensorMeasurementEntryViewModel : MvxViewModel
     {
         private TimeSpan _timeSpan;
 

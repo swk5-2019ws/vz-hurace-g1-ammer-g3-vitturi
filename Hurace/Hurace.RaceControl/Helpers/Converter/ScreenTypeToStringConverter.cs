@@ -10,7 +10,7 @@ namespace Hurace.RaceControl.Helpers.Converter
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (targetType == typeof(string))
-                switch ((ScreenType) value)
+                switch ((ScreenType)value)
                 {
                     case ScreenType.CurrentResult:
                         return "Show the current result";
@@ -23,7 +23,7 @@ namespace Hurace.RaceControl.Helpers.Converter
                 }
 
             if (targetType == typeof(ImageSource))
-                switch ((ScreenType) value)
+                switch ((ScreenType)value)
                 {
                     case ScreenType.CurrentResult:
                         return new BitmapImage(new Uri("ms-appx:///Assets/CurrentResult.png"));

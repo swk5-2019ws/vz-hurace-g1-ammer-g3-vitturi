@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Threading.Tasks;
-using Hurace.Core.Interface;
+﻿using Hurace.Core.Interface.Daos;
 using Hurace.Core.Mapper;
 using Hurace.Domain;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hurace.Core.Daos
 {

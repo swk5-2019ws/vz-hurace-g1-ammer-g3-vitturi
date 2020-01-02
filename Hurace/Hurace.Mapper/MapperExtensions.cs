@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
@@ -44,7 +43,7 @@ namespace Hurace.Core.Mapper
             var keyColumn = AttributeParser.GetColumnName(key);
             var sql = $"SELECT * FROM {tableName} WHERE {keyColumn} = @Id";
 
-            return (await connection.Query<TEntity>(sql, new {Id = id}).ConfigureAwait(false)).FirstOrDefault();
+            return (await connection.Query<TEntity>(sql, new { Id = id }).ConfigureAwait(false)).FirstOrDefault();
         }
 
         /// <summary>
@@ -153,7 +152,7 @@ namespace Hurace.Core.Mapper
             var keyColumn = AttributeParser.GetColumnName(key);
             var sql = $"DELETE FROM {tableName} WHERE {keyColumn} = @Id";
 
-            var deleted = await connection.Execute(sql, new {Id = id}).ConfigureAwait(false);
+            var deleted = await connection.Execute(sql, new { Id = id }).ConfigureAwait(false);
             return deleted > 0;
         }
 
@@ -181,7 +180,7 @@ namespace Hurace.Core.Mapper
             using var reader = await command.ExecuteReaderAsync().ConfigureAwait(false);
             while (reader.Read())
             {
-                var entity = (TEntity) Activator.CreateInstance(typeof(TEntity));
+                var entity = (TEntity)Activator.CreateInstance(typeof(TEntity));
                 var properties = AttributeParser.GetAllProperties(entity.GetType()).ToList();
                 foreach (var propertyInfo in properties)
                     if (AttributeParser.HasForeignKey(propertyInfo))
@@ -196,7 +195,7 @@ namespace Hurace.Core.Mapper
                     }
                     else if (propertyInfo.PropertyType.IsEnum)
                     {
-                        var parsedEnum = Enum.Parse(propertyInfo.PropertyType, (string) reader[AttributeParser.GetColumnName(propertyInfo)]);
+                        var parsedEnum = Enum.Parse(propertyInfo.PropertyType, (string)reader[AttributeParser.GetColumnName(propertyInfo)]);
                         propertyInfo.SetValue(entity, parsedEnum);
                     }
                     else if (!reader.IsDBNull(reader.GetOrdinal(AttributeParser.GetColumnName(propertyInfo))))

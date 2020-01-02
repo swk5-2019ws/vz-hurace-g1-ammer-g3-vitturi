@@ -1,11 +1,11 @@
-using System.Collections;
+using Hurace.Core.Interface.Services;
+using Hurace.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hurace.Domain;
 
 namespace Hurace.Core.Services
 {
-    public class SkierService : Service
+    public class SkierService : Service, ISkierService
     {
         public SkierService(DaoProvider daoProvider) : base(daoProvider)
         {

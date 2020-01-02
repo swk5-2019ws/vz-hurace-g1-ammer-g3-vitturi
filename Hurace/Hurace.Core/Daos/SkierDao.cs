@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Hurace.Core.Interface.Daos;
+using Hurace.Core.Mapper;
+using Hurace.Domain;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Hurace.Core.Interface;
-using Hurace.Core.Mapper;
-using Hurace.Domain;
 
 #nullable enable
 namespace Hurace.Core.Daos
@@ -47,11 +46,11 @@ namespace Hurace.Core.Daos
             }
 
             return await connection.Query<Skier>(query.ToString(), new
-                {
-                    NameSubstring = nameSubstring,
-                    CountryId = country?.Id,
-                    Gender = gender,
-                }
+            {
+                NameSubstring = nameSubstring,
+                CountryId = country?.Id,
+                Gender = gender,
+            }
             ).ConfigureAwait(false);
         }
     }

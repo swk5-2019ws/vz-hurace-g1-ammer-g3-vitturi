@@ -1,5 +1,5 @@
-﻿using System;
-using Hurace.Timer;
+﻿using Hurace.Timer;
+using System;
 
 namespace Hurace.Simulator
 {

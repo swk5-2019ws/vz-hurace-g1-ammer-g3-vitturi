@@ -1,12 +1,12 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Hurace.Core.Interface;
+using Hurace.Core.Interface.Daos;
 using Hurace.Core.Services;
 using Hurace.Domain;
 using Hurace.Simulator;
 using Hurace.Timer;
 using Moq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Hurace.Core.Test
@@ -20,7 +20,7 @@ namespace Hurace.Core.Test
             var runDaoMock = new Mock<IRunDao>();
             runDaoMock.Setup(d => d.GetBySkierAndRace(It.IsAny<Race>(), It.IsAny<int>(), It.IsAny<Skier>()))
                 .Returns(Task.FromResult(
-                    new Run {Status = RunStatus.Ready})
+                    new Run { Status = RunStatus.Ready })
                 );
 
             var daoProvider = DaoProviderHelper.GetPartialDaoProvider(runDao: runDaoMock.Object);
@@ -40,12 +40,12 @@ namespace Hurace.Core.Test
         public async void TestInterimTimesCalculation()
         {
             // Setup
-            var timestamps = new[] {1576850000.000, 1576850001.111, 1576850002.222};
+            var timestamps = new[] { 1576850000.000, 1576850001.111, 1576850002.222 };
 
             var sensorMeasurementDaoMock = new Mock<ISensorMeasurementDao>();
             sensorMeasurementDaoMock.Setup(d => d.GetMeasurementsForRun(It.IsAny<Run>()))
                 .Returns(Task.FromResult(
-                    timestamps.Select(t => new SensorMeasurement {Timestamp = t})
+                    timestamps.Select(t => new SensorMeasurement { Timestamp = t })
                 ));
 
             var runDaoMock = new Mock<IRunDao>();
@@ -71,12 +71,12 @@ namespace Hurace.Core.Test
         public async void TestLeaderBoardCalculation()
         {
             // Setup
-            var totalTimes = new[] {2.2, 1.1, 3.3, 0.0, 0.0};
+            var totalTimes = new[] { 2.2, 1.1, 3.3, 0.0, 0.0 };
 
             var runDaoMock = new Mock<IRunDao>();
             runDaoMock.Setup(d => d.GetAllRunsForRace(It.IsAny<Race>(), It.IsAny<int>()))
                 .Returns(Task.FromResult(
-                    totalTimes.Select(t => new Run {TotalTime = t})
+                    totalTimes.Select(t => new Run { TotalTime = t })
                 ));
 
             var daoProvider = DaoProviderHelper.GetPartialDaoProvider(runDao: runDaoMock.Object);
@@ -96,7 +96,7 @@ namespace Hurace.Core.Test
 
         private static RunService GetRunServiceForSensorImpulseHandlingTest(IRaceClock raceClock)
         {
-            var existingMeasurementsTimestamps = new[] {1576850000.000, 1576850001.111, 1576850002.222};
+            var existingMeasurementsTimestamps = new[] { 1576850000.000, 1576850001.111, 1576850002.222 };
 
             var sensorMeasurementDaoMock = new Mock<ISensorMeasurementDao>();
             sensorMeasurementDaoMock.Setup(d => d.GetMeasurementsForRun(It.IsAny<Run>()))
@@ -113,7 +113,7 @@ namespace Hurace.Core.Test
                 .Returns(Task.FromResult(
                     new Run
                     {
-                        Race = new Race {NumberOfSensors = existingMeasurementsTimestamps.Length + 1}
+                        Race = new Race { NumberOfSensors = existingMeasurementsTimestamps.Length + 1 }
                     }
                 ));
 

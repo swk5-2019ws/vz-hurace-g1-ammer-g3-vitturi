@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Hurace.Core.Mapper.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using Hurace.Core.Mapper.Attributes;
 
 namespace Hurace.Core.Mapper
 {
@@ -17,7 +17,7 @@ namespace Hurace.Core.Mapper
         internal static string GetTableName(Type type)
         {
             var tableName = nameof(type);
-            var tableAttributes = (TableAttribute[]) type.GetCustomAttributes(typeof(TableAttribute), false);
+            var tableAttributes = (TableAttribute[])type.GetCustomAttributes(typeof(TableAttribute), false);
 
             if (tableAttributes.Length > 0) tableName = tableAttributes[0].Name;
 
@@ -65,7 +65,7 @@ namespace Hurace.Core.Mapper
             var keyAttributes = propertyInfo.GetCustomAttributesData()
                 .Where(attribute => attribute.AttributeType == typeof(KeyAttribute)).ToArray();
             if (keyAttributes.Length == 1)
-                isGenerated = (bool) keyAttributes[0].ConstructorArguments[0].Value;
+                isGenerated = (bool)keyAttributes[0].ConstructorArguments[0].Value;
 
             return isGenerated;
         }
@@ -93,12 +93,12 @@ namespace Hurace.Core.Mapper
             var columnAttributes = propertyInfo.GetCustomAttributesData()
                 .Where(attribute => attribute.AttributeType == typeof(ColumnAttribute)).ToArray();
             if (columnAttributes.Length == 1)
-                name = (string) columnAttributes[0].ConstructorArguments[0].Value;
+                name = (string)columnAttributes[0].ConstructorArguments[0].Value;
 
             var foreignKeyAttributes = propertyInfo.GetCustomAttributesData()
                 .Where(attribute => attribute.AttributeType == typeof(ForeignKeyAttribute)).ToArray();
             if (foreignKeyAttributes.Length == 1)
-                name = (string) foreignKeyAttributes[0].ConstructorArguments[0].Value;
+                name = (string)foreignKeyAttributes[0].ConstructorArguments[0].Value;
 
             return name;
         }

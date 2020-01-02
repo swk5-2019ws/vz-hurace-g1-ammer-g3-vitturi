@@ -1,6 +1,4 @@
-using System;
-using Hurace.Core.Daos;
-using Hurace.Core.Interface;
+using Hurace.Core.Interface.Daos;
 
 namespace Hurace.Core.Test
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using Hurace.Core.Services;
+﻿using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.Helpers.MvvmCross;
@@ -10,14 +6,18 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Hurace.RaceControl.ViewModels
 {
     public class CreateRaceViewModel : MvxViewModel<Race>
     {
-        private readonly LocationService _locationService;
+        private readonly ILocationService _locationService;
         private readonly IMvxNavigationService _navigationService;
-        private readonly SkierService _skierService;
+        private readonly ISkierService _skierService;
         private DateTimeOffset _date;
 
         private string _description;
@@ -32,10 +32,10 @@ namespace Hurace.RaceControl.ViewModels
 
         private string _pictureUrl;
         private Race _race;
-        private readonly RaceService _raceService;
+        private readonly IRaceService _raceService;
 
         private RaceType _raceType;
-        private readonly RunService _runService;
+        private readonly IRunService _runService;
 
         private Location _selectedLocation;
 
@@ -49,7 +49,7 @@ namespace Hurace.RaceControl.ViewModels
 
         public CreateRaceViewModel(IMvxNavigationService navigationService, IDialogService dialogService,
             IMvxMessenger messenger,
-            LocationService locationService, SkierService skierService, RaceService raceService, RunService runService)
+            ILocationService locationService, ISkierService skierService, IRaceService raceService, IRunService runService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -199,7 +199,10 @@ namespace Hurace.RaceControl.ViewModels
                 _isNewRace = true;
                 race = new Race
                 {
-                    Date = DateTime.Now, Gender = Gender.Male, RaceType = RaceType.Slalom, Status = RaceStatus.Ready,
+                    Date = DateTime.Now,
+                    Gender = Gender.Male,
+                    RaceType = RaceType.Slalom,
+                    Status = RaceStatus.Ready,
                     NumberOfSensors = 2
                 };
             }
@@ -252,7 +255,7 @@ namespace Hurace.RaceControl.ViewModels
             if (runs.Any())
             {
                 var startListEntries = runs.Select(entry =>
-                    new StartListEntryViewModel(Messenger) { Skier = entry.Skier, StartPosition = entry.StartPosition, RaceStatus = Status});
+                    new StartListEntryViewModel(Messenger) { Skier = entry.Skier, StartPosition = entry.StartPosition, RaceStatus = Status });
                 StartListEntries.SwitchTo(startListEntries);
             }
             Locations.SwitchTo(locations);

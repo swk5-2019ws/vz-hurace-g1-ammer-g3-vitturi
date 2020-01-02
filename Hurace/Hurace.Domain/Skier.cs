@@ -1,5 +1,5 @@
-﻿using System;
-using Hurace.Core.Mapper.Attributes;
+﻿using Hurace.Core.Mapper.Attributes;
+using System;
 
 namespace Hurace.Domain
 {

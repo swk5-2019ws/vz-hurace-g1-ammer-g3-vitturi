@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Hurace.Core.Services;
+﻿using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System.Linq;
 
 namespace Hurace.RaceControl.ViewModels
 {
@@ -11,13 +11,13 @@ namespace Hurace.RaceControl.ViewModels
     {
         private string _name;
         private int _displayRunNumber;
-        private RunService _runService;
-        private RaceService _raceService;
+        private IRunService _runService;
+        private IRaceService _raceService;
         private IMvxNavigationService _navigationService;
 
         private Race Race { get; set; }
 
-        public ControlRaceViewModel(IMvxNavigationService navigationService, RunService runService, RaceService raceService)
+        public ControlRaceViewModel(IMvxNavigationService navigationService, IRunService runService, IRaceService raceService)
         {
             _navigationService = navigationService;
             _runService = runService;

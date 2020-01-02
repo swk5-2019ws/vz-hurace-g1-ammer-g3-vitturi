@@ -1,5 +1,4 @@
 using System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace Hurace.RaceControl.Helpers.Converter
@@ -8,7 +7,7 @@ namespace Hurace.RaceControl.Helpers.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string name = (string) value;
+            string name = (string)value;
             return $"{name.ToUpper()[0]}.";
         }
 

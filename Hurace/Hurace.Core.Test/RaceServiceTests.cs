@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hurace.Core.Interface;
+using Hurace.Core.Interface.Daos;
 using Hurace.Core.Services;
 using Hurace.Domain;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Hurace.Core.Test
@@ -18,7 +18,7 @@ namespace Hurace.Core.Test
             var raceDaoMock = new Mock<IRaceDao>();
             raceDaoMock.Setup(d => d.FindById(It.IsAny<int>()))
                 .Returns(Task.FromResult(
-                    new Race {Status = RaceStatus.Ready})
+                    new Race { Status = RaceStatus.Ready })
                 );
 
             var daoProvider = DaoProviderHelper.GetPartialDaoProvider(raceDao: raceDaoMock.Object);
@@ -28,10 +28,10 @@ namespace Hurace.Core.Test
             raceService.RaceStatusChanged += (race, status) => eventTriggered = true;
 
             // Execute and Assert
-            raceService.EditRace(new Race {Status = RaceStatus.Ready});
+            raceService.EditRace(new Race { Status = RaceStatus.Ready });
             Assert.False(eventTriggered);
 
-            raceService.EditRace(new Race {Status = RaceStatus.InProgress});
+            raceService.EditRace(new Race { Status = RaceStatus.InProgress });
             Assert.True(eventTriggered);
         }
 
@@ -39,7 +39,7 @@ namespace Hurace.Core.Test
         public void TestAutomaticStartListCreation()
         {
             // Setup
-            var skiers = new[] {new Skier(), new Skier(), new Skier()};
+            var skiers = new[] { new Skier(), new Skier(), new Skier() };
 
             var raceDaoMock = new Mock<IRaceDao>();
             var runDaoMock = new Mock<IRunDao>();
@@ -64,14 +64,14 @@ namespace Hurace.Core.Test
         public void TestAutomaticInvertedStartListCreation()
         {
             // Setup
-            var lastRunStatuses = new[] {RunStatus.Completed, RunStatus.Disqualified, RunStatus.Completed};
+            var lastRunStatuses = new[] { RunStatus.Completed, RunStatus.Disqualified, RunStatus.Completed };
             IEnumerable<Run> newRunsAdded = null;
 
             var raceDaoMock = new Mock<IRaceDao>();
             var runDaoMock = new Mock<IRunDao>();
             runDaoMock.Setup(d => d.GetAllRunsForRace(It.IsAny<Race>(), It.IsAny<int>()))
                 .Returns(Task.FromResult(
-                    lastRunStatuses.Select(s => new Run {Status = s})
+                    lastRunStatuses.Select(s => new Run { Status = s })
                 ));
             runDaoMock.Setup(d => d.InsertMany(It.IsAny<IEnumerable<Run>>()))
                 .Callback<IEnumerable<Run>>(runs =>
