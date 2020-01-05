@@ -1,0 +1,70 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: hurace
+  name: hurace-allow-backend-frontend
+spec:
+  podSelector:
+    matchLabels:
+      app: hurace
+      tier: backend
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: hurace
+          tier: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hurace-backend 
+  namespace: hurace
+spec:
+  selector:
+    app: hurace
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 1323
+    targetPort: 1323 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hurace-backend  
+  namespace: hurace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hurace
+      tier: backend 
+  template:
+    metadata:
+      labels:
+        app: hurace
+        tier: backend  
+    spec:
+      containers:
+      - name: hurace-backend 
+        image: ammerzon/hurace-backend:1.0.0
+        ports:
+        - containerPort: 1323 
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hurace-backend-ingress
+  namespace: hurace
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hurace-backend
+          servicePort: 1323
