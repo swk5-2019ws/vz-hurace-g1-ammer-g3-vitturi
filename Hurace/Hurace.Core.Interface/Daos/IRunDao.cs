@@ -10,5 +10,6 @@ namespace Hurace.Core.Interface.Daos
         Task<IEnumerable<Run>> GetAllRunsForRace(Race race, int runNumber);
         Task DeleteAllRunsForRace(Race race, int runNumber);
         Task<Run> GetCurrentRun();
+        Task<int> GetAmountOfRuns();
     }
 }

@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
+using System.Reflection;
 
 namespace Hurace.Core
 {
@@ -51,7 +52,8 @@ namespace Hurace.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Script does not contain user input")]
         private static void InitializeDatabase(DbConnection connection)
         {
-            string script = File.ReadAllText("./Scripts/create_tables.sql");
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Scripts/create_tables.sql");
+            string script = File.ReadAllText(path);
 
             using (DbCommand command = connection.CreateCommand())
             {

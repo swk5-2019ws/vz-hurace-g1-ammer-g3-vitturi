@@ -9,5 +9,7 @@ namespace Hurace.Core.Interface.Services
         Task ArchiveSkier(Skier skier);
 
         Task<IEnumerable<Skier>> GetSkiers(Gender gender, string? nameSubstring = null);
+        
+        Task<int> GetAmountOfSkiers();
     }
 }

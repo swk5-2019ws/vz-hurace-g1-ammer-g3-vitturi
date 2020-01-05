@@ -182,6 +182,10 @@ namespace Hurace.Core.Mapper
             {
                 var entity = (TEntity)Activator.CreateInstance(typeof(TEntity));
                 var properties = AttributeParser.GetAllProperties(entity.GetType()).ToList();
+                if (typeof(TEntity) == typeof(int))
+                {
+                    entity = (TEntity) Convert.ChangeType(reader[0], typeof(Int32), CultureInfo.InvariantCulture);
+                }
                 foreach (var propertyInfo in properties)
                     if (AttributeParser.HasForeignKey(propertyInfo))
                     {

@@ -44,5 +44,12 @@ namespace Hurace.Core.Daos
             ).ConfigureAwait(false);
             return currentRaces.Any() ? currentRaces.First() : null;
         }
+
+        public async Task<int> GetAmountOfRaces()
+        {
+            using var connection = ConnectionFactory.CreateConnection();
+            var amountOfRaces = await connection.Query<int>("SELECT COUNT(*) FROM race").ConfigureAwait(false);
+            return amountOfRaces.Any() ? amountOfRaces.First() : 0;
+        }
     }
 }

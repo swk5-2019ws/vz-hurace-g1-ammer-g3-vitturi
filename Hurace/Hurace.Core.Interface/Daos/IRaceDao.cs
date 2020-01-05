@@ -9,5 +9,6 @@ namespace Hurace.Core.Interface.Daos
         Task<IEnumerable<Race>> FindByName(string nameSubstring);
         Task<IEnumerable<Race>> GetLastRaces(int count);
         Task<Race> GetCurrentRace();
+        Task<int> GetAmountOfRaces();
     }
 }

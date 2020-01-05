@@ -9,5 +9,7 @@ namespace Hurace.Core.Interface.Daos
     {
         Task<IEnumerable<Skier>> FindByFilters(string? nameSubstring = null, Country? country = null,
             Gender? gender = null);
+
+        Task<int> GetAmountOfSkiers();
     }
 }

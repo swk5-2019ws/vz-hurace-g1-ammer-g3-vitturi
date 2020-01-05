@@ -127,5 +127,9 @@ namespace Hurace.Core.Services
 
             return runs;
         }
+
+        public async Task<int> GetAmountOfRuns()
+        {
+            return await DaoProvider.RunDao.GetAmountOfRuns().ConfigureAwait(false); }
     }
 }

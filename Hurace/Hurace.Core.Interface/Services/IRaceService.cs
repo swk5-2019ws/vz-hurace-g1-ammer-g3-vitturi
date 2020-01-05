@@ -7,7 +7,7 @@ namespace Hurace.Core.Interface.Services
     public delegate void RaceStatusChangedHandler(Race race, RaceStatus raceStatus);
     public interface IRaceService
     {
-        public event RaceStatusChangedHandler RaceStatusChanged;
+        event RaceStatusChangedHandler RaceStatusChanged;
 
         Task CreateRace(Race race, IList<Skier> skiers);
 
@@ -22,5 +22,7 @@ namespace Hurace.Core.Interface.Services
         Task EditStartList(Race race, int runNumber, IList<Skier> skiers);
 
         Task<IEnumerable<Race>> GetLastRaces(int shownRaces);
+        
+        Task<int> GetAmountOfRaces();
     }
 }

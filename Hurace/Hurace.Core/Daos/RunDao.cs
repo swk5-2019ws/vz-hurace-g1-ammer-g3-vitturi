@@ -66,5 +66,12 @@ namespace Hurace.Core.Daos
             ).ConfigureAwait(false);
             return currentRuns.First();
         }
+
+        public async Task<int> GetAmountOfRuns()
+        {
+            using var connection = ConnectionFactory.CreateConnection();
+            var amountOfRuns = await connection.Query<int>("SELECT COUNT(*) FROM run").ConfigureAwait(false);
+            return amountOfRuns.Any() ? amountOfRuns.First() : 0;
+        }
     }
 }

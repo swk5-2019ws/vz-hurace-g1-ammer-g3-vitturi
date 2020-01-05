@@ -2,6 +2,7 @@
 using Hurace.Core.Mapper;
 using Hurace.Domain;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,6 +53,13 @@ namespace Hurace.Core.Daos
                 Gender = gender,
             }
             ).ConfigureAwait(false);
+        }
+        
+        public async Task<int> GetAmountOfSkiers()
+        {
+            using var connection = ConnectionFactory.CreateConnection();
+            var amountOfSkiers = await connection.Query<int>("SELECT COUNT(*) FROM skier").ConfigureAwait(false);
+            return amountOfSkiers.Any() ? amountOfSkiers.First() : 0;
         }
     }
 }

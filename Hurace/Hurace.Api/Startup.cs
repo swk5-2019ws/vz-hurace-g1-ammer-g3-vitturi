@@ -5,6 +5,7 @@ using Hurace.Core;
 using Hurace.Core.Daos;
 using Hurace.Core.Interface.Services;
 using Hurace.Core.Services;
+using Hurace.Simulator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +46,9 @@ namespace Hurace.Api
 
             services.AddSingleton<IRaceService>(new RaceService(daoProvider));
             services.AddSingleton<ISkierService>(new SkierService(daoProvider));
+            services.AddSingleton<IRunService>(new RunService(daoProvider, new SimulatorRaceClock()));
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+                builder.WithOrigins("*").WithMethods("GET", "POST", "PUT", "DELETE").AllowAnyHeader()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,6 +59,8 @@ namespace Hurace.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseSwagger();
             

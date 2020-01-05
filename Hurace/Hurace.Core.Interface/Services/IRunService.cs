@@ -13,11 +13,11 @@ namespace Hurace.Core.Interface.Services
 
     public interface IRunService
     {
-        public event SensorMeasurementAddedHandler SensorMeasurementAdded;
+        event SensorMeasurementAddedHandler SensorMeasurementAdded;
 
-        public event RunStatusChangedHandler RunStatusChanged;
+        event RunStatusChangedHandler RunStatusChanged;
 
-        public event LeaderBoardUpdateHandler LeaderBoardUpdated;
+        event LeaderBoardUpdateHandler LeaderBoardUpdated;
 
         Task UpdateRunStatus(Race race, int runNumber, Skier skier, RunStatus status);
 
@@ -28,5 +28,7 @@ namespace Hurace.Core.Interface.Services
         Task<Run> GetCurrentRun();
 
         Task<IEnumerable<Run>> GetLeaderBoard(Race race, int runNumber);
+        
+        Task<int> GetAmountOfRuns();
     }
 }

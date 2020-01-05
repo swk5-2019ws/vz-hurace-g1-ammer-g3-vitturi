@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hurace.Core\Hurace.Core.csproj" />
+    <ProjectReference Include="..\Hurace.Simulator\Hurace.Simulator.csproj" />
   </ItemGroup>
 
 </Project>

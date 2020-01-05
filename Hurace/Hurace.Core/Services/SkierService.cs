@@ -21,5 +21,10 @@ namespace Hurace.Core.Services
         {
             return await DaoProvider.SkierDao.FindByFilters(gender: gender, nameSubstring: nameSubstring).ConfigureAwait(false);
         }
+        
+        public async Task<int> GetAmountOfSkiers()
+        {
+            return await DaoProvider.SkierDao.GetAmountOfSkiers().ConfigureAwait(false);
+        }
     }
 }
