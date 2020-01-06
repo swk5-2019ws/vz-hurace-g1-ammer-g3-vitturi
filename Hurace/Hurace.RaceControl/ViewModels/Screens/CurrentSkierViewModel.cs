@@ -45,10 +45,13 @@ namespace Hurace.RaceControl.ViewModels.Screens
             var times = await _runService.GetInterimTimes(_currentRace, currentRun.RunNumber, currentRun.Skier);
             SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel() { TimeSpan = timeSpan }));
             var runs = await _runService.GetLeaderBoard(_currentRace, currentRun.RunNumber);
-            var currentRunIndex = runs.Select((run, index) => new { run, index }).First(x => x.run.Skier.Id == currentRun.Skier.Id).index;
-            var leaderboardRuns = runs.Skip(currentRunIndex <= PreviousSkiers ? 0 : currentRunIndex - PreviousSkiers)
+            var currentRunIndex = runs.Select((run, index) => new { run, index }).FirstOrDefault(x => x.run.Skier.Id == currentRun.Skier.Id);
+            if(currentRunIndex != null)
+            {
+                var leaderboardRuns = runs.Skip(currentRunIndex.index <= PreviousSkiers ? 0 : currentRunIndex.index - PreviousSkiers)
                 .Take(LeaderboardShownSkiers);
-            Runs.SwitchTo(leaderboardRuns);
+                Runs.SwitchTo(leaderboardRuns);
+            }
         }
 
         public string PictureUrl

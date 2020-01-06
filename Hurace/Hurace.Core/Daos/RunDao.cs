@@ -28,7 +28,7 @@ namespace Hurace.Core.Daos
                     RunNumber = runNumber
                 }
             ).ConfigureAwait(false);
-            return matchingRuns.First();
+            return matchingRuns.FirstOrDefault();
         }
 
         public async Task<IEnumerable<Run>> GetAllRunsForRace(Race race, int runNumber)
