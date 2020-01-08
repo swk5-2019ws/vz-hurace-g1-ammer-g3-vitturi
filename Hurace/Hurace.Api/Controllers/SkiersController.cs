@@ -13,12 +13,12 @@ namespace Hurace.Api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class SkierController : ControllerBase
+    public class SkiersController : ControllerBase
     {
-        private readonly ILogger<SkierController> _logger;
+        private readonly ILogger<SkiersController> _logger;
         private readonly ISkierService _skierService;
 
-        public SkierController(ILogger<SkierController> logger, ISkierService skierService)
+        public SkiersController(ILogger<SkiersController> logger, ISkierService skierService)
         {
             _logger = logger;
             _skierService = skierService;
