@@ -12,7 +12,7 @@ namespace Hurace.Api.Controllers
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class SkiersController : ControllerBase
     {
         private readonly ILogger<SkiersController> _logger;
