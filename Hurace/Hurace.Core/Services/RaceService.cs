@@ -95,5 +95,10 @@ namespace Hurace.Core.Services
         {
             return await DaoProvider.RaceDao.GetAmountOfRaces().ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<Race>> GetRaces()
+        {
+            return await DaoProvider.RaceDao.FindAll().ConfigureAwait(false);
+        }
     }
 }

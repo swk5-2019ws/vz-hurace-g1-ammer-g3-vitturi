@@ -48,6 +48,7 @@ namespace Hurace.Api
 
             services.AddSingleton<IRaceService>(new RaceService(daoProvider));
             services.AddSingleton<ISkierService>(new SkierService(daoProvider));
+            services.AddSingleton<ILocationService>(new LocationService(daoProvider));
             services.AddSingleton<IRunService>(new RunService(daoProvider, new SimulatorRaceClock()));
             services.AddCors(options => options.AddDefaultPolicy(builder =>
                 builder.WithOrigins("*").WithMethods("GET", "POST", "PUT", "DELETE").AllowAnyHeader()));

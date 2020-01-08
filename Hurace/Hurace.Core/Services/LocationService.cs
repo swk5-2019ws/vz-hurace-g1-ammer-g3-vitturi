@@ -15,5 +15,10 @@ namespace Hurace.Core.Services
         {
             return await DaoProvider.LocationDao.FindAll().ConfigureAwait(false);
         }
+
+        public async Task<Location> GetLocation(int id)
+        {
+            return await DaoProvider.LocationDao.FindById(id).ConfigureAwait(false);
+        }
     }
 }

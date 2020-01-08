@@ -1,4 +1,5 @@
-﻿using Hurace.Domain;
+﻿using System.Collections;
+using Hurace.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,5 +25,7 @@ namespace Hurace.Core.Interface.Services
         Task<IEnumerable<Race>> GetLastRaces(int shownRaces);
         
         Task<int> GetAmountOfRaces();
+        
+        Task<IEnumerable<Race>> GetRaces();
     }
 }
