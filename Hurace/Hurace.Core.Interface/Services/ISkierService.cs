@@ -8,8 +8,16 @@ namespace Hurace.Core.Interface.Services
     {
         Task ArchiveSkier(Skier skier);
 
-        Task<IEnumerable<Skier>> GetSkiers(Gender gender, string? nameSubstring = null);
+        Task<IEnumerable<Skier>> GetSkiers(Gender? gender, string? nameSubstring = null);
         
         Task<int> GetAmountOfSkiers();
+        
+        Task<Skier> GetSkier(int id);
+        
+        Task<Skier> CreateSkier(Skier skier);
+        
+        Task<bool> RemoveSkier(int id);
+        
+        Task<bool> UpdateSkier(Skier skier);
     }
 }

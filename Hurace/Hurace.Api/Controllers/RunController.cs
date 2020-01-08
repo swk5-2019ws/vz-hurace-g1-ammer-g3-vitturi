@@ -8,7 +8,7 @@ namespace Hurace.Api.Controllers
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RunController : ControllerBase
     {
         private readonly ILogger<RunController> _logger;

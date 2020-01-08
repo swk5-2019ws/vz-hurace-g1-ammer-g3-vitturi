@@ -1,10 +1,14 @@
 using System;
 using System.IO;
 using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Hurace.Api.Helper;
 using Hurace.Core;
 using Hurace.Core.Daos;
 using Hurace.Core.Interface.Services;
 using Hurace.Core.Services;
+using Hurace.Domain;
 using Hurace.Simulator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,9 +30,10 @@ namespace Hurace.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hurace API", Version = "v1" }));
             
+            services.AddTransient<IValidator<Skier>, SkierValidator>();
             AddHuraceServices(services);
         }
 
