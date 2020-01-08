@@ -30,30 +30,27 @@ namespace Hurace.Api.Controllers
             Gender? genderObject = null;
             switch (gender)
             {
-                case "male": 
+                case "male":
                     genderObject = Gender.Male;
                     break;
-                case "female": 
+                case "female":
                     genderObject = Gender.Female;
                     break;
             }
-            
+
             return await _skierService.GetSkiers(genderObject, name);
         }
-        
+
         [HttpGet("{id}", Name = "GetById")]
         public async Task<ActionResult<Skier>> GetById(int id)
         {
             var skier = await _skierService.GetSkier(id);
-            
-            if (skier == null)
-            {
-                return NotFound();
-            }
+
+            if (skier == null) return NotFound();
 
             return skier;
         }
-        
+
         [HttpGet("metadata")]
         public async Task<Metadata> GetSkierMetadata()
         {
@@ -64,41 +61,34 @@ namespace Hurace.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Skier>> Create([CustomizeValidator(RuleSet="CreateSkierValidation")] Skier skier)
+        public async Task<ActionResult<Skier>> Create([CustomizeValidator(RuleSet = "CreateSkierValidation")]
+            Skier skier)
         {
             var insertedSkier = await _skierService.CreateSkier(skier);
-            return CreatedAtRoute("GetById", new { id = insertedSkier.Id }, insertedSkier);
+            return CreatedAtRoute("GetById", new {id = insertedSkier.Id}, insertedSkier);
         }
-        
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [CustomizeValidator(RuleSet="*")][FromBody] Skier item)
+        public async Task<IActionResult> Update(int id, [CustomizeValidator(RuleSet = "*")] [FromBody]
+            Skier item)
         {
-            if (item == null || item.Id != id)
-            {
-                return BadRequest();
-            }
+            if (item == null || item.Id != id) return BadRequest();
 
             var skier = await _skierService.GetSkier(id);
 
-            if (skier == null)
-            {
-                return NotFound();
-            }
+            if (skier == null) return NotFound();
 
             await _skierService.UpdateSkier(item);
-            
+
             return NoContent();
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var skier = await _skierService.GetSkier(id);
 
-            if (skier == null)
-            {
-                return NotFound();
-            }
+            if (skier == null) return NotFound();
 
             await _skierService.RemoveSkier(skier.Id);
             return NoContent();

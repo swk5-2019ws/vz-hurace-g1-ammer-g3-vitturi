@@ -1,4 +1,6 @@
-﻿using Hurace.Domain;
+﻿using System;
+using System.Collections;
+using Hurace.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,5 +13,6 @@ namespace Hurace.Core.Interface.Daos
         Task DeleteAllRunsForRace(Race race, int runNumber);
         Task<Run> GetCurrentRun();
         Task<int> GetAmountOfRuns();
+        Task<IEnumerable<Run>> GetAllRunsForSkier(Skier skier);
     }
 }

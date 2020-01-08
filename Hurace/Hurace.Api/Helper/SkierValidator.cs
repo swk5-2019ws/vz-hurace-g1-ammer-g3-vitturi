@@ -10,9 +10,9 @@ namespace Hurace.Api.Helper
         {
             RuleSet("UpdateSkierValidation", () =>
             {
-            RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.Id).GreaterThan(0);
-            RuleFor(x => x.Archived).Equals(false);
+                RuleFor(x => x.Id).NotNull();
+                RuleFor(x => x.Id).GreaterThan(0);
+                RuleFor(x => x.Archived).Equals(false);
             });
 
             RuleSet("CreateSkierValidation", () =>

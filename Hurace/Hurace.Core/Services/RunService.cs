@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hurace.Core.Helper;
 
 namespace Hurace.Core.Services
 {
@@ -135,5 +136,25 @@ namespace Hurace.Core.Services
         public async Task<int> GetAmountOfRuns()
         {
             return await DaoProvider.RunDao.GetAmountOfRuns().ConfigureAwait(false); }
+
+        public async Task<Run> GetRun(int id)
+        {
+            return await DaoProvider.RunDao.FindById(id).ConfigureAwait(false);;
+        }
+
+        public async Task<IEnumerable<Run>> GetRunsForSkierInSeasons(int skierId, uint season)
+        {
+            var skier = await DaoProvider.SkierDao.FindById(skierId).ConfigureAwait(false);;
+
+            if (skier == null)
+            {
+                return null;
+            }
+            
+            var runs = await DaoProvider.RunDao.GetAllRunsForSkier(skier).ConfigureAwait(false);;
+            var seasonsStart = SeasonParser.GetSeasonsStart(season);
+            var seasonsEnd = SeasonParser.GetSeasonsEnd(season);
+            return runs.Where(run => run.Race.Date >= seasonsStart && run.Race.Date <= seasonsEnd);
+        }
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hurace.Api.Helper;
@@ -31,8 +28,8 @@ namespace Hurace.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddFluentValidation();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hurace API", Version = "v1" }));
-            
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo {Title = "Hurace API", Version = "v1"}));
+
             services.AddTransient<IValidator<Skier>, SkierValidator>();
             AddHuraceServices(services);
         }
@@ -58,31 +55,25 @@ namespace Hurace.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
             app.UseCors();
 
             app.UseSwagger();
-            
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hurace v1");
                 c.RoutePrefix = string.Empty;
             });
-            
+
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

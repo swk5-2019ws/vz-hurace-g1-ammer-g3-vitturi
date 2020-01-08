@@ -30,5 +30,9 @@ namespace Hurace.Core.Interface.Services
         Task<IEnumerable<Run>> GetLeaderBoard(Race race, int runNumber);
         
         Task<int> GetAmountOfRuns();
+        
+        Task<Run> GetRun(int id);
+        
+        Task<IEnumerable<Run>> GetRunsForSkierInSeasons(int skierId, uint season);
     }
 }

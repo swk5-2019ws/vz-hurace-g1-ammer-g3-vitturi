@@ -1,4 +1,5 @@
-﻿using Hurace.Core.Interface.Daos;
+﻿using System;
+using Hurace.Core.Interface.Daos;
 using Hurace.Core.Mapper;
 using Hurace.Domain;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace Hurace.Core.Daos
                 WHERE status = @Status",
                 new { Status = RunStatus.InProgress }
             ).ConfigureAwait(false);
-            return currentRuns.First();
+            return currentRuns.FirstOrDefault();
         }
 
         public async Task<int> GetAmountOfRuns()
@@ -72,6 +73,16 @@ namespace Hurace.Core.Daos
             using var connection = ConnectionFactory.CreateConnection();
             var amountOfRuns = await connection.Query<int>("SELECT COUNT(*) FROM run").ConfigureAwait(false);
             return amountOfRuns.Any() ? amountOfRuns.First() : 0;
+        }
+
+        public async Task<IEnumerable<Run>> GetAllRunsForSkier(Skier skier)
+        {
+            using var connection = ConnectionFactory.CreateConnection();
+            return await connection.Query<Run>(@"
+                SELECT * FROM run
+                WHERE skier_id = @SkierId",
+                new { SkierId = skier.Id }
+            ).ConfigureAwait(false);
         }
     }
 }
