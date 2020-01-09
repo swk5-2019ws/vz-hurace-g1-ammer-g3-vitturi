@@ -50,8 +50,8 @@ namespace Hurace.Api
             services.AddSingleton<ISkierService>(new SkierService(daoProvider));
             services.AddSingleton<ILocationService>(new LocationService(daoProvider));
             services.AddSingleton<IRunService>(new RunService(daoProvider, new SimulatorRaceClock()));
-            services.AddCors(options => options.AddDefaultPolicy(builder =>
-                builder.WithOrigins("*").WithMethods("GET", "POST", "PUT", "DELETE").AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("CORS", builder =>
+                builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,7 +60,7 @@ namespace Hurace.Api
 
             app.UseHttpsRedirection();
 
-            app.UseCors();
+            app.UseCors("CORS");
 
             app.UseSwagger();
 
