@@ -13,36 +13,35 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0">
+            <CheckBox Content="Automatically send impulses"
+                      IsChecked="{x:Bind ViewModel.AutomaticallySend, Mode=TwoWay}"/>
+
+            <TextBlock Text="Seconds between impulses"/>
+            <TextBox Text="{x:Bind ViewModel.SendInterval, Mode=TwoWay}"
+                     IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
+        </StackPanel>
         
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
-                   Margin="5"
-                   Text="Sensor number"/>
-
-        <TextBox Grid.Row="0"
+        <StackPanel Grid.Row="1"
+                    Margin="0,20,0,0">
+            <TextBlock Text="Sensor number"/>
+            <TextBox Grid.Row="0"
                  Grid.Column="1"
-                 Text="{x:Bind ViewModel.SensorNumber, Mode=TwoWay}"/>
-        
-        <TextBlock Grid.Row="1"
-                   Grid.Column="0"
-                   Margin="5"
-                   Text="Number of sensors"/>
+                 Text="{x:Bind ViewModel.SensorNumber, Mode=TwoWay}"
+                 IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
 
-        <TextBox Grid.Row="1"
+            <TextBlock Text="Number of sensors"/>
+            <TextBox Grid.Row="1"
                  Grid.Column="1"
-                 Text="{x:Bind ViewModel.SensorCount, Mode=TwoWay}"/>
+                 Text="{x:Bind ViewModel.SensorCount, Mode=TwoWay}"
+                 IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
 
-        <Button Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
+            <Button Margin="0,5,5,0"
                 Content="Send Impulse"
-                Command="{x:Bind ViewModel.SendTimerImpulseCommand}"/>
+                Command="{x:Bind ViewModel.SendTimerImpulseCommand}"
+                IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
+        </StackPanel>
     </Grid>
 </local:SimulatorAbstract>
