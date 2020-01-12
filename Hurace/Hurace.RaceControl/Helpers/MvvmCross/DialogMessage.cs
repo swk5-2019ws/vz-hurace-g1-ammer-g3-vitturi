@@ -1,6 +1,6 @@
 ﻿using MvvmCross.Plugins.Messenger;
 
-namespace Hurace.RaceControl.Helpers
+namespace Hurace.RaceControl.Helpers.MvvmCross
 {
     class DialogMessage : MvxMessage
     {
@@ -14,6 +14,7 @@ namespace Hurace.RaceControl.Helpers
 
     public enum DialogEvent
     {
-        RaceEditSuccess
+        RaceEditSuccess,
+        NoRaceInProgress
     }
 }
