@@ -9,15 +9,16 @@
     xmlns:domain="using:Hurace.Domain"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:converter="using:Hurace.RaceControl.Helpers.Converter"
+    xmlns:viewModels="using:Hurace.RaceControl.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
         <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter" />
         <converter:RunStatusToColorConverter x:Key="RunStatusToColorConverter" />
 
-        <DataTemplate x:Key="RunViewTemplate" x:DataType="domain:Run">
+        <DataTemplate x:Key="RunViewTemplate" x:DataType="viewModels:RunEntryViewModel">
             <UserControl PointerEntered="Run_PointerEntered" PointerExited="RunEntry_PointerExited">
-                <Grid Background="{x:Bind Status, Converter={StaticResource RunStatusToColorConverter}}">
+                <Grid Background="{x:Bind Run.Status, Converter={StaticResource RunStatusToColorConverter}}" Margin="0,5,0,5" CornerRadius="10">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="HoveringStates">
                             <VisualState x:Name="HoverButtonsHidden" />
@@ -30,10 +31,10 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <SwipeControl x:Name="ListViewSwipeContainer">
+                    <SwipeControl x:Name="ListViewSwipeContainer" IsEnabled="{x:Bind CanDisqualify}">
                         <SwipeControl.RightItems>
                             <SwipeItems Mode="Execute">
-                                <SwipeItem Background="Red" CommandParameter="{x:Bind Skier}" />
+                                <SwipeItem Background="Red" Command="{x:Bind DisqualifySkierCommand}" />
                             </SwipeItems>
                         </SwipeControl.RightItems>
                         <Grid>
@@ -48,26 +49,25 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" FontWeight="Bold"
-                                       Text="{x:Bind StartPosition}" />
+                                       Text="{x:Bind Run.StartPosition}" Margin="10,0,0,0" />
                             <controls:ImageEx x:Name="PersonPicture" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
                                               Stretch="UniformToFill" Width="32"
                                               Height="32" Margin="40,6,0,6" VerticalAlignment="Center"
                                               HorizontalAlignment="Left"
                                               PlaceholderStretch="UniformToFill" IsCacheEnabled="True"
                                               PlaceholderSource="/Assets/SkierProfilePicturePlaceholder.jpg"
-                                              Source="{x:Bind Skier.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
+                                              Source="{x:Bind Run.Skier.PictureUrl, TargetNullValue=/Assets/SkierProfilePicturePlaceholder.jpg}"
                                               CornerRadius="18" />
                             <TextBlock Grid.Column="2" Grid.Row="0" Style="{ThemeResource BaseTextBlockStyle}"
                                        Margin="30,5,0,0" HorizontalAlignment="Left">
-                                <Run Text="{x:Bind Skier.FirstName}" />
-                                <Run Text="{x:Bind Skier.LastName}" />
+                                <Run Text="{x:Bind Run.Skier.FirstName}" />
+                                <Run Text="{x:Bind Run.Skier.LastName}" />
                             </TextBlock>
                             <Image Grid.Column="2" Grid.Row="1" x:Phase="2" Stretch="Fill"
                                    Height="10" Width="15" HorizontalAlignment="Left" Margin="30,0,0,0"
-                                   Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
-                            <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton" Label="Disqualify"
-                                          IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
-                                          CommandParameter="{x:Bind Skier}">
+                                   Source="{x:Bind Run.Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                            <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton" Label="Disqualify" IsEnabled="{x:Bind CanDisqualify}"
+                                          IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed" Command="{x:Bind DisqualifySkierCommand}">
                                 <AppBarButton.Icon>
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDAE;" />
                                 </AppBarButton.Icon>
@@ -82,7 +82,7 @@
     <Grid Margin="40,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

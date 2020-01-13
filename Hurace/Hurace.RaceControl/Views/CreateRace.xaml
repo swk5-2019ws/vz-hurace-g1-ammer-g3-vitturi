@@ -204,15 +204,15 @@
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Header="Name:" PlaceholderText="Name"
                              Text="{x:Bind ViewModel.Name, Mode=TwoWay}" />
-                    <CalendarDatePicker HorizontalAlignment="Stretch" Grid.Row="1" Header="Race date:"
+                    <CalendarDatePicker HorizontalAlignment="Stretch" Grid.Row="1" Header="Race date:" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                                         PlaceholderText="Choose your race date"
                                         DateFormat="{}{dayofweek.full}‎, ‎{month.full}‎ ‎{day.integer}‎, ‎{year.full}"
                                         Date="{x:Bind ViewModel.Date, Mode=TwoWay}" />
                     <AutoSuggestBox x:Name="LocationSuggestBox" Grid.Row="2" TextChanged="LocationAutoSuggestBox_TextChanged"
-                                    QuerySubmitted="LocationAutoSuggestBox_QuerySubmitted"
+                                    QuerySubmitted="LocationAutoSuggestBox_QuerySubmitted" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                                     SuggestionChosen="LocationAutoSuggestBox_SuggestionChosen"
                                     PlaceholderText="Type a location name" Header="Location:" />
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.RaceTypes}"
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.RaceTypes}" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                               SelectedItem="{x:Bind ViewModel.RaceType, Mode=TwoWay}" PlaceholderText="Pick a race type"
                               Grid.Row="3" Header="Race type:">
                         <ComboBox.ItemTemplate>
@@ -221,11 +221,11 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Genders}"
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Genders}" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                               SelectedItem="{x:Bind ViewModel.Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
                               Grid.Row="4" Header="Gender:" />
                     <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5"
-                             extensions:TextBoxRegex.ValidationType="Number"
+                             extensions:TextBoxRegex.ValidationType="Number" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                              extensions:TextBoxRegex.ValidationMode="Dynamic"
                              Text="{x:Bind ViewModel.NumberOfSensors, Mode=TwoWay}" />
                     <TextBlock Grid.Row="6" Text="Additional information"

@@ -136,12 +136,14 @@
     <Compile Include="Helpers\Converter\ScreenTypeToStringConverter.cs" />
     <Compile Include="Helpers\MvvmCross\CustomMvxWindowsViewPresenter.cs" />
     <Compile Include="Helpers\MvvmCross\DialogService.cs" />
+    <Compile Include="Helpers\MvvmCross\DisqualifySkierMessage.cs" />
     <Compile Include="Helpers\MvvmCross\IDialogService.cs" />
     <Compile Include="Helpers\MvvmCross\MvxWindowPresentationAttribute.cs" />
     <Compile Include="Helpers\MvvmCross\StartListUpdateMessage.cs" />
     <Compile Include="Helpers\RaceValidator.cs" />
     <Compile Include="Helpers\ScreenType.cs" />
     <Compile Include="ViewModels\CreateRaceViewModel.cs" />
+    <Compile Include="ViewModels\RunEntryViewModel.cs" />
     <Compile Include="ViewModels\ScreenSelectionViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentResultViewModel.cs" />
     <Compile Include="ViewModels\Screens\CurrentSkierViewModel.cs" />

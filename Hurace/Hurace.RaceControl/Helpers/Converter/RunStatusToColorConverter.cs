@@ -15,7 +15,7 @@ namespace Hurace.RaceControl.Helpers.Converter
                 case RunStatus.Disqualified:
                 case RunStatus.NotStarted:
                 case RunStatus.Unfinished:
-                    return new SolidColorBrush(Color.FromArgb(255, 52, 152, 219));
+                    return new SolidColorBrush(Color.FromArgb(200, 255, 40, 37));
                 default:
                     return new SolidColorBrush(Colors.White);
             }

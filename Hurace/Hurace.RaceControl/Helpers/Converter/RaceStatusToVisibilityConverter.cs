@@ -13,6 +13,15 @@ namespace Hurace.RaceControl.Helpers.Converter
             switch ((RaceStatus)value)
             {
                 case RaceStatus.Finished:
+                    switch (element)
+                    {
+                        case "SkierAutoSuggestBox":
+                        case "StartButton":
+                        case "ControlButton":
+                            return Visibility.Collapsed;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(value));
+                    }
                 case RaceStatus.InProgress:
                     switch (element)
                     {

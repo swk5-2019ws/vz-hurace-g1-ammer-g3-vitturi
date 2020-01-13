@@ -46,6 +46,7 @@ namespace Hurace.RaceControl.ViewModels
 
         private string _website;
         private readonly RaceValidator raceValidator = new RaceValidator();
+        private bool _raceIsNotFinished;
 
         public CreateRaceViewModel(IMvxNavigationService navigationService, IDialogService dialogService,
             IMvxMessenger messenger,
@@ -182,6 +183,12 @@ namespace Hurace.RaceControl.ViewModels
             });
         }
 
+        public bool RaceIsNotFinished
+        {
+            get => _raceIsNotFinished;
+            set => SetProperty(ref _raceIsNotFinished, value);
+        }
+
         public IEnumerable<RaceType> RaceTypes => Enum.GetValues(typeof(RaceType)).Cast<RaceType>();
 
         public IEnumerable<Gender> Genders => Enum.GetValues(typeof(Gender)).Cast<Gender>();
@@ -213,8 +220,8 @@ namespace Hurace.RaceControl.ViewModels
                 if (race.Status == RaceStatus.Ready)
                 {
                     race.Status = RaceStatus.InProgress;
+                    SaveRaceCommand.Execute();
                 }
-                await _raceService.EditRace(race);
                 await _navigationService.Navigate<ControlRaceViewModel, Race>(_race);
             }, () => StartListEntries.Count > 2);
 
@@ -249,6 +256,7 @@ namespace Hurace.RaceControl.ViewModels
             PictureUrl = _race.PictureUrl;
             SelectedLocation = _race.Location;
             Status = _race.Status;
+            RaceIsNotFinished = _race.Status != RaceStatus.Finished;
 
             var locations = await _locationService.GetLocations();
             var runs = (await _runService.GetAllRunsForRace(race, 1));
