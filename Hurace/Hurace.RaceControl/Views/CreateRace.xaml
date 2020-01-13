@@ -119,12 +119,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <controls:InAppNotification x:Name="DialogEventNotification"
-                                    ShowDismissButton="True"
-                                    VerticalOffset="100"
-                                    HorizontalOffset="0"
-                                    Canvas.ZIndex="1000" Grid.Row="1" VerticalAlignment="Bottom"/>
-
         <Grid Grid.Row="0" Background="{StaticResource SystemAccentColorBrush}" Padding="24,52,24,24" Height="348">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

@@ -1,18 +1,19 @@
-﻿using Hurace.Domain;
-using Hurace.RaceControl.Helpers;
-using Hurace.RaceControl.Helpers.MvvmCross;
-using Hurace.RaceControl.ViewModels;
-using MvvmCross;
-using MvvmCross.Platforms.Uap.Presenters.Attributes;
-using MvvmCross.Plugins.Messenger;
-using MvvmCross.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Devices.Input;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Hurace.Domain;
+using Hurace.RaceControl.Helpers.MvvmCross;
+using Hurace.RaceControl.ViewModels;
+using Microsoft.Toolkit.Uwp.Notifications;
+using MvvmCross;
+using MvvmCross.Platforms.Uap.Presenters.Attributes;
+using MvvmCross.Plugin.Messenger;
+using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views
 {
@@ -24,8 +25,10 @@ namespace Hurace.RaceControl.Views
     [MvxSplitViewPresentation(SplitPanePosition.Content)]
     public sealed partial class CreateRace : CreateRaceAbstract
     {
-        private MvxSubscriptionToken _token;
         private const string EmptyLocationMessage = "No locations found!";
+        private MvxSubscriptionToken _token;
+        private ToastNotification toast;
+        private ToastContent toastContent;
 
         public CreateRace()
         {
@@ -36,21 +39,46 @@ namespace Hurace.RaceControl.Views
         {
             base.OnViewModelSet();
             var messenger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
+            CreateToast();
             _token = messenger.Subscribe<DialogMessage>(message =>
             {
-                try
-                {
-                    DialogEventNotification.Show("The race was updated successfully!", 2000);
-                }
-                catch (Exception e)
-                {
-                    // see: https://github.com/windows-toolkit/WindowsCommunityToolkit/issues/2899
-                }
+                toast = new ToastNotification(toastContent.GetXml()) {ExpirationTime = DateTime.Now.AddSeconds(4)};
+                ToastNotificationManager.CreateToastNotifier().Show(toast);
             });
-            if (ViewModel.SelectedLocation != null)
+
+            if (ViewModel.SelectedLocation != null) LocationSuggestBox.Text = ViewModel.SelectedLocation.Name;
+        }
+
+        private void CreateToast()
+        {
+            toastContent = new ToastContent
             {
-                LocationSuggestBox.Text = ViewModel.SelectedLocation.Name;
-            }
+                Launch = "hurace-race-updated",
+                Visual = new ToastVisual
+                {
+                    BindingGeneric = new ToastBindingGeneric
+                    {
+                        Children =
+                        {
+                            new AdaptiveText
+                            {
+                                Text = "Race update",
+                                HintMaxLines = 1
+                            },
+
+                            new AdaptiveText
+                            {
+                                Text = "The race was updated successfully!"
+                            }
+                        }
+                    }
+                },
+                Audio = new ToastAudio
+                {
+                    Src = new Uri("ms-winsoundevent:Notification.Reminder")
+                }
+            };
+            toast = new ToastNotification(toastContent.GetXml()) {ExpirationTime = DateTime.Now.AddSeconds(2)};
         }
 
         private void TextBoxNumber_OnBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
@@ -62,8 +90,9 @@ namespace Hurace.RaceControl.Views
         {
             if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
 
-            var locations = ViewModel.Locations.Where(loc => loc.Name.Contains(sender.Text)).Select(loc => loc.Name).ToList();
-            sender.ItemsSource = locations.Count == 0 ? new List<string> { EmptyLocationMessage } : locations;
+            var locations = ViewModel.Locations.Where(loc => loc.Name.Contains(sender.Text)).Select(loc => loc.Name)
+                .ToList();
+            sender.ItemsSource = locations.Count == 0 ? new List<string> {EmptyLocationMessage} : locations;
         }
 
         private void LocationAutoSuggestBox_SuggestionChosen(AutoSuggestBox sender,
@@ -97,7 +126,7 @@ namespace Hurace.RaceControl.Views
                 var messenger = ViewModel.Messenger;
                 ViewModel.StartListEntries.Add(new StartListEntryViewModel(messenger)
                 {
-                    Skier = (Skier)args.ChosenSuggestion,
+                    Skier = (Skier) args.ChosenSuggestion,
                     StartPosition = ViewModel.StartListEntries.Count + 1,
                     RaceStatus = ViewModel.Status
                 });
