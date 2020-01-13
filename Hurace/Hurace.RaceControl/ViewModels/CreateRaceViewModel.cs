@@ -116,11 +116,18 @@ namespace Hurace.RaceControl.ViewModels
         public Gender Gender
         {
             get => _gender;
-            set => SetProperty(ref _gender, value, () =>
+            set
             {
-                _race.Gender = Gender;
-                SaveRaceCommand.RaiseCanExecuteChanged();
-            });
+                if (value != _gender)
+                {
+                    StartListEntries.Clear();
+                }
+                SetProperty(ref _gender, value, () =>
+                {
+                    _race.Gender = Gender;
+                    SaveRaceCommand.RaiseCanExecuteChanged();
+                });
+            }
         }
 
         public RaceType RaceType
