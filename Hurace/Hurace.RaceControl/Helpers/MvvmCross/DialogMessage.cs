@@ -1,4 +1,4 @@
-﻿using MvvmCross.Plugins.Messenger;
+﻿using MvvmCross.Plugin.Messenger;
 
 namespace Hurace.RaceControl.Helpers.MvvmCross
 {

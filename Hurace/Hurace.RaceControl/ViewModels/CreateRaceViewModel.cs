@@ -4,12 +4,12 @@ using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
-using MvvmCross.Plugins.Messenger;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using MvvmCross.Plugin.Messenger;
 
 namespace Hurace.RaceControl.ViewModels
 {

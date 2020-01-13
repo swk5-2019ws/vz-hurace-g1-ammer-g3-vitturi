@@ -5,7 +5,7 @@ using Hurace.Core.Services;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using Hurace.Simulator;
 using MvvmCross;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using System;
 using System.IO;

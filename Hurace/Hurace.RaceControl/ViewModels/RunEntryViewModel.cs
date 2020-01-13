@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
