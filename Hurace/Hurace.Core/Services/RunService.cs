@@ -1,3 +1,4 @@
+using Hurace.Core.Helper;
 using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using Hurace.Timer;
@@ -5,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hurace.Core.Helper;
 
 namespace Hurace.Core.Services
 {
@@ -33,7 +33,7 @@ namespace Hurace.Core.Services
         public async Task<IList<TimeSpan>> GetInterimTimes(Race race, int runNumber, Skier skier)
         {
             Run run = await DaoProvider.RunDao.GetBySkierAndRace(race, runNumber, skier);
-            if(run == null)
+            if (run == null)
             {
                 return new List<TimeSpan>();
             }
@@ -85,6 +85,7 @@ namespace Hurace.Core.Services
             };
 
             var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementsForRun(run)).ToArray();
+            if (sensorId > 0 && sensorMeasurements.Length == 0) return;
 
             if (
                 // First measurement
@@ -96,9 +97,12 @@ namespace Hurace.Core.Services
             {
                 await DaoProvider.SensorMeasurementDao.Insert(sensorMeasurement);
 
-                var interimTime = sensorMeasurement.Timestamp - sensorMeasurements.Last().Timestamp;
-                var timeSpan = TimeSpan.FromMilliseconds(interimTime * 1000);
-                SensorMeasurementAdded?.Invoke(run.Race, run.RunNumber, run.Skier, timeSpan);
+                if (sensorId > 0)
+                {
+                    var interimTime = sensorMeasurement.Timestamp - sensorMeasurements.Last().Timestamp;
+                    var timeSpan = TimeSpan.FromMilliseconds(interimTime * 1000);
+                    SensorMeasurementAdded?.Invoke(run.Race, run.RunNumber, run.Skier, timeSpan);
+                }
             }
 
             // Last measurement
@@ -135,23 +139,24 @@ namespace Hurace.Core.Services
 
         public async Task<int> GetAmountOfRuns()
         {
-            return await DaoProvider.RunDao.GetAmountOfRuns().ConfigureAwait(false); }
+            return await DaoProvider.RunDao.GetAmountOfRuns().ConfigureAwait(false);
+        }
 
         public async Task<Run> GetRun(int id)
         {
-            return await DaoProvider.RunDao.FindById(id).ConfigureAwait(false);;
+            return await DaoProvider.RunDao.FindById(id).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Run>> GetRunsForSkierInSeasons(int skierId, uint season)
         {
-            var skier = await DaoProvider.SkierDao.FindById(skierId).ConfigureAwait(false);;
+            var skier = await DaoProvider.SkierDao.FindById(skierId).ConfigureAwait(false);
 
             if (skier == null)
             {
                 return null;
             }
-            
-            var runs = await DaoProvider.RunDao.GetAllRunsForSkier(skier).ConfigureAwait(false);;
+
+            var runs = await DaoProvider.RunDao.GetAllRunsForSkier(skier).ConfigureAwait(false);
             var seasonsStart = SeasonParser.GetSeasonsStart(season);
             var seasonsEnd = SeasonParser.GetSeasonsEnd(season);
             return runs.Where(run => run.Race.Date >= seasonsStart && run.Race.Date <= seasonsEnd);
