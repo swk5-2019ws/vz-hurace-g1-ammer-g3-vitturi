@@ -33,7 +33,7 @@ namespace Hurace.Api.Controllers
         }   
         
         [HttpGet("{season}")]
-        public async Task<ActionResult<IEnumerable<Season>>> GetSeason(uint season)
+        public async Task<ActionResult<Season>> GetSeason(uint season)
         {
             var skiSeason = new Season {Year = Convert.ToDateTime($"01.01.{season}")};
             var races = (await _raceService.GetRaces()).Where(r =>
@@ -49,6 +49,7 @@ namespace Hurace.Api.Controllers
                 skiEvent.StartDate = grouping.Min(r => r.Date);
                 skiEvent.EndDate = grouping.Max(r => r.Date);
                 skiEvent.RaceTypes = grouping.Select(r => r.RaceType).Distinct();
+                skiEvent.Genders = grouping.Select(r => r.Gender).Distinct();
                 events.Add(skiEvent);
             }
             skiSeason.Events = events;

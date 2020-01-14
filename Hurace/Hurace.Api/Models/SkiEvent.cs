@@ -11,5 +11,6 @@ namespace Hurace.Api.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public IEnumerable<RaceType> RaceTypes { get; set; }
+        public IEnumerable<Gender> Genders { get; set; }
     }
 }
