@@ -16,12 +16,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
-            <CheckBox Content="Automatically send impulses"
-                      IsChecked="{x:Bind ViewModel.AutomaticallySend, Mode=TwoWay}"/>
-
             <TextBlock Text="Seconds between impulses"/>
             <TextBox Text="{x:Bind ViewModel.SendInterval, Mode=TwoWay}"
                      IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
+
+            <CheckBox Content="Automatically send impulses"
+                      IsChecked="{x:Bind ViewModel.AutomaticallySend, Mode=TwoWay}"/>
         </StackPanel>
         
         <StackPanel Grid.Row="1"
@@ -38,7 +38,7 @@
                  Text="{x:Bind ViewModel.SensorCount, Mode=TwoWay}"
                  IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
 
-            <Button Margin="0,5,5,0"
+            <Button Margin="0,20,5,0"
                 Content="Send Impulse"
                 Command="{x:Bind ViewModel.SendTimerImpulseCommand}"
                 IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=TwoWay}"/>
