@@ -15,7 +15,7 @@ namespace Hurace.Core.Services
 
         public async Task CreateRace(Race race, IList<Skier> skiers)
         {
-            await DaoProvider.RaceDao.Insert(race).ConfigureAwait(false);
+            race.Id = await DaoProvider.RaceDao.Insert(race).ConfigureAwait(false);
             await CreateStartList(race, 1, skiers).ConfigureAwait(false);
         }
 
