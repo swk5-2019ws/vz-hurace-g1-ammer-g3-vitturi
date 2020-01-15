@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hurace.Api.Models;
 using Hurace.Core.Interface.Services;
@@ -69,13 +70,13 @@ namespace Hurace.Api.Controllers
         }
 
         [HttpGet("{id}/interim", Name = "GetInterimTimes")]
-        public async Task<ActionResult<List<TimeSpan>>> GetInterimTimes(int id)
+        public async Task<ActionResult<List<string>>> GetInterimTimes(int id)
         {
             var run = await _runService.GetRun(id);
 
             if (run == null) return NotFound();
 
-            return Ok(await _runService.GetInterimTimes(run.Race, run.RunNumber, run.Skier));
+            return Ok((await _runService.GetInterimTimes(run.Race, run.RunNumber, run.Skier)).Select(time => time.ToString()));
         }
     }
 }
