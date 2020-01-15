@@ -41,7 +41,7 @@ namespace Hurace.Api.Controllers
             return await _skierService.GetSkiers(genderObject, name);
         }
 
-        [HttpGet("{id}", Name = "GetById")]
+        [HttpGet("{id}", Name = "GetSkierById")]
         public async Task<ActionResult<Skier>> GetById(int id)
         {
             var skier = await _skierService.GetSkier(id);
@@ -65,7 +65,7 @@ namespace Hurace.Api.Controllers
             Skier skier)
         {
             var insertedSkier = await _skierService.CreateSkier(skier);
-            return CreatedAtRoute("GetById", new {id = insertedSkier.Id}, insertedSkier);
+            return CreatedAtRoute("GetSkierById", new {id = insertedSkier.Id}, insertedSkier);
         }
 
         [HttpPut("{id}")]

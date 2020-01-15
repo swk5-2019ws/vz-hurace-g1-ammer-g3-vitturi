@@ -15,13 +15,11 @@ namespace Hurace.Api.Controllers
     public class RunsController : ControllerBase
     {
         private readonly ILogger<RunsController> _logger;
-        private readonly IRaceService _raceService;
         private readonly IRunService _runService;
 
-        public RunsController(ILogger<RunsController> logger, IRunService runService, IRaceService raceService)
+        public RunsController(ILogger<RunsController> logger, IRunService runService)
         {
             _logger = logger;
-            _raceService = raceService;
             _runService = runService;
         }
 
@@ -31,6 +29,16 @@ namespace Hurace.Api.Controllers
             if (skierId == 0 || season == 0) return BadRequest();
 
             return Ok(await _runService.GetRunsForSkierInSeasons(skierId, season));
+        }
+        
+        [HttpGet("{id}", Name = "GetRunById")]
+        public async Task<ActionResult<Run>> GetById(int id)
+        {
+            var run = await _runService.GetRun(id);
+
+            if (run == null) return NotFound();
+
+            return run;
         }
 
         [HttpGet("metadata")]

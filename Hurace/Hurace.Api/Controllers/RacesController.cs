@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Hurace.Api.Models;
 using Hurace.Core.Helper;
 using Hurace.Core.Interface.Services;
 using Hurace.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -18,11 +19,13 @@ namespace Hurace.Api.Controllers
     {
         private readonly ILogger<RacesController> _logger;
         private readonly IRaceService _raceService;
+        private readonly IRunService _runService;
 
-        public RacesController(ILogger<RacesController> logger, IRaceService raceService)
+        public RacesController(ILogger<RacesController> logger, IRaceService raceService, IRunService runService)
         {
             _logger = logger;
             _raceService = raceService;
+            _runService = runService;
         }
 
         [HttpGet("metadata")]
@@ -51,6 +54,27 @@ namespace Hurace.Api.Controllers
             if (currentRace == null) return NoContent();
 
             return currentRace;
+        }
+
+        [HttpPost("{id}/runs")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Run>> AddRun(int id,
+            [CustomizeValidator(RuleSet = "CreateSkierValidation")] [FromBody]
+            Skier skier)
+        {
+            var race = await _raceService.GetRace(id);
+
+            if (race == null || race.Status != RaceStatus.Ready) return BadRequest();
+
+            var runs = await _runService.GetAllRunsForRace(race, 1);
+            var skiers = runs.Select(run => run.Skier).ToList();
+            skiers.Add(skier);
+            await _raceService.EditStartList(race, 1, skiers);
+
+            var insertedRun = (await _runService.GetAllRunsForRace(race, 1)).LastOrDefault();
+
+            return CreatedAtRoute("GetRunById", new {id = insertedRun.Id}, insertedRun);
         }
     }
 }
