@@ -24,8 +24,8 @@ namespace Hurace.Api.Controllers
             _skierService = skierService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<Skier>> GetAll([FromQuery] string name, [FromQuery] string gender)
+        [HttpGet(Name = "GetAllSkiers")]
+        public async Task<IEnumerable<Skier>> GetAllSkiers([FromQuery] string name, [FromQuery] string gender)
         {
             Gender? genderObject = null;
             switch (gender)
@@ -42,7 +42,7 @@ namespace Hurace.Api.Controllers
         }
 
         [HttpGet("{id}", Name = "GetSkierById")]
-        public async Task<ActionResult<Skier>> GetById(int id)
+        public async Task<ActionResult<Skier>> GetSkierById(int id)
         {
             var skier = await _skierService.GetSkier(id);
 
@@ -51,25 +51,25 @@ namespace Hurace.Api.Controllers
             return skier;
         }
 
-        [HttpGet("metadata")]
+        [HttpGet("metadata", Name = "GetSkierMetadata")]
         public async Task<Metadata> GetSkierMetadata()
         {
             var amountOfSkiers = await _skierService.GetAmountOfSkiers();
             return new Metadata {Count = amountOfSkiers};
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateSkier")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Skier>> Create([CustomizeValidator(RuleSet = "CreateSkierValidation")]
+        public async Task<ActionResult<Skier>> CreateSkier([CustomizeValidator(RuleSet = "CreateSkierValidation")]
             Skier skier)
         {
             var insertedSkier = await _skierService.CreateSkier(skier);
             return CreatedAtRoute("GetSkierById", new {id = insertedSkier.Id}, insertedSkier);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [CustomizeValidator(RuleSet = "*")] [FromBody]
+        [HttpPut("{id}", Name = "UpdateSkier")]
+        public async Task<IActionResult> UpdateSkier(int id, [CustomizeValidator(RuleSet = "*")] [FromBody]
             Skier item)
         {
             if (item == null || item.Id != id) return BadRequest();
@@ -83,8 +83,8 @@ namespace Hurace.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}", Name = "DeleteSkier")]
+        public async Task<IActionResult> DeleteSkier(int id)
         {
             var skier = await _skierService.GetSkier(id);
 

@@ -21,8 +21,8 @@ namespace Hurace.Api.Controllers
             _countryService = countryService;
         }
         
-        [HttpGet]
-        public async Task<IEnumerable<Country>> GetAll()
+        [HttpGet(Name = "GetAllCountries")]
+        public async Task<IEnumerable<Country>> GetAllCountries()
         {
             return await _countryService.GetCountries();
         }

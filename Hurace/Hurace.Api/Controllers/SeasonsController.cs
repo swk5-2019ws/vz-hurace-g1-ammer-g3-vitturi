@@ -26,13 +26,13 @@ namespace Hurace.Api.Controllers
             _locationService = locationService;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<int>> GetSeasons()
+        [HttpGet(Name = "GetAllSeasons")]
+        public async Task<IEnumerable<int>> GetAllSeasons()
         {
             return (await _raceService.GetRaces()).Select(r => r.Date.Year).Distinct();
         }   
         
-        [HttpGet("{season}")]
+        [HttpGet("{season}", Name = "GetSeason")]
         public async Task<ActionResult<Season>> GetSeason(uint season)
         {
             var skiSeason = new Season {Year = Convert.ToDateTime($"01.01.{season}")};

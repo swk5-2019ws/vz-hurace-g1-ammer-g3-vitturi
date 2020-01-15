@@ -28,15 +28,15 @@ namespace Hurace.Api.Controllers
             _runService = runService;
         }
 
-        [HttpGet("metadata")]
+        [HttpGet("metadata", Name = "GetRaceMetadata")]
         public async Task<Metadata> GetRaceMetadata()
         {
             var amountOfRaces = await _raceService.GetAmountOfRaces();
             return new Metadata {Count = amountOfRaces};
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Race>>> GetAll([FromQuery] uint season, [FromQuery] int locationId)
+        [HttpGet(Name = "GetAllRaces")]
+        public async Task<ActionResult<IEnumerable<Race>>> GetAllRaces([FromQuery] uint season, [FromQuery] int locationId)
         {
             if (season == 0 || locationId == 0) return BadRequest();
 
@@ -46,7 +46,7 @@ namespace Hurace.Api.Controllers
             return Ok(races);
         }
 
-        [HttpGet("current")]
+        [HttpGet("current", Name = "GetCurrentRace")]
         public async Task<ActionResult<Race>> GetCurrentRace()
         {
             var currentRace = await _raceService.GetCurrentRace();
@@ -56,10 +56,10 @@ namespace Hurace.Api.Controllers
             return currentRace;
         }
 
-        [HttpPost("{id}/runs")]
+        [HttpPost("{id}/runs", Name = "AddRunToRace")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Run>> AddRun(int id,
+        public async Task<ActionResult<Run>> AddRunToRace(int id,
             [CustomizeValidator(RuleSet = "CreateSkierValidation")] [FromBody]
             Skier skier)
         {

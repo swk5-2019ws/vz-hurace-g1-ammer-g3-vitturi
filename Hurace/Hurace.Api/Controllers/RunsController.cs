@@ -23,8 +23,8 @@ namespace Hurace.Api.Controllers
             _runService = runService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Run>>> GetAll([FromQuery] int skierId, [FromQuery] uint season)
+        [HttpGet(Name = "GetAllRuns")]
+        public async Task<ActionResult<IEnumerable<Run>>> GetAllRuns([FromQuery] int skierId, [FromQuery] uint season)
         {
             if (skierId == 0 || season == 0) return BadRequest();
 
@@ -32,7 +32,7 @@ namespace Hurace.Api.Controllers
         }
         
         [HttpGet("{id}", Name = "GetRunById")]
-        public async Task<ActionResult<Run>> GetById(int id)
+        public async Task<ActionResult<Run>> GetRunById(int id)
         {
             var run = await _runService.GetRun(id);
 
@@ -41,14 +41,14 @@ namespace Hurace.Api.Controllers
             return run;
         }
 
-        [HttpGet("metadata")]
+        [HttpGet("metadata", Name = "GetRunMetadata")]
         public async Task<Metadata> GetRunMetadata()
         {
             var amountOfRuns = await _runService.GetAmountOfRuns();
             return new Metadata {Count = amountOfRuns};
         }
 
-        [HttpGet("current")]
+        [HttpGet("current", Name = "GetCurrentRun")]
         public async Task<ActionResult<Run>> GetCurrentRun()
         {
             var currentRun = await _runService.GetCurrentRun();
@@ -58,7 +58,7 @@ namespace Hurace.Api.Controllers
             return currentRun;
         }
 
-        [HttpGet("{id}/leaderboard/{runNumber}")]
+        [HttpGet("{id}/leaderboard/{runNumber}", Name = "GetLeaderboard")]
         public async Task<ActionResult<IEnumerable<Run>>> GetLeaderboard(int id, int runNumber)
         {
             var run = await _runService.GetRun(id);
@@ -68,7 +68,7 @@ namespace Hurace.Api.Controllers
             return Ok(await _runService.GetLeaderBoard(run.Race, runNumber));
         }
 
-        [HttpGet("{id}/interim")]
+        [HttpGet("{id}/interim", Name = "GetInterimTimes")]
         public async Task<ActionResult<List<TimeSpan>>> GetInterimTimes(int id)
         {
             var run = await _runService.GetRun(id);
