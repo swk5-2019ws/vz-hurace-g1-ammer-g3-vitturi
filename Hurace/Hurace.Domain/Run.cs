@@ -17,6 +17,8 @@ namespace Hurace.Domain
         [Column("start_position")]
         public int StartPosition { get; set; }
 
+        public int EndPosition { get; set; }
+
         [Column("status")]
         public RunStatus Status { get; set; }
 

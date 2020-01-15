@@ -134,6 +134,11 @@ namespace Hurace.Core.Services
                 return timeX.CompareTo(timeY);
             });
 
+            for (var i = 0; i < runs.Length; i++)
+            {
+                runs[i].EndPosition = i + 1;
+            }
+
             return runs;
         }
 
