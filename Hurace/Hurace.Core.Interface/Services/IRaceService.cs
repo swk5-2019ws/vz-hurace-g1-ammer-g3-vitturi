@@ -27,5 +27,7 @@ namespace Hurace.Core.Interface.Services
         Task<int> GetAmountOfRaces();
         
         Task<IEnumerable<Race>> GetRaces();
+        
+        Task<Race> GetRace(int id);
     }
 }

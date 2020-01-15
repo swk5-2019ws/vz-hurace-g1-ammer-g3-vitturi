@@ -36,11 +36,21 @@ namespace Hurace.Api.Controllers
         public async Task<ActionResult<IEnumerable<Race>>> GetAll([FromQuery] uint season, [FromQuery] int locationId)
         {
             if (season == 0 || locationId == 0) return BadRequest();
-            
+
             var races = (await _raceService.GetRaces()).Where(r =>
                 r.Location.Id == locationId && r.Date > SeasonParser.GetSeasonsStart(season) &&
                 r.Date < SeasonParser.GetSeasonsEnd(season));
             return Ok(races);
+        }
+
+        [HttpGet("current")]
+        public async Task<ActionResult<Race>> GetCurrentRace()
+        {
+            var currentRace = await _raceService.GetCurrentRace();
+
+            if (currentRace == null) return NoContent();
+
+            return currentRace;
         }
     }
 }

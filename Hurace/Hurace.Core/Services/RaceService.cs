@@ -100,5 +100,10 @@ namespace Hurace.Core.Services
         {
             return await DaoProvider.RaceDao.FindAll().ConfigureAwait(false);
         }
+
+        public async Task<Race> GetRace(int id)
+        {
+            return await DaoProvider.RaceDao.FindById(id).ConfigureAwait(false);
+        }
     }
 }
