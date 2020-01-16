@@ -55,6 +55,13 @@ namespace Hurace.Api.Controllers
 
             return currentRace;
         }
+        
+        [HttpGet("open/{id}", Name = "GetOpenRacesForSkier")]
+        public async Task<IEnumerable<Race>> GetOpenRacesForSkier(int id)
+        {
+            var openRaces = (await _raceService.GetRaces()).Where(race => race.Status == RaceStatus.Ready);
+            return openRaces.Where(race => _runService.GetAllRunsForRace(race, 1).Result.All(run => run.Skier.Id != id));
+        }
 
         [HttpPost("{id}/runs", Name = "AddRunToRace")]
         [ProducesResponseType(StatusCodes.Status201Created)]

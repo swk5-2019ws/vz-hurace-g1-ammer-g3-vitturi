@@ -62,7 +62,7 @@ namespace Hurace.Core.Mapper
             var key = AttributeParser.GetKey(type);
 
             if (AttributeParser.GetKeyIsGenerated(key)) properties = properties.Where(pi => pi != key);
-            var insertAttributes = properties.Except(collections).ToList();
+            var insertAttributes = properties.Except(collections).Except(AttributeParser.GetAllIgnored(type)).ToList();
 
             var columns = new StringBuilder(null);
             for (var i = 0; i < insertAttributes.Count; i++)
@@ -120,7 +120,7 @@ namespace Hurace.Core.Mapper
             var collections = AttributeParser.GetAllCollections(type);
             var key = AttributeParser.GetKey(type);
             var keyColumn = AttributeParser.GetColumnName(key);
-            var updateAttributes = properties.Except(collections).Where(pi => pi != key).ToList();
+            var updateAttributes = properties.Except(collections).Except(AttributeParser.GetAllIgnored(type)).Where(pi => pi != key).ToList();
 
             var sql = new StringBuilder($"UPDATE {name} SET ");
 
