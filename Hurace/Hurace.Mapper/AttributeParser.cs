@@ -113,5 +113,10 @@ namespace Hurace.Core.Mapper
             return GetAllProperties(type).Where(pi =>
                 pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>));
         }
+
+        public static IEnumerable<PropertyInfo> GetAllIgnored(Type type)
+        {
+            return GetAllProperties(type).Where(pi => pi.GetCustomAttributesData().Count(attribute => attribute.AttributeType == typeof(IgnoreAttribute)) == 1);
+        }
     }
 }
