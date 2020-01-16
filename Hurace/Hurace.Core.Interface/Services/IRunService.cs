@@ -23,6 +23,8 @@ namespace Hurace.Core.Interface.Services
 
         Task<IList<TimeSpan>> GetInterimTimes(Race race, int runNumber, Skier skier);
 
+        Task<IList<TimeSpan>> GetInterimTimesDifferences(IList<TimeSpan> interimTimes, Race race, int runNumber, Skier skier);
+
         Task<IEnumerable<Run>> GetAllRunsForRace(Race race, int runNumber);
 
         Task<Run> GetCurrentRun();

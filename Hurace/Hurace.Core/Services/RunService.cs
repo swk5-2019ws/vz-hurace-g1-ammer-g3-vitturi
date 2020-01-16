@@ -37,6 +37,7 @@ namespace Hurace.Core.Services
             {
                 return new List<TimeSpan>();
             }
+
             var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementsForRun(run)).ToArray();
 
             IList<TimeSpan> interimTimes = new List<TimeSpan>();
@@ -55,6 +56,26 @@ namespace Hurace.Core.Services
             }
 
             return interimTimes;
+        }
+
+        public async Task<IList<TimeSpan>> GetInterimTimesDifferences(IList<TimeSpan> interimTimes,
+            Race race, int runNumber, Skier skier)
+        {
+            var interimTimesDifferences = new List<TimeSpan>();
+
+            var bestRun = (await GetLeaderBoard(race, runNumber)).ToList().FirstOrDefault();
+            if (bestRun == null || bestRun.Status != RunStatus.Completed)
+            {
+                return interimTimesDifferences;
+            }
+
+            var bestRunInterimTimes = await GetInterimTimes(bestRun.Race, bestRun.RunNumber, bestRun.Skier);
+            for (var i = 0; i < Math.Min(interimTimes.Count, bestRunInterimTimes.Count); i++)
+            {
+                interimTimesDifferences.Add(interimTimes[i] - bestRunInterimTimes[i]);
+            }
+
+            return interimTimesDifferences;
         }
 
         public async Task<IEnumerable<Run>> GetAllRunsForRace(Race race, int runNumber)
@@ -124,8 +145,8 @@ namespace Hurace.Core.Services
             var runs = (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber)).ToArray();
             Array.Sort(runs, (x, y) =>
             {
-                int timeX = (int)(x.TotalTime * 1000);
-                int timeY = (int)(y.TotalTime * 1000);
+                int timeX = (int) (x.TotalTime * 1000);
+                int timeY = (int) (y.TotalTime * 1000);
 
                 // Push unfinished runs to the bottom
                 if (timeX == 0) timeX = int.MaxValue;
