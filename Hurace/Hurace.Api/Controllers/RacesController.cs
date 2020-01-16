@@ -62,6 +62,23 @@ namespace Hurace.Api.Controllers
             var openRaces = (await _raceService.GetRaces()).Where(race => race.Status == RaceStatus.Ready);
             return openRaces.Where(race => _runService.GetAllRunsForRace(race, 1).Result.All(run => run.Skier.Id != id));
         }
+        
+        [HttpGet("closed/{id}", Name = "GetClosedRacesForSkier")]
+        public async Task<IEnumerable<Race>> GetClosedRacesForSkier(int id)
+        {
+            var closedRaces = (await _raceService.GetRaces()).Where(race => race.Status == RaceStatus.InProgress || race.Status == RaceStatus.Finished);
+            return closedRaces.Where(race => _runService.GetAllRunsForRace(race, 1).Result.Any(run => run.Skier.Id == id));
+        }
+        
+        [HttpGet("{id}/runs", Name = "GetRunsForRace")]
+        public async Task<ActionResult<IEnumerable<Run>>> GetRunsForRace(int id, [FromQuery] int runNumber)
+        {
+            var race = await _raceService.GetRace(id);
+            
+            if (race == null || race.Status == RaceStatus.Ready) return BadRequest();
+
+            return Ok(await _runService.GetAllRunsForRace(race, runNumber));
+        }
 
         [HttpPost("{id}/runs", Name = "AddRunToRace")]
         [ProducesResponseType(StatusCodes.Status201Created)]
