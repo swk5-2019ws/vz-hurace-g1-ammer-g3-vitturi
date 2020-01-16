@@ -78,5 +78,16 @@ namespace Hurace.Api.Controllers
 
             return Ok((await _runService.GetInterimTimes(run.Race, run.RunNumber, run.Skier)).Select(time => time.ToString()));
         }
+        
+        [HttpGet("{id}/interimdiff", Name = "GetInterimDiffTimes")]
+        public async Task<ActionResult<List<string>>> GetInterimDiffTimes(int id)
+        {
+            var run = await _runService.GetRun(id);
+
+            if (run == null) return NotFound();
+
+            var times = await _runService.GetInterimTimes(run.Race, run.RunNumber, run.Skier);
+            return Ok((await _runService.GetInterimTimesDifferences(times, run.Race, run.RunNumber, run.Skier)).Select(time => time.ToString()));
+        }
     }
 }
