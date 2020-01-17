@@ -83,5 +83,15 @@ namespace Hurace.Api.Controllers
 
             return CreatedAtRoute("GetRunById", new {id = insertedRun.Id}, insertedRun);
         }
+        
+        [HttpGet("{id}/leaderboard/{runNumber}", Name = "GetRunLeaderboard")]
+        public async Task<ActionResult<IEnumerable<Run>>> GetLeaderboard(int id, int runNumber)
+        {
+            var race = await _raceService.GetRace(id);
+
+            if (race == null) return NotFound();
+
+            return Ok(await _runService.GetLeaderBoard(race, runNumber));
+        }
     }
 }
