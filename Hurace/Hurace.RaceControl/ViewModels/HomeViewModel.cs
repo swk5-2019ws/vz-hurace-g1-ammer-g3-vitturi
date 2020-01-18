@@ -1,4 +1,5 @@
-﻿using Hurace.Core.Interface.Services;
+﻿using System.Linq;
+using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
@@ -46,7 +47,7 @@ namespace Hurace.RaceControl.ViewModels
         public override async Task Initialize()
         {
             await base.Initialize();
-            var races = await _raceService.GetLastRaces(SHOWN_RACES);
+            var races = (await _raceService.GetLastRaces(SHOWN_RACES)).OrderBy(race => race.Status);
             Races.AddRange(races);
             RaceSearchQueryCommand = new MvxCommand<Race>(ShowCreateRace);
         }
