@@ -16,7 +16,7 @@ namespace Hurace.RaceControl.ViewModels
         public StartListEntryViewModel(IMvxMessenger messenger)
         {
             _messenger = messenger;
-            DeleteStartListEntryCommand = new MvxCommand<int>(startPosition => _messenger.Publish(new StartListUpdateMessage(this, startPosition)));
+            DeleteStartListEntryCommand = new MvxCommand(() => _messenger.Publish(new StartListUpdateMessage(this, StartPosition)));
         }
 
         public int StartPosition
@@ -37,6 +37,6 @@ namespace Hurace.RaceControl.ViewModels
             set => SetProperty(ref _raceStatus, value);
         }
 
-        public MvxCommand<int> DeleteStartListEntryCommand { get; set; }
+        public MvxCommand DeleteStartListEntryCommand { get; set; }
     }
 }

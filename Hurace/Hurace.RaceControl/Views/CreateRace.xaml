@@ -46,8 +46,11 @@
                     <Run Text="{x:Bind FirstName}" />
                     <Run Text="{x:Bind LastName}" />
                 </TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{x:Bind Country.Code}" x:Phase="2"
-                           Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Country.Code}" x:Phase="2" Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                    <Image HorizontalAlignment="Right" Margin="5,-3,0,0" Stretch="Fill" Height="10" Width="15"
+                           Source="{x:Bind Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                </StackPanel>
             </Grid>
         </DataTemplate>
 
@@ -69,8 +72,7 @@
                             <SwipeItems Mode="Execute">
                                 <SwipeItem x:Name="DeleteSwipeItem"
                                            Background="Red"
-                                           Command="{x:Bind DeleteStartListEntryCommand}"
-                                           CommandParameter="{x:Bind StartPosition}" />
+                                           Command="{x:Bind DeleteStartListEntryCommand}"/>
                             </SwipeItems>
                         </SwipeControl.RightItems>
                         <Grid VerticalAlignment="Center">
@@ -100,8 +102,12 @@
                                 <Run Text="{x:Bind Skier.FirstName}" />
                                 <Run Text="{x:Bind Skier.LastName}" />
                             </TextBlock>
-                            <TextBlock Grid.Column="2" Grid.Row="1" Text="{x:Bind Skier.Country.Code}" x:Phase="2"
-                                       Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                            <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Text="{x:Bind Skier.Country.Code}" x:Phase="2"
+                                           Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                                <Image HorizontalAlignment="Right" Margin="5,-3,0,0" Stretch="Fill" Height="10" Width="15"
+                                       Source="{x:Bind Skier.Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                            </StackPanel>
                             <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton"
                                           IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
                                           Command="{x:Bind DeleteStartListEntryCommand}" IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}"

@@ -234,7 +234,11 @@ namespace Hurace.RaceControl.ViewModels
 
             _token = Messenger.Subscribe<StartListUpdateMessage>(message =>
             {
-                StartListEntries.RemoveAt(message.StartPosition - 1);
+                if (message.StartPosition <= StartListEntries.Count)
+                {
+                    StartListEntries.RemoveAt(message.StartPosition - 1);
+
+                }
             });
 
             SaveRaceCommand = new MvxCommand(async () =>
