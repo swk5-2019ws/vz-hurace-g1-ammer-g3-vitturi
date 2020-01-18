@@ -52,7 +52,6 @@ namespace Hurace.Core.Services
             {
                 var interimTime = sensorMeasurements[i].Timestamp - lastTimestamp;
                 interimTimes.Add(TimeSpan.FromSeconds(interimTime));
-                lastTimestamp = sensorMeasurements[i].Timestamp;
             }
 
             return interimTimes;
