@@ -34,8 +34,11 @@ namespace Hurace.RaceControl.Views
             CreateToast();
             _token = messenger.Subscribe<DialogMessage>(message =>
             {
-                toast = new ToastNotification(toastContent.GetXml()) {ExpirationTime = DateTime.Now.AddSeconds(2)};
-                ToastNotificationManager.CreateToastNotifier().Show(toast);
+                if (message.DialogEvent == DialogEvent.NoRaceInProgress)
+                {
+                    toast = new ToastNotification(toastContent.GetXml()) { ExpirationTime = DateTime.Now.AddSeconds(2) };
+                    ToastNotificationManager.CreateToastNotifier().Show(toast);
+                }
             });
         }
 

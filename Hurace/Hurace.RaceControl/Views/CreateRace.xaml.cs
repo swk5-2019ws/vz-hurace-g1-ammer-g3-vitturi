@@ -42,8 +42,11 @@ namespace Hurace.RaceControl.Views
             CreateToast();
             _token = messenger.Subscribe<DialogMessage>(message =>
             {
-                toast = new ToastNotification(toastContent.GetXml()) {ExpirationTime = DateTime.Now.AddSeconds(4)};
-                ToastNotificationManager.CreateToastNotifier().Show(toast);
+                if (message.DialogEvent == DialogEvent.RaceEditSuccess)
+                {
+                    toast = new ToastNotification(toastContent.GetXml()) { ExpirationTime = DateTime.Now.AddSeconds(4) };
+                    ToastNotificationManager.CreateToastNotifier().Show(toast);
+                }
             });
 
             if (ViewModel.SelectedLocation != null) LocationSuggestBox.Text = ViewModel.SelectedLocation.Name;
