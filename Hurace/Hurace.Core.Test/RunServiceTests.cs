@@ -64,7 +64,7 @@ namespace Hurace.Core.Test
             // Assert
             Assert.Equal(timestamps.Length - 1, calculatedTimespans.Length);
             Assert.Equal(calculatedTimespans[0], TimeSpan.FromSeconds(timestamps[1] - timestamps[0]));
-            Assert.Equal(calculatedTimespans[1], TimeSpan.FromSeconds(timestamps[2] - timestamps[1]));
+            Assert.Equal(calculatedTimespans[1], TimeSpan.FromSeconds(timestamps[2] - timestamps[0]));
         }
 
         [Fact]
