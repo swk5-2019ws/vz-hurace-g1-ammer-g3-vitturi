@@ -51,7 +51,7 @@ namespace Hurace.Core.Services
                 var interimTime = run.RunNumber == 2
                     ? run.TotalTime + sensorMeasurements[i].Timestamp - lastTimestamp
                     : sensorMeasurements[i].Timestamp - lastTimestamp;
-                interimTimes.Add(TimeSpan.FromSeconds(interimTime));
+                interimTimes.Add(TimeSpan.FromMilliseconds(interimTime * 1000));
             }
 
             return interimTimes;
@@ -87,8 +87,8 @@ namespace Hurace.Core.Services
             var runs = (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber)).ToArray();
             Array.Sort(runs, (x, y) =>
             {
-                var timeX = (int) x.TotalTime;
-                var timeY = (int) y.TotalTime;
+                var timeX = (int) (x.TotalTime * 1000);
+                var timeY = (int) (y.TotalTime * 1000);
 
                 // Push unfinished runs to the bottom
                 if (timeX == 0) timeX = int.MaxValue;
@@ -138,7 +138,7 @@ namespace Hurace.Core.Services
             {
                 SensorId = sensorId,
                 Run = run,
-                Timestamp = (time - UnixEpoch).TotalMilliseconds
+                Timestamp = (time - UnixEpoch).TotalMilliseconds / 1000
             };
 
             var sensorMeasurements = (await DaoProvider.SensorMeasurementDao.GetMeasurementsForRun(run)).ToArray();
@@ -157,7 +157,7 @@ namespace Hurace.Core.Services
                 if (sensorId > 0)
                 {
                     var interimTime = sensorMeasurement.Timestamp - sensorMeasurements.Last().Timestamp;
-                    var timeSpan = TimeSpan.FromMilliseconds(interimTime);
+                    var timeSpan = TimeSpan.FromMilliseconds(interimTime * 1000);
                     SensorMeasurementAdded?.Invoke(run.Race, run.RunNumber, run.Skier, timeSpan);
                 }
                 else if (sensorId == 0)

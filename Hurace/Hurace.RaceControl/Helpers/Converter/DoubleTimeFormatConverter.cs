@@ -13,7 +13,7 @@ namespace Hurace.RaceControl.Helpers.Converter
 
             if (value == null) return null;
 
-            if (value is double time) result = TimeSpan.FromMilliseconds(time).ToString(StringFormat);
+            if (value is double time) result = TimeSpan.FromMilliseconds(time * 1000).ToString(StringFormat);
 
             return result;
         }
