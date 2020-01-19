@@ -1,8 +1,10 @@
-﻿using Hurace.Core.Interface.Services;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using Windows.UI.Xaml;
+using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.ViewModels;
-using System;
-using System.Linq;
 
 namespace Hurace.RaceControl.ViewModels.Screens
 {
@@ -11,47 +13,31 @@ namespace Hurace.RaceControl.ViewModels.Screens
         private const int PreviousSkiers = 2;
         private const int LeaderboardShownSkiers = 5;
         private string _countryCode;
+        private Race _currentRace;
+        private readonly DispatcherTimer _dispatcherTimer;
         private TimeSpan _elapsedTime;
         private string _firstName;
         private string _lastName;
+        private Run _lastRun;
         private string _pictureUrl;
+        private readonly IRaceService _raceService;
+        private readonly IRunService _runService;
         private int _startNumber;
-        private IRunService _runService;
-        private IRaceService _raceService;
-        private Race _currentRace;
+        private readonly Stopwatch _stopWatch;
+        private TimeSpan _totalTime;
 
         public CurrentSkierViewModel(IRunService runService, IRaceService raceService)
         {
             _runService = runService;
             _raceService = raceService;
+            _stopWatch = new Stopwatch();
+            _dispatcherTimer = new DispatcherTimer();
         }
 
-        public override async void Prepare()
+        public TimeSpan TotalTime
         {
-            base.Prepare();
-            _currentRace = await _raceService.GetCurrentRace();
-            _runService.SensorMeasurementAdded += (race, number, skier, timeSpan) => RefreshRun();
-            RefreshRun();
-        }
-
-        private async void RefreshRun()
-        {
-            var currentRun = await _runService.GetCurrentRun();
-            PictureUrl = currentRun.Skier.PictureUrl;
-            FirstName = currentRun.Skier.FirstName;
-            LastName = currentRun.Skier.LastName;
-            StartNumber = currentRun.StartPosition;
-            CountryCode = currentRun.Skier.Country.Code;
-            var times = await _runService.GetInterimTimes(_currentRace, currentRun.RunNumber, currentRun.Skier);
-            SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel() { TimeSpan = timeSpan }));
-            var runs = await _runService.GetLeaderBoard(_currentRace, currentRun.RunNumber);
-            var currentRunIndex = runs.Select((run, index) => new { run, index }).FirstOrDefault(x => x.run.Skier.Id == currentRun.Skier.Id);
-            if(currentRunIndex != null)
-            {
-                var leaderboardRuns = runs.Skip(currentRunIndex.index <= PreviousSkiers ? 0 : currentRunIndex.index - PreviousSkiers)
-                .Take(LeaderboardShownSkiers);
-                Runs.SwitchTo(leaderboardRuns);
-            }
+            get => _totalTime;
+            set => SetProperty(ref _totalTime, value);
         }
 
         public string PictureUrl
@@ -93,6 +79,77 @@ namespace Hurace.RaceControl.ViewModels.Screens
         public MvxObservableCollection<SensorMeasurementEntryViewModel> SensorMeasurementEntries { get; } =
             new MvxObservableCollection<SensorMeasurementEntryViewModel>();
 
+        public MvxObservableCollection<SensorMeasurementEntryViewModel> SensorMeasurementDiffEntries { get; } =
+            new MvxObservableCollection<SensorMeasurementEntryViewModel>();
+
         public MvxObservableCollection<Run> Runs { get; } = new MvxObservableCollection<Run>();
+
+        public override async void Prepare()
+        {
+            base.Prepare();
+            _currentRace = await _raceService.GetCurrentRace();
+            _runService.SensorMeasurementAdded += (race, number, skier, timeSpan) => RefreshRun();
+            _runService.RunStatusChanged += (race, number, skier, status) => HandleRunStatusChange(status);
+            _runService.RunStarted += RunServiceOnRunStarted;
+            _dispatcherTimer.Tick += (sender, o) => ElapsedTime = TotalTime + _stopWatch.Elapsed;
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            RefreshRun();
+        }
+
+        private void RunServiceOnRunStarted(Race race, int runNumber, Skier skier)
+        {
+            _stopWatch.Start();
+            _dispatcherTimer.Start();
+        }
+
+        private void HandleRunStatusChange(RunStatus runStatus)
+        {
+            RefreshRun();
+            if (runStatus == RunStatus.Completed || runStatus == RunStatus.Disqualified)
+            {
+                _stopWatch.Stop();
+                _dispatcherTimer.Stop();
+                _stopWatch.Reset();
+                FetchLeaderBoard();
+            }
+        }
+
+        private async void RefreshRun()
+        {
+            var currentRun = await _runService.GetCurrentRun();
+            if (currentRun != null)
+            {
+                _lastRun = currentRun;
+                PictureUrl = currentRun.Skier.PictureUrl;
+                FirstName = currentRun.Skier.FirstName;
+                LastName = currentRun.Skier.LastName;
+                StartNumber = currentRun.StartPosition;
+                CountryCode = currentRun.Skier.Country.Code;
+                TotalTime = TimeSpan.FromMilliseconds(currentRun.TotalTime);
+                var times = await _runService.GetInterimTimes(_currentRace, currentRun.RunNumber, currentRun.Skier);
+                SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel
+                    {TimeSpan = timeSpan}));
+                var diffTimes =
+                    await _runService.GetInterimTimesDifferences(times, _currentRace, currentRun.RunNumber,
+                        currentRun.Skier);
+                SensorMeasurementDiffEntries.SwitchTo(diffTimes.Select(timeSpan => new SensorMeasurementEntryViewModel
+                    {TimeSpan = timeSpan}));
+                FetchLeaderBoard();
+            }
+        }
+
+        private async void FetchLeaderBoard()
+        {
+            var runs = await _runService.GetLeaderBoard(_currentRace, _lastRun.RunNumber);
+            var currentRunIndex = runs.Select((run, index) => new {run, index})
+                .FirstOrDefault(x => x.run.Skier.Id == _lastRun.Skier.Id);
+            if (currentRunIndex != null)
+            {
+                var leaderboardRuns = runs
+                    .Skip(currentRunIndex.index <= PreviousSkiers ? 0 : currentRunIndex.index - PreviousSkiers)
+                    .Take(LeaderboardShownSkiers);
+                Runs.SwitchTo(leaderboardRuns);
+            }
+        }
     }
 }

@@ -1,26 +1,27 @@
-﻿using Hurace.RaceControl.Helpers;
-using Hurace.RaceControl.ViewModels.Screens;
-using MvvmCross.Commands;
-using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hurace.Core.Interface.Services;
 using Hurace.Domain;
+using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.Helpers.MvvmCross;
+using Hurace.RaceControl.ViewModels.Screens;
+using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
 {
     public class ScreenSelectionViewModel : MvxViewModel
     {
         private readonly IMvxNavigationService _navigationService;
-        private IRaceService _raceService;
-        private Race _currentRace = null;
-        private IDialogService _dialogService;
+        private Race _currentRace;
+        private readonly IDialogService _dialogService;
+        private readonly IRaceService _raceService;
 
-        public ScreenSelectionViewModel(IMvxNavigationService navigationService, IRaceService raceService, IDialogService dialogService)
+        public ScreenSelectionViewModel(IMvxNavigationService navigationService, IRaceService raceService,
+            IDialogService dialogService)
         {
             _navigationService = navigationService;
             _raceService = raceService;
@@ -59,8 +60,6 @@ namespace Hurace.RaceControl.ViewModels
                     break;
                 case ScreenType.CurrentSkier:
                     _navigationService.Navigate<CurrentSkierViewModel>();
-                    break;
-                default:
                     break;
             }
         }

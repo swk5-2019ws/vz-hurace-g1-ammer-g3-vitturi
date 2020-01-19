@@ -1,22 +1,25 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
-using Hurace.Domain;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    internal class RaceTypeToStringConverter : IValueConverter
+    internal class TimeSpanFormatConverter : IValueConverter
     {
+        public string StringFormat { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch ((RaceType) value)
+            var result = "";
+
+            if (value == null) return null;
+
+            if (value is TimeSpan timeSpan)
             {
-                case RaceType.Slalom:
-                    return "Slalom";
-                case RaceType.SuperSlalom:
-                    return "Super Slalom";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                result = timeSpan.ToString(StringFormat);
+                if (timeSpan.TotalMilliseconds < 0) result = "-" + result;
             }
+
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

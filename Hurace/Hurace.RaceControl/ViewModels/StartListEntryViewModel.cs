@@ -8,15 +8,16 @@ namespace Hurace.RaceControl.ViewModels
 {
     public class StartListEntryViewModel : MvxViewModel
     {
-        private int _startPosition;
-        private Skier _skier;
-        private IMvxMessenger _messenger;
+        private readonly IMvxMessenger _messenger;
         private RaceStatus _raceStatus;
+        private Skier _skier;
+        private int _startPosition;
 
         public StartListEntryViewModel(IMvxMessenger messenger)
         {
             _messenger = messenger;
-            DeleteStartListEntryCommand = new MvxCommand(() => _messenger.Publish(new StartListUpdateMessage(this, StartPosition)));
+            DeleteStartListEntryCommand =
+                new MvxCommand(() => _messenger.Publish(new StartListUpdateMessage(this, StartPosition)));
         }
 
         public int StartPosition

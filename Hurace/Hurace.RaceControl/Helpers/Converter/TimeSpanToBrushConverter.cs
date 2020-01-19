@@ -5,14 +5,12 @@ using Windows.UI.Xaml.Media;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    class TimeSpanToBrushConverter : IValueConverter
+    internal class TimeSpanToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            double time = (double)value;
-            var brush = new AcrylicBrush();
-            brush.BackgroundSource = AcrylicBackgroundSource.Backdrop;
-            brush.TintOpacity = 0.6;
+            var time = ((TimeSpan) value).TotalMilliseconds;
+            var brush = new AcrylicBrush {BackgroundSource = AcrylicBackgroundSource.Backdrop, TintOpacity = 0.6};
 
             if (time > 0.0)
             {

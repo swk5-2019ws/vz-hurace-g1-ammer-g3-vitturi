@@ -3,13 +3,19 @@ using Windows.UI.Xaml.Data;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    internal class StringToUpperCaseConverter : IValueConverter
+    internal class DoubleTimeFormatConverter : IValueConverter
     {
+        public string StringFormat { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value != null && value is string) return ((string) value).ToUpper();
+            var result = "";
 
-            return value;
+            if (value == null) return null;
+
+            if (value is double time) result = TimeSpan.FromMilliseconds(time).ToString(StringFormat);
+
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

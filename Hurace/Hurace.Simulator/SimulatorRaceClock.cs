@@ -9,7 +9,7 @@ namespace Hurace.Simulator
 
         public void SendImpulse(int sensorId)
         {
-            TimingTriggered?.Invoke(sensorId, DateTime.Now);
+            TimingTriggered?.Invoke(sensorId, DateTime.UtcNow);
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Hurace.Domain;
-using System;
+﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
+using Hurace.Domain;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
@@ -9,8 +9,8 @@ namespace Hurace.RaceControl.Helpers.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var element = (string)parameter;
-            switch ((RaceStatus)value)
+            var element = (string) parameter;
+            switch ((RaceStatus) value)
             {
                 case RaceStatus.Finished:
                     switch (element)

@@ -4,11 +4,11 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    class CountryCodeToImagePathConverter : IValueConverter
+    internal class CountryCodeToImagePathConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string countryCode = (string)value;
+            var countryCode = (string) value;
             return new BitmapImage(new Uri($"ms-appx:///Assets/CountryFlags/{countryCode}.png"));
         }
 

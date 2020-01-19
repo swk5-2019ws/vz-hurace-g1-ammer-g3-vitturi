@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hurace.Domain;
+﻿using Hurace.Domain;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.Messenger;
@@ -13,14 +8,15 @@ namespace Hurace.RaceControl.ViewModels
 {
     public class RunEntryViewModel : MvxViewModel
     {
+        private readonly IMvxMessenger _messenger;
         private Run _run;
-        private IMvxMessenger _messenger;
 
         public RunEntryViewModel(IMvxMessenger messenger, Run run)
         {
             _messenger = messenger;
             Run = run;
-            DisqualifySkierCommand = new MvxCommand<Run>(r => _messenger.Publish(new DisqualifySkierMessage(this, Run)));
+            DisqualifySkierCommand =
+                new MvxCommand<Run>(r => _messenger.Publish(new DisqualifySkierMessage(this, Run)));
         }
 
         public Run Run

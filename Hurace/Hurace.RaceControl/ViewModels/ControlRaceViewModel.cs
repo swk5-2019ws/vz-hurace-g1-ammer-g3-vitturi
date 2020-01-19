@@ -11,15 +11,16 @@ namespace Hurace.RaceControl.ViewModels
 {
     public class ControlRaceViewModel : MvxViewModel<Race>
     {
-        private int _displayRunNumber;
-        private string _name;
-        private IMvxMessenger _messenger;
-        private MvxSubscriptionToken _token;
         private readonly IMvxNavigationService _navigationService;
         private readonly IRaceService _raceService;
         private readonly IRunService _runService;
+        private int _displayRunNumber;
+        private readonly IMvxMessenger _messenger;
+        private string _name;
+        private MvxSubscriptionToken _token;
 
-        public ControlRaceViewModel(IMvxNavigationService navigationService, IMvxMessenger messenger, IRunService runService,
+        public ControlRaceViewModel(IMvxNavigationService navigationService, IMvxMessenger messenger,
+            IRunService runService,
             IRaceService raceService)
         {
             _navigationService = navigationService;
@@ -50,11 +51,14 @@ namespace Hurace.RaceControl.ViewModels
 
         public MvxCommand StartRun { get; set; }
 
-        public MvxObservableCollection<RunEntryViewModel> CurrentRun { get; } = new MvxObservableCollection<RunEntryViewModel>();
+        public MvxObservableCollection<RunEntryViewModel> CurrentRun { get; } =
+            new MvxObservableCollection<RunEntryViewModel>();
 
-        public MvxObservableCollection<RunEntryViewModel> FinishedRuns { get; } = new MvxObservableCollection<RunEntryViewModel>();
+        public MvxObservableCollection<RunEntryViewModel> FinishedRuns { get; } =
+            new MvxObservableCollection<RunEntryViewModel>();
 
-        public MvxObservableCollection<RunEntryViewModel> NextRuns { get; } = new MvxObservableCollection<RunEntryViewModel>();
+        public MvxObservableCollection<RunEntryViewModel> NextRuns { get; } =
+            new MvxObservableCollection<RunEntryViewModel>();
 
         public MvxCommand ShowFirstRunCommand { get; set; }
 
@@ -86,7 +90,8 @@ namespace Hurace.RaceControl.ViewModels
             });
             _token = _messenger.Subscribe<DisqualifySkierMessage>(async message =>
             {
-                await _runService.UpdateRunStatus(message.Run.Race, DisplayRunNumber, message.Run.Skier, RunStatus.Disqualified);
+                await _runService.UpdateRunStatus(message.Run.Race, DisplayRunNumber, message.Run.Skier,
+                    RunStatus.Disqualified);
                 SwitchRun(DisplayRunNumber);
             });
             _runService.RunStatusChanged += (currentRace, raceNumber, skier, status) =>
@@ -96,7 +101,10 @@ namespace Hurace.RaceControl.ViewModels
 
         private async void SwitchRun(int runNumber)
         {
-            var runEntries = (await _runService.GetAllRunsForRace(Race, runNumber)).Select(run => new RunEntryViewModel(_messenger, run)).ToList();
+            if (runNumber == 2 && Race.CompletedRuns == 0 && NextRuns.Count == 0)
+                await _raceService.CompleteRun(Race, 1);
+            var runEntries = (await _runService.GetAllRunsForRace(Race, runNumber))
+                .Select(run => new RunEntryViewModel(_messenger, run)).ToList();
             FinishedRuns.SwitchTo(runEntries.Where(runEntry =>
                 runEntry.Run.Status == RunStatus.Completed || runEntry.Run.Status == RunStatus.Disqualified ||
                 runEntry.Run.Status == RunStatus.Unfinished || runEntry.Run.Status == RunStatus.NotStarted));

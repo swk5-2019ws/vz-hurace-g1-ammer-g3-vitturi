@@ -19,9 +19,39 @@
         <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter" />
         <converter:TimeSpanToBrushConverter x:Key="TimeSpanToBrushConverter" />
         <converter:StringToAbbreviationConverter x:Key="StringToAbbreviationConverter" />
+        <converter:TimeSpanFormatConverter x:Key="TimeSpanFormatConverter" StringFormat="mm\:ss\:ff" />
+        <converter:DoubleTimeFormatConverter x:Key="DoubleTimeFormatConverter" StringFormat="mm\:ss\:ff" />
 
         <AcrylicBrush x:Key="BlackAcrylicBackgroundBrush" BackgroundSource="HostBackdrop"
                       TintOpacity="0.7" TintColor="#FF000000" FallbackColor="#FF000000" />
+
+        <DataTemplate x:Key="SensorMeasurementTemplate" x:DataType="viewModels:SensorMeasurementEntryViewModel">
+            <Grid Width="180" Margin="0,0,-10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Background="{ThemeResource SystemControlAcrylicElementBrush}" CornerRadius="3,0,0,3">
+                    <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
+                               Margin="0,7,40,7" HorizontalAlignment="Right"
+                               Text="{x:Bind TimeSpan, Converter={StaticResource TimeSpanFormatConverter}}" />
+                </Border>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SensorDiffMeasurementTemplate" x:DataType="viewModels:SensorMeasurementEntryViewModel">
+            <Grid Width="180" Margin="0,0,-10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" CornerRadius="3,0,0,3" Width="7" Background="{x:Bind TimeSpan, Converter={StaticResource TimeSpanToBrushConverter}}" />
+                <Border Grid.Column="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
+                               Margin="5,7,40,7" HorizontalAlignment="Right"
+                               Text="{x:Bind TimeSpan, Converter={StaticResource TimeSpanFormatConverter}}" />
+                </Border>
+            </Grid>
+        </DataTemplate>
     </views:MvxWindowsPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -48,16 +78,16 @@
                                   CornerRadius="100" />
                 <Image Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" Margin="30,54,0,0" Stretch="Fill"
                        Height="40" Width="60"
-                       Source="{x:Bind ViewModel.CountryCode, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                       Source="{x:Bind ViewModel.CountryCode, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
                 <TextBlock Grid.Column="2" Grid.Row="0" Foreground="White" HorizontalAlignment="Left"
                            Margin="20,40,22,0" FontSize="50"
-                           Text="{x:Bind ViewModel.FirstName, Converter={StaticResource StringToUpperCaseConverter}}" />
+                           Text="{x:Bind ViewModel.FirstName, Mode=OneWay, Converter={StaticResource StringToUpperCaseConverter}}" />
                 <TextBlock Grid.Column="3" Grid.Row="0" Foreground="White" FontSize="50" FontWeight="Bold"
                            Margin="0,40,0,0"
-                           Text="{x:Bind ViewModel.LastName, Converter={StaticResource StringToUpperCaseConverter}}" />
+                           Text="{x:Bind ViewModel.LastName, Mode=OneWay, Converter={StaticResource StringToUpperCaseConverter}}" />
                 <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="26,0,0,0" Foreground="White"
                            FontSize="50" FontWeight="Bold"
-                           Text="{x:Bind ViewModel.StartNumber}" />
+                           Text="{x:Bind ViewModel.StartNumber, Mode=OneWay}" />
             </Grid>
         </Border>
         <Grid x:Name="SkierTime" Grid.Row="1">
@@ -74,35 +104,24 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <ListView Grid.Row="0" ItemsSource="{x:Bind ViewModel.SensorMeasurementEntries}" SelectionMode="None"
-                          Grid.ColumnSpan="2" HorizontalAlignment="Right">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="viewModels:SensorMeasurementEntryViewModel">
-                            <Grid Width="180" Margin="0,0,-10,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="3,0,0,3" Width="7" />
-                                <Border Grid.Column="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                                    <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
-                                               Margin="5,7,40,7" HorizontalAlignment="Right"
-                                               Text="{x:Bind TimeSpan}" />
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <ListView Grid.Row="0" ItemsSource="{x:Bind ViewModel.SensorMeasurementEntries}"
+                          ItemTemplate="{StaticResource SensorMeasurementTemplate}" SelectionMode="None"
+                          Grid.ColumnSpan="2" HorizontalAlignment="Right" />
 
-                <ListView Grid.Row="1" VerticalAlignment="Bottom" ItemsSource="{x:Bind ViewModel.Runs}"
+                <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.SensorMeasurementDiffEntries}"
+                          ItemTemplate="{StaticResource SensorDiffMeasurementTemplate}" SelectionMode="None"
+                          Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Right" />
+
+                <ListView Grid.Row="2" VerticalAlignment="Bottom" ItemsSource="{x:Bind ViewModel.Runs}"
                           SelectionMode="None" Grid.Column="0"
                           HorizontalAlignment="Left">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="domain:Run">
                             <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}"
-                                  CornerRadius="0,10,10,0" Width="350" Margin="-12,0,0,0">
+                                  CornerRadius="0,10,10,0" Width="360" Margin="-12,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -110,8 +129,9 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{x:Bind StartPosition}" Foreground="#005D7f" FontSize="25"
-                                           FontWeight="Bold" Margin="40,0,10,5" />
+                                <TextBlock Grid.Column="0" Text="{x:Bind EndPosition}" Foreground="#005D7f"
+                                           FontSize="25"
+                                           FontWeight="Bold" Margin="10,0,10,5" />
                                 <Image Grid.Column="1" Width="30" Height="25"
                                        Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
                                 <TextBlock Grid.Column="2" FontSize="22" FontWeight="SemiBold" Margin="10,0,0,0"
@@ -121,17 +141,18 @@
                                            VerticalAlignment="Center"
                                            Text="{x:Bind Skier.LastName, Converter={StaticResource StringToUpperCaseConverter}}" />
                                 <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                           FontSize="22" FontWeight="SemiBold" Margin="10,0,0,0" Width="80"
-                                           Text="{x:Bind TotalTime}" />
+                                           FontSize="22" FontWeight="SemiBold" Margin="10,0,0,0" Width="100"
+                                           Text="{x:Bind TotalTime, Converter={StaticResource DoubleTimeFormatConverter}}" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Border Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,50"
+                <Border Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,50"
                         CornerRadius="10,0,0,10" HorizontalAlignment="Right"
                         Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                    <TextBlock Text="{x:Bind ViewModel.ElapsedTime}" FontSize="30" FontWeight="Bold" Margin="70,0,70,0" />
+                    <TextBlock Text="{x:Bind ViewModel.ElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" FontSize="30" FontWeight="Bold"
+                               Margin="70,0,70,0" />
                 </Border>
             </Grid>
         </Grid>

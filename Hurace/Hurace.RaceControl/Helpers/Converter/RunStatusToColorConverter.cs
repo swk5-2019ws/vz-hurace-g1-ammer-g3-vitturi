@@ -1,16 +1,16 @@
-﻿using Hurace.Domain;
-using System;
+﻿using System;
 using Windows.UI;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
+using Hurace.Domain;
 
 namespace Hurace.RaceControl.Helpers.Converter
 {
-    class RunStatusToColorConverter : IValueConverter
+    internal class RunStatusToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            switch ((RunStatus)value)
+            switch ((RunStatus) value)
             {
                 case RunStatus.Disqualified:
                 case RunStatus.NotStarted:

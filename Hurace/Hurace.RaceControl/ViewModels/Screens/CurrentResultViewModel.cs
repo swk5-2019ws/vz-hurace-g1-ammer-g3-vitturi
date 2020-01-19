@@ -6,41 +6,19 @@ namespace Hurace.RaceControl.ViewModels.Screens
 {
     public class CurrentResultViewModel : MvxViewModel
     {
-        private string _name;
         private Gender _gender;
         private Location _location;
+        private string _name;
+        private string _pictureUrl;
+        private readonly IRaceService _raceService;
         private RaceType _raceType;
         private int _runNumber;
-        private string _pictureUrl;
-        private IRunService _runService;
-        private IRaceService _raceService;
+        private readonly IRunService _runService;
 
         public CurrentResultViewModel(IRaceService raceService, IRunService runService)
         {
             _raceService = raceService;
             _runService = runService;
-        }
-
-        public override async void Prepare()
-        {
-            base.Prepare();
-
-            var currentRace = await _raceService.GetCurrentRace();
-            Name = currentRace.Name;
-            Gender = currentRace.Gender;
-            Location = currentRace.Location;
-            RunNumber = currentRace.CompletedRuns >= 1 ? 2 : 1;
-            RaceType = currentRace.RaceType;
-            PictureUrl = currentRace.PictureUrl;
-
-            var runs = await _runService.GetLeaderBoard(currentRace, RunNumber);
-            Runs.SwitchTo(runs);
-
-            _runService.LeaderBoardUpdated += (race, runNumber, leaderboardRuns) =>
-            {
-                RunNumber = runNumber;
-                Runs.SwitchTo(leaderboardRuns);
-            };
         }
 
         public string Name
@@ -80,5 +58,27 @@ namespace Hurace.RaceControl.ViewModels.Screens
         }
 
         public MvxObservableCollection<Run> Runs { get; set; } = new MvxObservableCollection<Run>();
+
+        public override async void Prepare()
+        {
+            base.Prepare();
+
+            var currentRace = await _raceService.GetCurrentRace();
+            Name = currentRace.Name;
+            Gender = currentRace.Gender;
+            Location = currentRace.Location;
+            RunNumber = currentRace.CompletedRuns >= 1 ? 2 : 1;
+            RaceType = currentRace.RaceType;
+            PictureUrl = currentRace.PictureUrl;
+
+            var runs = await _runService.GetLeaderBoard(currentRace, RunNumber);
+            Runs.SwitchTo(runs);
+
+            _runService.LeaderBoardUpdated += (race, runNumber, leaderboardRuns) =>
+            {
+                RunNumber = runNumber;
+                Runs.SwitchTo(leaderboardRuns);
+            };
+        }
     }
 }

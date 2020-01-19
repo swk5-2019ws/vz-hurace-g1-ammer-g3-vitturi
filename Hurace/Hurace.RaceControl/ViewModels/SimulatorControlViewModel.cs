@@ -1,45 +1,63 @@
-﻿using Hurace.Simulator;
+﻿using System;
+using Windows.UI.Xaml;
+using Hurace.Simulator;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
-using System;
-using Windows.UI.Xaml;
 
 namespace Hurace.RaceControl.ViewModels
 {
     public class SimulatorControlViewModel : MvxViewModel
     {
-        private SimulatorRaceClock _raceClock;
-        DispatcherTimer _dispatcherTimer;
+        private bool _automaticallySend;
+        private readonly DispatcherTimer _dispatcherTimer;
 
         private bool _inputEnabled;
+        private readonly SimulatorRaceClock _raceClock;
+
+        private int _sendInterval;
+
+        private int _sensorCount;
+
+        private int _sensorNumber;
+
+        public SimulatorControlViewModel(SimulatorRaceClock raceClock)
+        {
+            _raceClock = raceClock;
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += dispatcherTimer_Tick;
+
+            SensorNumber = 0;
+            SensorCount = 5;
+            SendInterval = 10;
+            InputEnabled = true;
+
+            SendTimerImpulseCommand = new MvxCommand(SendTimerImpulse);
+        }
+
         public bool InputEnabled
         {
             get => _inputEnabled;
             set => SetProperty(ref _inputEnabled, value);
         }
 
-        private int _sensorNumber;
         public int SensorNumber
         {
             get => _sensorNumber;
             set => SetProperty(ref _sensorNumber, value);
         }
 
-        private int _sensorCount;
         public int SensorCount
         {
             get => _sensorCount;
             set => SetProperty(ref _sensorCount, value);
         }
 
-        private int _sendInterval;
         public int SendInterval
         {
             get => _sendInterval;
             set => SetProperty(ref _sendInterval, value);
         }
 
-        private bool _automaticallySend;
         public bool AutomaticallySend
         {
             get => _automaticallySend;
@@ -62,20 +80,6 @@ namespace Hurace.RaceControl.ViewModels
         }
 
         public MvxCommand SendTimerImpulseCommand { get; set; }
-
-        public SimulatorControlViewModel(SimulatorRaceClock raceClock)
-        {
-            _raceClock = raceClock;
-            _dispatcherTimer = new DispatcherTimer();
-            _dispatcherTimer.Tick += dispatcherTimer_Tick;
-
-            SensorNumber = 0;
-            SensorCount = 5;
-            SendInterval = 10;
-            InputEnabled = true;
-
-            SendTimerImpulseCommand = new MvxCommand(SendTimerImpulse);
-        }
 
         public void SendTimerImpulse()
         {

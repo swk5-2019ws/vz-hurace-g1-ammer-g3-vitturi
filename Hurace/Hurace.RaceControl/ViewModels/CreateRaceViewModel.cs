@@ -1,27 +1,30 @@
-﻿using Hurace.Core.Interface.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using Hurace.RaceControl.Helpers;
 using Hurace.RaceControl.Helpers.MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 using MvvmCross.Plugin.Messenger;
+using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
 {
     public class CreateRaceViewModel : MvxViewModel<Race>
     {
+        private readonly IDialogService _dialogService;
         private readonly ILocationService _locationService;
         private readonly IMvxNavigationService _navigationService;
+        private readonly IRaceService _raceService;
+        private readonly IRunService _runService;
         private readonly ISkierService _skierService;
+        private readonly RaceValidator raceValidator = new RaceValidator();
         private DateTimeOffset _date;
 
         private string _description;
-        private readonly IDialogService _dialogService;
 
         private Gender _gender;
         private bool _isNewRace;
@@ -32,10 +35,9 @@ namespace Hurace.RaceControl.ViewModels
 
         private string _pictureUrl;
         private Race _race;
-        private readonly IRaceService _raceService;
+        private bool _raceIsNotFinished;
 
         private RaceType _raceType;
-        private readonly IRunService _runService;
 
         private Location _selectedLocation;
 
@@ -45,12 +47,11 @@ namespace Hurace.RaceControl.ViewModels
         private MvxSubscriptionToken _token;
 
         private string _website;
-        private readonly RaceValidator raceValidator = new RaceValidator();
-        private bool _raceIsNotFinished;
 
         public CreateRaceViewModel(IMvxNavigationService navigationService, IDialogService dialogService,
             IMvxMessenger messenger,
-            ILocationService locationService, ISkierService skierService, IRaceService raceService, IRunService runService)
+            ILocationService locationService, ISkierService skierService, IRaceService raceService,
+            IRunService runService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
@@ -118,10 +119,7 @@ namespace Hurace.RaceControl.ViewModels
             get => _gender;
             set
             {
-                if (value != _gender)
-                {
-                    StartListEntries.Clear();
-                }
+                if (value != _gender) StartListEntries.Clear();
                 SetProperty(ref _gender, value, () =>
                 {
                     _race.Gender = Gender;
@@ -217,7 +215,7 @@ namespace Hurace.RaceControl.ViewModels
                     Gender = Gender.Male,
                     RaceType = RaceType.Slalom,
                     Status = RaceStatus.Ready,
-                    NumberOfSensors = 2
+                    NumberOfSensors = 5
                 };
             }
 
@@ -229,16 +227,14 @@ namespace Hurace.RaceControl.ViewModels
                     race.Status = RaceStatus.InProgress;
                     SaveRaceCommand.Execute();
                 }
+
                 await _navigationService.Navigate<ControlRaceViewModel, Race>(_race);
             }, () => StartListEntries.Count > 2);
 
             _token = Messenger.Subscribe<StartListUpdateMessage>(message =>
             {
                 if (message.StartPosition <= StartListEntries.Count)
-                {
                     StartListEntries.RemoveAt(message.StartPosition - 1);
-
-                }
             });
 
             SaveRaceCommand = new MvxCommand(async () =>
@@ -270,13 +266,15 @@ namespace Hurace.RaceControl.ViewModels
             RaceIsNotFinished = _race.Status != RaceStatus.Finished;
 
             var locations = await _locationService.GetLocations();
-            var runs = (await _runService.GetAllRunsForRace(race, 1));
+            var runs = await _runService.GetAllRunsForRace(race, 1);
             if (runs.Any())
             {
                 var startListEntries = runs.Select(entry =>
-                    new StartListEntryViewModel(Messenger) { Skier = entry.Skier, StartPosition = entry.StartPosition, RaceStatus = Status });
+                    new StartListEntryViewModel(Messenger)
+                        {Skier = entry.Skier, StartPosition = entry.StartPosition, RaceStatus = Status});
                 StartListEntries.SwitchTo(startListEntries);
             }
+
             Locations.SwitchTo(locations);
             StartListEntries.CollectionChanged += RunsOnCollectionChanged;
         }

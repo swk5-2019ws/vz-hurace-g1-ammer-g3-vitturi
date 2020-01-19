@@ -25,6 +25,7 @@
         <converter:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
         <converter:StringToUpperCaseConverter  x:Key="StringToUpperCaseConverter"/>
         <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter"/>
+        <converter:DoubleTimeFormatConverter x:Key="DoubleTimeFormatConverter" StringFormat="mm\:ss\:ff" />
     </views:MvxWindowsPage.Resources>
 
     <Grid>
@@ -81,7 +82,7 @@
                             <ColumnDefinition Width="Auto" MinWidth="150" />
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Margin="-12,0,0,0" Background="{StaticResource OrangeGradientBrush}">
-                            <TextBlock Margin="15,0,15,0" Padding="20,5,20,5" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind RunNumber}" />
+                            <TextBlock Margin="15,0,15,0" Padding="20,5,20,5" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind EndPosition}" />
                         </Border>
                         <Border Grid.Column="1" Background="{StaticResource BlueAcrylicBrush}">
                             <Grid>
@@ -99,7 +100,7 @@
                             </Grid>
                         </Border>
                         <Border Grid.Column="2" Margin="0,0,-12,0" Background="{StaticResource BlueGradientBrush}">
-                            <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" Foreground="White" FontSize="22" HorizontalAlignment="Right" Text="{x:Bind TotalTime}" />
+                            <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" Foreground="White" FontSize="22" HorizontalAlignment="Right" Text="{x:Bind TotalTime, Converter={StaticResource DoubleTimeFormatConverter}}" />
                         </Border>
                     </Grid>
                 </DataTemplate>

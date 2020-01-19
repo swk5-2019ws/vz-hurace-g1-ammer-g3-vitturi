@@ -1,14 +1,20 @@
-﻿using MvvmCross.Commands;
+﻿using Windows.ApplicationModel;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using Windows.ApplicationModel;
 
 namespace Hurace.RaceControl.ViewModels
 {
     public class SettingsViewModel : MvxViewModel
     {
+        private readonly IMvxNavigationService _navigationService;
         private string _versionDescription;
-        private IMvxNavigationService _navigationService;
+
+        public SettingsViewModel(IMvxNavigationService navigationService)
+        {
+            _navigationService = navigationService;
+            OpenSimulatorCommand = new MvxCommand(OpenSimulator);
+        }
 
         public MvxCommand OpenSimulatorCommand { get; set; }
 
@@ -16,12 +22,6 @@ namespace Hurace.RaceControl.ViewModels
         {
             get => _versionDescription;
             set => SetProperty(ref _versionDescription, value);
-        }
-
-        public SettingsViewModel(IMvxNavigationService navigationService)
-        {
-            _navigationService = navigationService;
-            OpenSimulatorCommand = new MvxCommand(OpenSimulator);
         }
 
         public override void Prepare()

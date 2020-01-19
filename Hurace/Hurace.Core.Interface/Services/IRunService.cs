@@ -9,6 +9,8 @@ namespace Hurace.Core.Interface.Services
 
     public delegate void SensorMeasurementAddedHandler(Race race, int runNumber, Skier skier, TimeSpan timeSpan);
 
+    public delegate void RunStartedHandler(Race race, int runNumber, Skier skier);
+
     public delegate void RunStatusChangedHandler(Race race, int runNumber, Skier skier, RunStatus runStatus);
 
     public interface IRunService
@@ -18,6 +20,8 @@ namespace Hurace.Core.Interface.Services
         event RunStatusChangedHandler RunStatusChanged;
 
         event LeaderBoardUpdateHandler LeaderBoardUpdated;
+
+        event RunStartedHandler RunStarted;
 
         Task UpdateRunStatus(Race race, int runNumber, Skier skier, RunStatus status);
 

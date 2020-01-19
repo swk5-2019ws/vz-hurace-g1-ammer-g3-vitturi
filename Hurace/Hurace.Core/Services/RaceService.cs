@@ -1,17 +1,20 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Hurace.Core.Interface.Services;
 using Hurace.Domain;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Hurace.Core.Services
 {
     public class RaceService : Service, IRaceService
     {
-        public event RaceStatusChangedHandler RaceStatusChanged;
+        private const int AmountSkierSecondRun = 30;
 
         public RaceService(DaoProvider daoProvider) : base(daoProvider)
         {
         }
+
+        public event RaceStatusChangedHandler RaceStatusChanged;
 
         public async Task CreateRace(Race race, IList<Skier> skiers)
         {
@@ -23,10 +26,7 @@ namespace Hurace.Core.Services
         {
             var savedRace = await DaoProvider.RaceDao.FindById(race.Id).ConfigureAwait(false);
             await DaoProvider.RaceDao.Update(race).ConfigureAwait(false);
-            if (race.Status != savedRace.Status)
-            {
-                RaceStatusChanged?.Invoke(race, race.Status);
-            }
+            if (race.Status != savedRace.Status) RaceStatusChanged?.Invoke(race, race.Status);
         }
 
         public async Task CompleteRun(Race race, int runNumber)
@@ -37,18 +37,16 @@ namespace Hurace.Core.Services
             if (runNumber >= 1)
             {
                 // Create inverted start list
-                var pastRuns = await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber).ConfigureAwait(false);
+                var pastRuns =
+                    (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber).ConfigureAwait(false)).Take(
+                        AmountSkierSecondRun);
                 var newStartList = new List<Skier>();
 
                 foreach (var pastRun in pastRuns)
-                {
                     if (pastRun.Status == RunStatus.Completed)
-                    {
                         newStartList.Insert(0, pastRun.Skier);
-                    }
-                }
 
-                await CreateStartList(race, runNumber + 1, newStartList).ConfigureAwait(false);
+                await CreateSecondStartList(race, pastRuns.Reverse().ToList(), newStartList).ConfigureAwait(false);
             }
         }
 
@@ -60,24 +58,6 @@ namespace Hurace.Core.Services
         public async Task<Race> GetCurrentRace()
         {
             return await DaoProvider.RaceDao.GetCurrentRace().ConfigureAwait(false);
-        }
-
-        private async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)
-        {
-            IList<Run> runs = new List<Run>();
-            for (var i = 0; i < skiers.Count; i++)
-            {
-                runs.Add(new Run
-                {
-                    Race = race,
-                    Status = RunStatus.Ready,
-                    RunNumber = runNumber,
-                    Skier = skiers[i],
-                    StartPosition = i + 1,
-                });
-            }
-
-            await DaoProvider.RunDao.InsertMany(runs).ConfigureAwait(false);
         }
 
         public async Task EditStartList(Race race, int runNumber, IList<Skier> skiers)
@@ -104,6 +84,39 @@ namespace Hurace.Core.Services
         public async Task<Race> GetRace(int id)
         {
             return await DaoProvider.RaceDao.FindById(id).ConfigureAwait(false);
+        }
+
+        private async Task CreateSecondStartList(Race race, IList<Run> firstRuns, IList<Skier> skiers)
+        {
+            IList<Run> runs = new List<Run>();
+            for (var i = 0; i < skiers.Count; i++)
+                runs.Add(new Run
+                {
+                    Race = race,
+                    Status = RunStatus.Ready,
+                    RunNumber = 2,
+                    Skier = skiers[i],
+                    TotalTime = firstRuns[i].TotalTime,
+                    StartPosition = i + 1
+                });
+
+            await DaoProvider.RunDao.InsertMany(runs).ConfigureAwait(false);
+        }
+
+        private async Task CreateStartList(Race race, int runNumber, IList<Skier> skiers)
+        {
+            IList<Run> runs = new List<Run>();
+            for (var i = 0; i < skiers.Count; i++)
+                runs.Add(new Run
+                {
+                    Race = race,
+                    Status = RunStatus.Ready,
+                    RunNumber = runNumber,
+                    Skier = skiers[i],
+                    StartPosition = i + 1
+                });
+
+            await DaoProvider.RunDao.InsertMany(runs).ConfigureAwait(false);
         }
     }
 }

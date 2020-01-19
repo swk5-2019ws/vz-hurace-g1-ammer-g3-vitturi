@@ -1,5 +1,5 @@
-﻿using MvvmCross.ViewModels;
-using System;
+﻿using System;
+using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.ViewModels
 {

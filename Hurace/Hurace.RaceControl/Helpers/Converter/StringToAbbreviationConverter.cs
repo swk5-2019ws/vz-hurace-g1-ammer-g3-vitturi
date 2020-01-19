@@ -7,7 +7,7 @@ namespace Hurace.RaceControl.Helpers.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string name = (string)value;
+            var name = (string) value;
             return $"{name.ToUpper()[0]}.";
         }
 
