@@ -34,13 +34,17 @@ Universal Windows Platform application to view and manipulate the data.
 Implementation of Hurace.Timer with manual controls in a graphical user interface.
 
 **Hurace.Timer**  
-Assignemnt-specified `IRaceClock` interface.
+Assignment-specified `IRaceClock` interface.
 
 # Data Storage
 
 ## Models
 
 Classes in the application logic (.NET classes) and relational entities (SQL tables) have been modeled to be a one-to-one representation of each other, besides a few exceptions for enumerations. Each entity has the same attributes (properties in .NET, columns in SQL) and connections to other entities (refernces in .NET, foreign keys in SQL).
+
+![](assets/cld.png)
+
+![](assets/erd.png)
 
 ***DataObject***  
 An abstract entity that is uniquely identified by an integer `Id` which constitutes its primary key. This serves as base class for all other classes that fullfill this characteristic.
@@ -111,6 +115,9 @@ Indicates that the property is the primary key.
 **`Required`**  
 Indicates that the column must not be null.
 
+**`Ignore`**
+Specifies that the column should be ignored when inserting or updating an object.
+
 The following methods can be used to communicate with the database.
 
 **`Get<T>(id)`**  
@@ -166,7 +173,13 @@ A set of matching rules in the Angular Hurace.Web client can be used to provide 
 
 # Business Logic
 
-![](assets/sequence-diagram.jpeg)
+The first sequence diagram visualizes the flow when the web app wants to retrieve the sensor measurements for the current run.
+
+![](assets/get-sensor-measurements.jpeg)
+
+The second diagram show the steps which are eecuted when a new sensor measurement is added.
+
+![](assets/handle-sensor-measurement.png)
 
 ## Services
 
@@ -188,21 +201,78 @@ Each service may need one or more DAO implementations for each entity it updates
 
 # Graphical User Interface
 
+The race control is an UWP app to control all the races. 
+
+This page shows all created races and also let's the user search for specific races. The side navigation on the left allows a quick navigation between the most important screens.
+
 ![](assets/home.png)
+
+This screen can be used to create new races and also update them. Unfortunately UWP does not implement `INotifyDataErrorInfo` on text boxes and therefore no error indicator are displayed. On the right half the user can edited the start list.
 
 ![](assets/edit.png)
 
+This page is used to control the race by releasing skiers, stopping a race, disqualify skiers and switching to the second run.
+
 ![](assets/control.png)
 
-![](assets/current_result.png)
+This screen allows to create new windows which show the current result or the current skier.
 
-![](assets/current_skier.png)
+![](assets/screen-selection.png)
+
+The current result screen shows the currentleader board.
+
+![](assets/current-result.png)
+
+The current skier screen shows the current skier and also the current position in the race.
+
+![](assets/current-skier.png)
 
 ## Universal Windows Platform
 
+The client is realized with the Universal Windows Platform and a helper library called [Windows Community Toolkit](https://docs.microsoft.com/en-us/windows/communitytoolkit/).
+
 ## MvvmCross
 
+MvvmCross is a convention based MVVM framework for Xamarin and Windows. The main usages of these library are listed below:
+
+* Dependeny injection of services
+* Navigation between ViewModels with the `IMvxNavigationService`
+* Communication between ViewModels with the `MvxMessengerHub`
+* Custom `MvxWindowsViewPresenter` to allow the creation of new windows (e. g. current result screen)
+* Custom `DialogService` with the `IMvxMessenger`
+
+### Dependency Injection
+
+By specifying a class which inherits from `MvxApplication`, all services can be registered as singletons and therefore every ViewModel can access them if needed.
+
+```
+public override void Initialize()
+{
+    var daoProvider = new DaoProvider(countryDao, locationDao, raceDao, runDao, sensorMeasurementDao, skierDao);
+    var messengerHub = new MvxMessengerHub();
+    var simulatorRaceClock = new SimulatorRaceClock();
+    Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(messengerHub);
+    Mvx.IoCProvider.RegisterSingleton<IDialogService>(new DialogService(messengerHub));
+    Mvx.IoCProvider.RegisterSingleton<IRaceService>(new RaceService(daoProvider));
+    Mvx.IoCProvider.RegisterSingleton<ILocationService>(new LocationService(daoProvider));
+    Mvx.IoCProvider.RegisterSingleton<ISkierService>(new SkierService(daoProvider));
+    Mvx.IoCProvider.RegisterSingleton<IRunService>(new RunService(daoProvider, simulatorRaceClock));
+    Mvx.IoCProvider.RegisterSingleton<SimulatorRaceClock>(simulatorRaceClock);
+
+    RegisterAppStart<ViewModels.NavigationRootViewModel>();
+}
+```
+
+## Limitations of UWP
+
+* The UWP TextBox does not implement the `INotifyDataErrorInfo` (see [Issue 179](https://github.com/microsoft/microsoft-ui-xaml/issues/179))
+* NavigationView does not support Command (see [Issue 944](https://github.com/microsoft/microsoft-ui-xaml/issues/944))
+* x:Bind does not support StringFormat without a converter (see [String format using UWP and x:Bind](https://stackoverflow.com/questions/34026332/string-format-using-uwp-and-xbind/34026544))
+* UWP does not support IMultiValueConverter
+
 # Simulator
+
+![](assets/simulator.png)
 
 The simulator provides a simple way to send time impulses for testing and demonstration purposes. It is composed by an implementation of `IRaceClock` and an view and related view controller.
 
