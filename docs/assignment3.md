@@ -38,7 +38,7 @@ Assignment-specified `IRaceClock` interface.
 
 # Data Storage
 
-## Models
+## Models (`Hurace.Domain`)
 
 Classes in the application logic (.NET classes) and relational entities (SQL tables) have been modeled to be a one-to-one representation of each other, besides a few exceptions for enumerations. Each entity has the same attributes (properties in .NET, columns in SQL) and connections to other entities (refernces in .NET, foreign keys in SQL).
 
@@ -80,7 +80,7 @@ A measurement performed by `Hurace.Timer` during a race. The measurement is rela
 A class representing a participant of ski competitions.
 
 
-## Data Access Objects
+## Data Access Objects (`Hurace.Core/Daos`)
 
 The DAOs provide a set of methods to insert, retrieve, update, delete the domain classes in the concrete storage provider, that is a SQLite database. Each operation is implemented generically by `DataObjectDao`, from which all other DAOs are derived, with the helper of `Hurace.Core.Mapper`.
 
@@ -94,7 +94,7 @@ A file-based database management system is also an appropriate storage type for 
 
 Despite many misconceptions, SQLite provides a locking mechanism and allows for concurrency making it feasable to have multiple clients accessing the data, in this case the UI and web API.
 
-## Object-Relational Mapper
+## Object-Relational Mapper (`Hurace.Core.Mapper`)
 
 The Hurace.Core.Mapper project is a simple object mapper that is responsible for mapping between the database and the programming language. It also adds extension methods for `DbConnections` to query a database.
 
@@ -137,7 +137,7 @@ Deletes an entity.
 
 All of these extensions rely on one of the base methods `Execute` or `Query`.
 
-# Web API
+# Web API (`Hurace.Api`)
 
 ## OpenAPI
 
@@ -171,7 +171,7 @@ public async Task<ActionResult<Skier>> CreateSkier(
 
 A set of matching rules in the Angular Hurace.Web client can be used to provide immediate feedback to the user trying to modify or create a resource before submitting the request to the server and receiving an error message.
 
-# Business Logic
+# Business Logic (`Hurace.Core`)
 
 The first sequence diagram visualizes the flow when the web app wants to retrieve the sensor measurements for the current run.
 
@@ -181,7 +181,7 @@ The second diagram show the steps which are eecuted when a new sensor measuremen
 
 ![](assets/handle-sensor-measurement.png)
 
-## Services
+## Services (`Hurace.Core/Services`)
 
 In order to access the data access objects (DAOs) the view controllers, and the web API backend, communicate with a business logic layer divided into multiple *services*:
 
@@ -199,7 +199,7 @@ Moreover these two services are responsible for signaling to the Race Control th
 
 Each service may need one or more DAO implementations for each entity it updates or needs information from. An helper class `DaoProvider` has been created in order to collect all DAO implementations so to be passed to each service, which will then have all DAOs at its availability. The helper class simply takes all DAOs (`ICountryDao`, `ILocationDao`, `IRaceDao`, `IRunDao`, `ISensorMeasurementDao`, `ISkierDao`) in the constructor an makes them available as public properties.
 
-# Graphical User Interface
+# Graphical User Interface (`Hurace.RaceControl`)
 
 The race control is an UWP app to control all the races. 
 
@@ -270,7 +270,7 @@ public override void Initialize()
 * x:Bind does not support StringFormat without a converter (see [String format using UWP and x:Bind](https://stackoverflow.com/questions/34026332/string-format-using-uwp-and-xbind/34026544))
 * UWP does not support IMultiValueConverter
 
-# Simulator
+# Simulator (`Hurace.Simulator`, `Hurace.RaceControl/Simulator`)
 
 ![](assets/simulator.png)
 
@@ -287,7 +287,7 @@ Since the sensors are not supposed to be completely reliable, the simulator allo
 
 When the business logic recives a sensor measurement to be handled it makes sure it is valid by checking whether the sensor identifier is following the previously saved measurement. This means sensor measurements are only considered when received in the correct order.
 
-# Testing
+# Testing (`Hurace.Core.Test`)
 
 ## In-Memory Database
 
