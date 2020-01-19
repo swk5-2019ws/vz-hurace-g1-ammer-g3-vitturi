@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+#nullable enable
 namespace Hurace.Core.Interface.Services
 {
     public interface ISkierService

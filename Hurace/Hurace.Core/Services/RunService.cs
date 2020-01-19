@@ -62,7 +62,7 @@ namespace Hurace.Core.Services
         {
             var interimTimesDifferences = new List<TimeSpan>();
 
-            var bestRun = (await GetLeaderBoard(race, runNumber)).ToList().FirstOrDefault();
+            var bestRun = (await GetLeaderBoard(race, runNumber)).ToList().FirstOrDefault(run => run.RunNumber == runNumber);
             if (bestRun == null || bestRun.Status != RunStatus.Completed) return interimTimesDifferences;
 
             var bestRunInterimTimes = await GetInterimTimes(bestRun.Race, bestRun.RunNumber, bestRun.Skier);

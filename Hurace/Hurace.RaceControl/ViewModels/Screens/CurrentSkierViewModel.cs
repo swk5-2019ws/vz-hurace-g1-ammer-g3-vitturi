@@ -25,6 +25,7 @@ namespace Hurace.RaceControl.ViewModels.Screens
         private int _startNumber;
         private readonly Stopwatch _stopWatch;
         private TimeSpan _totalTime;
+        private int _runNumber;
 
         public CurrentSkierViewModel(IRunService runService, IRaceService raceService)
         {
@@ -76,6 +77,12 @@ namespace Hurace.RaceControl.ViewModels.Screens
             set => SetProperty(ref _elapsedTime, value);
         }
 
+        public int RunNumber
+        {
+            get => _runNumber;
+            set => SetProperty(ref _runNumber, value);
+        }
+
         public MvxObservableCollection<SensorMeasurementEntryViewModel> SensorMeasurementEntries { get; } =
             new MvxObservableCollection<SensorMeasurementEntryViewModel>();
 
@@ -87,6 +94,7 @@ namespace Hurace.RaceControl.ViewModels.Screens
         public override async void Prepare()
         {
             base.Prepare();
+            RunNumber = 1;
             _currentRace = await _raceService.GetCurrentRace();
             _runService.SensorMeasurementAdded += (race, number, skier, timeSpan) => RefreshRun();
             _runService.RunStatusChanged += (race, number, skier, status) => HandleRunStatusChange(status);
@@ -110,6 +118,7 @@ namespace Hurace.RaceControl.ViewModels.Screens
                 _stopWatch.Stop();
                 _dispatcherTimer.Stop();
                 _stopWatch.Reset();
+                ElapsedTime = TimeSpan.Zero;
                 FetchLeaderBoard();
             }
         }
@@ -120,18 +129,17 @@ namespace Hurace.RaceControl.ViewModels.Screens
             if (currentRun != null)
             {
                 _lastRun = currentRun;
+                RunNumber = currentRun.RunNumber;
                 PictureUrl = currentRun.Skier.PictureUrl;
                 FirstName = currentRun.Skier.FirstName;
                 LastName = currentRun.Skier.LastName;
                 StartNumber = currentRun.StartPosition;
                 CountryCode = currentRun.Skier.Country.Code;
-                TotalTime = TimeSpan.FromMilliseconds(currentRun.TotalTime);
+                TotalTime = TimeSpan.FromMilliseconds(currentRun.TotalTime * 1000);
                 var times = await _runService.GetInterimTimes(_currentRace, currentRun.RunNumber, currentRun.Skier);
                 SensorMeasurementEntries.SwitchTo(times.Select(timeSpan => new SensorMeasurementEntryViewModel
                     {TimeSpan = timeSpan}));
-                var diffTimes =
-                    await _runService.GetInterimTimesDifferences(times, _currentRace, currentRun.RunNumber,
-                        currentRun.Skier);
+                var diffTimes = await _runService.GetInterimTimesDifferences(times, _currentRace, currentRun.RunNumber, currentRun.Skier);
                 SensorMeasurementDiffEntries.SwitchTo(diffTimes.Select(timeSpan => new SensorMeasurementEntryViewModel
                     {TimeSpan = timeSpan}));
                 FetchLeaderBoard();

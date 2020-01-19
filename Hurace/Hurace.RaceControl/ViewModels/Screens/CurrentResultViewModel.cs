@@ -1,4 +1,5 @@
-﻿using Hurace.Core.Interface.Services;
+﻿using System.Linq;
+using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 using MvvmCross.ViewModels;
 
@@ -14,6 +15,7 @@ namespace Hurace.RaceControl.ViewModels.Screens
         private RaceType _raceType;
         private int _runNumber;
         private readonly IRunService _runService;
+        private Skier _lastSkier;
 
         public CurrentResultViewModel(IRaceService raceService, IRunService runService)
         {
@@ -57,6 +59,13 @@ namespace Hurace.RaceControl.ViewModels.Screens
             set => SetProperty(ref _pictureUrl, value);
         }
 
+        public Skier LastSkier
+        {
+            get => _lastSkier;
+            set => SetProperty(ref _lastSkier, value);
+        }
+
+
         public MvxObservableCollection<Run> Runs { get; set; } = new MvxObservableCollection<Run>();
 
         public override async void Prepare()
@@ -77,7 +86,24 @@ namespace Hurace.RaceControl.ViewModels.Screens
             _runService.LeaderBoardUpdated += (race, runNumber, leaderboardRuns) =>
             {
                 RunNumber = runNumber;
+                var runsList = leaderboardRuns.ToList();
+                for (int i = 0; i < runsList.Count(); i++)
+                {
+                    if (i > 0)
+                    {
+                        runsList[i].TotalTime = runsList[i].TotalTime - runsList[0].TotalTime;
+                    }
+                }
                 Runs.SwitchTo(leaderboardRuns);
+            };
+
+            _runService.RunStatusChanged += (race, number, skier, status) =>
+            {
+                if (status == RunStatus.Completed)
+                {
+                    LastSkier = skier;
+
+                }
             };
         }
     }

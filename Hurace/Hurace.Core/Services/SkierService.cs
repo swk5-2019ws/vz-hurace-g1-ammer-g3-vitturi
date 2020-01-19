@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Hurace.Core.Interface.Services;
 using Hurace.Domain;
 
+#nullable enable
 namespace Hurace.Core.Services
 {
     public class SkierService : Service, ISkierService

@@ -87,8 +87,12 @@
                            Margin="0,40,0,0"
                            Text="{x:Bind ViewModel.LastName, Mode=OneWay, Converter={StaticResource StringToUpperCaseConverter}}" />
                 <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="26,0,0,0" Foreground="White"
-                           FontSize="50" FontWeight="Bold"
-                           Text="{x:Bind ViewModel.StartNumber, Mode=OneWay}" />
+                           FontSize="50" FontWeight="Bold">
+                    <Run Text="{x:Bind ViewModel.StartNumber, Mode=OneWay}" />
+                    <Run Text="(" />
+                    <Run Text="{x:Bind ViewModel.RunNumber, Mode=OneWay}" />
+                    <Run Text=". run )" />
+                </TextBlock>
             </Grid>
         </Border>
         <Grid x:Name="SkierTime" Grid.Row="1">
