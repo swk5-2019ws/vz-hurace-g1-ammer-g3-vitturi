@@ -2,7 +2,7 @@
 
 namespace Hurace.RaceControl.Helpers.MvvmCross
 {
-    class StartListUpdateMessage : MvxMessage
+    internal class StartListUpdateMessage : MvxMessage
     {
         public StartListUpdateMessage(object sender, int startPosition) : base(sender)
         {

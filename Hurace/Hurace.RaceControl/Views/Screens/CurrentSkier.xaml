@@ -44,7 +44,8 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" CornerRadius="3,0,0,3" Width="7" Background="{x:Bind TimeSpan, Converter={StaticResource TimeSpanToBrushConverter}}" />
+                <Border Grid.Column="0" CornerRadius="3,0,0,3" Width="7"
+                        Background="{x:Bind TimeSpan, Converter={StaticResource TimeSpanToBrushConverter}}" />
                 <Border Grid.Column="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
                     <TextBlock FontWeight="Bold" FontSize="18" VerticalAlignment="Center"
                                Margin="5,7,40,7" HorizontalAlignment="Right"
@@ -151,8 +152,10 @@
                 <Border Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,50"
                         CornerRadius="10,0,0,10" HorizontalAlignment="Right"
                         Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                    <TextBlock Text="{x:Bind ViewModel.ElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}" FontSize="30" FontWeight="Bold"
-                               Margin="70,0,70,0" />
+                    <TextBlock
+                        Text="{x:Bind ViewModel.ElapsedTime, Mode=OneWay, Converter={StaticResource TimeSpanFormatConverter}}"
+                        FontSize="30" FontWeight="Bold"
+                        Margin="70,0,70,0" />
                 </Border>
             </Grid>
         </Grid>

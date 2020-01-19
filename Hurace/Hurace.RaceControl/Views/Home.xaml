@@ -136,7 +136,8 @@
         </Image>
 
         <AutoSuggestBox x:Name="Search" Grid.Row="0" ItemsSource="{x:Bind ViewModel.SearchRaces, Mode=OneWay}"
-                        Text="{x:Bind ViewModel.RaceSearchText, Mode=TwoWay}" ItemTemplate="{StaticResource RaceViewTemplate}"
+                        Text="{x:Bind ViewModel.RaceSearchText, Mode=TwoWay}"
+                        ItemTemplate="{StaticResource RaceViewTemplate}"
                         Width="296" PlaceholderText="Search races" Margin="0,68,24,0" TextMemberPath="Name"
                         QueryIcon="Find">
             <interactivity:Interaction.Behaviors>

@@ -2,7 +2,6 @@
 using Hurace.RaceControl.ViewModels.Screens;
 using MvvmCross.ViewModels;
 
-
 namespace Hurace.RaceControl.Views.Screens
 {
     public abstract class CurrentSkierAbstract : BaseApplicationMvxPage<CurrentSkierViewModel>
@@ -15,7 +14,7 @@ namespace Hurace.RaceControl.Views.Screens
     {
         public CurrentSkier()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

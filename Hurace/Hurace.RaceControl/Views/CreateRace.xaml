@@ -47,7 +47,8 @@
                     <Run Text="{x:Bind LastName}" />
                 </TextBlock>
                 <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind Country.Code}" x:Phase="2" Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
+                    <TextBlock Text="{x:Bind Country.Code}" x:Phase="2" Style="{ThemeResource BodyTextBlockStyle}"
+                               Margin="12,0,0,6" />
                     <Image HorizontalAlignment="Right" Margin="5,-3,0,0" Stretch="Fill" Height="10" Width="15"
                            Source="{x:Bind Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
                 </StackPanel>
@@ -67,12 +68,13 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <SwipeControl x:Name="ListViewSwipeContainer" IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}">
+                    <SwipeControl x:Name="ListViewSwipeContainer"
+                                  IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}">
                         <SwipeControl.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem x:Name="DeleteSwipeItem"
                                            Background="Red"
-                                           Command="{x:Bind DeleteStartListEntryCommand}"/>
+                                           Command="{x:Bind DeleteStartListEntryCommand}" />
                             </SwipeItems>
                         </SwipeControl.RightItems>
                         <Grid VerticalAlignment="Center">
@@ -105,12 +107,14 @@
                             <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Text="{x:Bind Skier.Country.Code}" x:Phase="2"
                                            Style="{ThemeResource BodyTextBlockStyle}" Margin="12,0,0,6" />
-                                <Image HorizontalAlignment="Right" Margin="5,-3,0,0" Stretch="Fill" Height="10" Width="15"
+                                <Image HorizontalAlignment="Right" Margin="5,-3,0,0" Stretch="Fill" Height="10"
+                                       Width="15"
                                        Source="{x:Bind Skier.Country.Code, Mode=OneWay, Converter={StaticResource CountryCodeToImagePathConverter}}" />
                             </StackPanel>
                             <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton"
                                           IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
-                                          Command="{x:Bind DeleteStartListEntryCommand}" IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}"
+                                          Command="{x:Bind DeleteStartListEntryCommand}"
+                                          IsEnabled="{x:Bind RaceStatus, Converter={StaticResource RaceStatusToEnabledConverter}}"
                                           CommandParameter="{x:Bind StartPosition}" Icon="Delete" Label="Delete" />
                         </Grid>
                     </SwipeControl>
@@ -204,16 +208,21 @@
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Header="Name:" PlaceholderText="Name"
                              Text="{x:Bind ViewModel.Name, Mode=TwoWay}" />
-                    <CalendarDatePicker HorizontalAlignment="Stretch" Grid.Row="1" Header="Race date:" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
+                    <CalendarDatePicker HorizontalAlignment="Stretch" Grid.Row="1" Header="Race date:"
+                                        IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                                         PlaceholderText="Choose your race date"
                                         DateFormat="{}{dayofweek.full}‎, ‎{month.full}‎ ‎{day.integer}‎, ‎{year.full}"
                                         Date="{x:Bind ViewModel.Date, Mode=TwoWay}" />
-                    <AutoSuggestBox x:Name="LocationSuggestBox" Grid.Row="2" TextChanged="LocationAutoSuggestBox_TextChanged"
-                                    QuerySubmitted="LocationAutoSuggestBox_QuerySubmitted" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
+                    <AutoSuggestBox x:Name="LocationSuggestBox" Grid.Row="2"
+                                    TextChanged="LocationAutoSuggestBox_TextChanged"
+                                    QuerySubmitted="LocationAutoSuggestBox_QuerySubmitted"
+                                    IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                                     SuggestionChosen="LocationAutoSuggestBox_SuggestionChosen"
                                     PlaceholderText="Type a location name" Header="Location:" />
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.RaceTypes}" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
-                              SelectedItem="{x:Bind ViewModel.RaceType, Mode=TwoWay}" PlaceholderText="Pick a race type"
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.RaceTypes}"
+                              IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
+                              SelectedItem="{x:Bind ViewModel.RaceType, Mode=TwoWay}"
+                              PlaceholderText="Pick a race type"
                               Grid.Row="3" Header="Race type:">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -221,11 +230,13 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Genders}" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
+                    <ComboBox HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Genders}"
+                              IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                               SelectedItem="{x:Bind ViewModel.Gender, Mode=TwoWay}" PlaceholderText="Pick a gender"
                               Grid.Row="4" Header="Gender:" />
                     <TextBox Grid.Row="5" Header="Number of sensors:" PlaceholderText="5"
-                             extensions:TextBoxRegex.ValidationType="Number" IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
+                             extensions:TextBoxRegex.ValidationType="Number"
+                             IsEnabled="{x:Bind ViewModel.RaceIsNotFinished}"
                              extensions:TextBoxRegex.ValidationMode="Dynamic"
                              Text="{x:Bind ViewModel.NumberOfSensors, Mode=TwoWay}" />
                     <TextBlock Grid.Row="6" Text="Additional information"
@@ -258,7 +269,8 @@
                                 ItemTemplate="{StaticResource SkierViewTemplate}" QueryIcon="Find" />
                 <ListView x:Name="RunListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="2"
                           CanDragItems="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToEnabledConverter}}"
-                          CanReorderItems="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToEnabledConverter}}" AllowDrop="True" SelectionMode="Single"
+                          CanReorderItems="{x:Bind ViewModel.Status, Converter={StaticResource RaceStatusToEnabledConverter}}"
+                          AllowDrop="True" SelectionMode="Single"
                           ItemsSource="{Binding StartListEntries}"
                           ItemTemplate="{StaticResource StartListEntryViewTemplate}">
                     <ListView.HeaderTemplate>

@@ -21,12 +21,16 @@
             <Grid CornerRadius="30" Width="300">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="PointerEntered">
-                        <core:CallMethodAction TargetObject="{Binding ElementName=TextOffsetRight}" MethodName="StartAnimation"/>
-                        <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleUp}" MethodName="StartAnimation"/>
+                        <core:CallMethodAction TargetObject="{Binding ElementName=TextOffsetRight}"
+                                               MethodName="StartAnimation" />
+                        <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleUp}"
+                                               MethodName="StartAnimation" />
                     </core:EventTriggerBehavior>
                     <core:EventTriggerBehavior EventName="PointerExited">
-                        <core:CallMethodAction TargetObject="{Binding ElementName=TextOffsetLeft}" MethodName="StartAnimation"/>
-                        <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleDown}" MethodName="StartAnimation"/>
+                        <core:CallMethodAction TargetObject="{Binding ElementName=TextOffsetLeft}"
+                                               MethodName="StartAnimation" />
+                        <core:CallMethodAction TargetObject="{Binding ElementName=PhotoScaleDown}"
+                                               MethodName="StartAnimation" />
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
                 <Image Grid.Row="0"
@@ -48,8 +52,10 @@
                     <TextBlock Foreground="White" TextWrapping="Wrap" FontSize="30" FontWeight="Bold"
                                Text="{x:Bind Converter={StaticResource ScreenTypeToStringConverter}}" />
                     <interactivity:Interaction.Behaviors>
-                        <behaviors:Offset x:Name="TextOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="8" OffsetY="8" EasingMode="EaseOut" EasingType="Cubic" />
-                        <behaviors:Offset x:Name="TextOffsetLeft"  Duration="400" Delay="0" AutomaticallyStart="False" OffsetX="0" OffsetY="0" EasingMode="EaseOut"  EasingType="Cubic" />
+                        <behaviors:Offset x:Name="TextOffsetRight" Duration="400" Delay="0" AutomaticallyStart="False"
+                                          OffsetX="8" OffsetY="8" EasingMode="EaseOut" EasingType="Cubic" />
+                        <behaviors:Offset x:Name="TextOffsetLeft" Duration="400" Delay="0" AutomaticallyStart="False"
+                                          OffsetX="0" OffsetY="0" EasingMode="EaseOut" EasingType="Cubic" />
                     </interactivity:Interaction.Behaviors>
                 </controls:DropShadowPanel>
             </Grid>
@@ -62,7 +68,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Screens" Height="52" Margin="20,20,0,0" Style="{ThemeResource SubtitleTextBlockStyle}" />
+        <TextBlock Grid.Row="0" Text="Screens" Height="52" Margin="20,20,0,0"
+                   Style="{ThemeResource SubtitleTextBlockStyle}" />
         <controls:AdaptiveGridView Name="AdaptiveGridViewControl"
                                    Grid.Row="1"
                                    Height="1200"
@@ -72,7 +79,7 @@
                                    SelectionMode="Single"
                                    IsItemClickEnabled="True"
                                    ItemTemplate="{StaticResource ScreensTemplate}"
-                                   ItemsSource="{x:Bind ViewModel.ScreenTypes}" ItemClickCommand="{x:Bind ViewModel.ScreenSelectCommand}">
-        </controls:AdaptiveGridView>
+                                   ItemsSource="{x:Bind ViewModel.ScreenTypes}"
+                                   ItemClickCommand="{x:Bind ViewModel.ScreenSelectCommand}" />
     </Grid>
 </local:ScreenSelectionAbstract>

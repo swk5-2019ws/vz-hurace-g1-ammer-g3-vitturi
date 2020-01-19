@@ -1,10 +1,10 @@
-﻿using Hurace.RaceControl.Helpers.MvvmCross;
-using Hurace.RaceControl.ViewModels;
-using MvvmCross.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Hurace.RaceControl.Helpers.MvvmCross;
+using Hurace.RaceControl.ViewModels;
+using MvvmCross.ViewModels;
 
 namespace Hurace.RaceControl.Views
 {
@@ -21,7 +21,8 @@ namespace Hurace.RaceControl.Views
         }
 
         /// <summary>
-        /// NavigationView command binding is not supported at the moment: https://github.com/microsoft/microsoft-ui-xaml/issues/944.
+        ///     NavigationView command binding is not supported at the moment:
+        ///     https://github.com/microsoft/microsoft-ui-xaml/issues/944.
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="args">The args</param>

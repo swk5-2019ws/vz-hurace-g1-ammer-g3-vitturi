@@ -12,7 +12,7 @@
         <NavigationView x:Name="NavView" ItemInvoked="NavView_ItemInvoked" IsBackEnabled="True"
                         BackRequested="NavigationView_BackRequested">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Races" IsSelected="True" >
+                <NavigationViewItem Content="Races" IsSelected="True">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC4A;" />
                     </NavigationViewItem.Icon>
@@ -24,7 +24,8 @@
                 </NavigationViewItem>
                 <NavigationViewItemHeader Content="Quick Links" />
                 <NavigationViewItem Content="Create race" Icon="Add" />
-                <NavigationViewItem Content="Current race" Icon="Play" IsEnabled="{x:Bind ViewModel.IsRaceActive, Mode=OneWay}" />
+                <NavigationViewItem Content="Current race" Icon="Play"
+                                    IsEnabled="{x:Bind ViewModel.IsRaceActive, Mode=OneWay}" />
             </NavigationView.MenuItems>
         </NavigationView>
     </Grid>

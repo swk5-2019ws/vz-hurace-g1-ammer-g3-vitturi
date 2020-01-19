@@ -36,7 +36,7 @@ namespace Hurace.RaceControl.Views
             {
                 if (message.DialogEvent == DialogEvent.NoRaceInProgress)
                 {
-                    toast = new ToastNotification(toastContent.GetXml()) { ExpirationTime = DateTime.Now.AddSeconds(2) };
+                    toast = new ToastNotification(toastContent.GetXml()) {ExpirationTime = DateTime.Now.AddSeconds(2)};
                     ToastNotificationManager.CreateToastNotifier().Show(toast);
                 }
             });

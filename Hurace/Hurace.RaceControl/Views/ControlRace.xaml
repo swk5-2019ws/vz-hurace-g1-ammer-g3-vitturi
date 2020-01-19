@@ -18,7 +18,8 @@
 
         <DataTemplate x:Key="RunViewTemplate" x:DataType="viewModels:RunEntryViewModel">
             <UserControl PointerEntered="Run_PointerEntered" PointerExited="RunEntry_PointerExited">
-                <Grid Background="{x:Bind Run.Status, Converter={StaticResource RunStatusToColorConverter}}" Margin="0,5,0,5" CornerRadius="10">
+                <Grid Background="{x:Bind Run.Status, Converter={StaticResource RunStatusToColorConverter}}"
+                      Margin="0,5,0,5" CornerRadius="10">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="HoveringStates">
                             <VisualState x:Name="HoverButtonsHidden" />
@@ -66,8 +67,10 @@
                             <Image Grid.Column="2" Grid.Row="1" x:Phase="2" Stretch="Fill"
                                    Height="10" Width="15" HorizontalAlignment="Left" Margin="30,0,0,0"
                                    Source="{x:Bind Run.Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
-                            <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton" Label="Disqualify" IsEnabled="{x:Bind CanDisqualify}"
-                                          IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed" Command="{x:Bind DisqualifySkierCommand}">
+                            <AppBarButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Name="HoverButton"
+                                          Label="Disqualify" IsEnabled="{x:Bind CanDisqualify}"
+                                          IsTabStop="False" HorizontalAlignment="Right" Visibility="Collapsed"
+                                          Command="{x:Bind DisqualifySkierCommand}">
                                 <AppBarButton.Icon>
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDAE;" />
                                 </AppBarButton.Icon>

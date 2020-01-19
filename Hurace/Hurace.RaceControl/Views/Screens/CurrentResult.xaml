@@ -12,8 +12,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <views:MvxWindowsPage.Resources>
-        <AcrylicBrush x:Key="OrangeAcrylicBrush" BackgroundSource="Backdrop" TintOpacity="0.8" TintColor="#FF9300" FallbackColor="#FF9300" />
-        <AcrylicBrush x:Key="BlueAcrylicBrush" BackgroundSource="Backdrop" TintOpacity="0.8" TintColor="#225C92" FallbackColor="#225C92" />
+        <AcrylicBrush x:Key="OrangeAcrylicBrush" BackgroundSource="Backdrop" TintOpacity="0.8" TintColor="#FF9300"
+                      FallbackColor="#FF9300" />
+        <AcrylicBrush x:Key="BlueAcrylicBrush" BackgroundSource="Backdrop" TintOpacity="0.8" TintColor="#225C92"
+                      FallbackColor="#225C92" />
         <LinearGradientBrush x:Key="OrangeGradientBrush" StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientStop Color="#F5CD27" Offset="1.0" />
             <GradientStop Color="#D38A2B" Offset="0.0" />
@@ -23,8 +25,8 @@
             <GradientStop Color="#01020C" Offset="1.0" />
         </LinearGradientBrush>
         <converter:RaceTypeToStringConverter x:Key="RaceTypeToStringConverter" />
-        <converter:StringToUpperCaseConverter  x:Key="StringToUpperCaseConverter"/>
-        <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter"/>
+        <converter:StringToUpperCaseConverter x:Key="StringToUpperCaseConverter" />
+        <converter:CountryCodeToImagePathConverter x:Key="CountryCodeToImagePathConverter" />
         <converter:DoubleTimeFormatConverter x:Key="DoubleTimeFormatConverter" StringFormat="mm\:ss\:ff" />
     </views:MvxWindowsPage.Resources>
 
@@ -35,7 +37,8 @@
                               Source="{x:Bind ViewModel.PictureUrl, TargetNullValue=/Assets/CurrentResultPlaceholder.jpg}" />
         </ParallaxView>
 
-        <ListView x:Name="ResultList" Margin="30,30,30,0" SelectedIndex="-1" ItemsSource="{x:Bind ViewModel.Runs}" SelectionMode="None">
+        <ListView x:Name="ResultList" Margin="30,30,30,0" SelectedIndex="-1" ItemsSource="{x:Bind ViewModel.Runs}"
+                  SelectionMode="None">
             <ListView.Header>
                 <controls:ScrollHeader Mode="QuickReturn">
                     <Grid>
@@ -44,31 +47,37 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" CornerRadius="10,10,0,0" Margin="0,0,0,5" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                        <Grid Grid.Row="0" CornerRadius="10,10,0,0" Margin="0,0,0,5"
+                              Background="{ThemeResource SystemControlAcrylicElementBrush}">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Margin="0,0,20,0" HorizontalAlignment="Right" FontSize="50" Text="{x:Bind ViewModel.Name, Converter={StaticResource StringToUpperCaseConverter}}"></TextBlock>
-                            <TextBlock Grid.Row="1" Margin="0,-10,20,5" HorizontalAlignment="Right" FontSize="30" Text="{x:Bind ViewModel.Location.Name, Converter={StaticResource StringToUpperCaseConverter}}"></TextBlock>
+                            <TextBlock Grid.Row="0" Margin="0,0,20,0" HorizontalAlignment="Right" FontSize="50"
+                                       Text="{x:Bind ViewModel.Name, Converter={StaticResource StringToUpperCaseConverter}}" />
+                            <TextBlock Grid.Row="1" Margin="0,-10,20,5" HorizontalAlignment="Right" FontSize="30"
+                                       Text="{x:Bind ViewModel.Location.Name, Converter={StaticResource StringToUpperCaseConverter}}" />
                         </Grid>
                         <Border Grid.Row="1" Margin="0,0,0,5" Background="{ThemeResource OrangeAcrylicBrush}">
                             <TextBlock Margin="0,0,20,5" FontSize="20" HorizontalAlignment="Right">
-                                <Run Text="{x:Bind ViewModel.RaceType, Converter={StaticResource RaceTypeToStringConverter}}"></Run>
-                                <Run Text="{x:Bind ViewModel.Gender}"></Run>
+                                <Run
+                                    Text="{x:Bind ViewModel.RaceType, Converter={StaticResource RaceTypeToStringConverter}}" />
+                                <Run Text="{x:Bind ViewModel.Gender}" />
                             </TextBlock>
                         </Border>
                         <Grid Grid.Row="2" Background="{ThemeResource SystemControlAcrylicElementBrush}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Left">
-                                <Run Text="RESULT"></Run>
-                                <Run Text="{x:Bind ViewModel.RunNumber}"></Run>
-                                <Run Text="RUN"></Run>
+                            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="0"
+                                       HorizontalAlignment="Left">
+                                <Run Text="RESULT" />
+                                <Run Text="{x:Bind ViewModel.RunNumber}" />
+                                <Run Text="RUN" />
                             </TextBlock>
-                            <TextBlock Margin="0,5,20,5" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" Text="TIME"></TextBlock>
+                            <TextBlock Margin="0,5,20,5" FontSize="15" Grid.Column="1" HorizontalAlignment="Right"
+                                       Text="TIME" />
                         </Grid>
                     </Grid>
                 </controls:ScrollHeader>
@@ -78,29 +87,39 @@
                     <Grid VerticalAlignment="Center" Margin="0,11.5,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" MinWidth="150" />
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Margin="-12,0,0,0" Background="{StaticResource OrangeGradientBrush}">
-                            <TextBlock Margin="15,0,15,0" Padding="20,5,20,5" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind EndPosition}" />
+                            <TextBlock Margin="15,0,15,0" Padding="20,5,20,5" FontSize="22" FontWeight="Bold"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Text="{x:Bind EndPosition}" />
                         </Border>
                         <Border Grid.Column="1" Background="{StaticResource BlueAcrylicBrush}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Margin="15,0,0,0" FontSize="22" Foreground="White" VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Stretch">
-                                    <Run Text="{x:Bind Skier.FirstName}"></Run>
-                                    <Run Text="{x:Bind Skier.LastName, Converter={StaticResource StringToUpperCaseConverter}}"></Run>
+                                <TextBlock Margin="15,0,0,0" FontSize="22" Foreground="White"
+                                           VerticalAlignment="Center" Grid.Column="0" HorizontalAlignment="Stretch">
+                                    <Run Text="{x:Bind Skier.FirstName}" />
+                                    <Run
+                                        Text="{x:Bind Skier.LastName, Converter={StaticResource StringToUpperCaseConverter}}" />
                                 </TextBlock>
-                                <Image Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0" Stretch="Fill" Height="20" Width="30" Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}"/>
-                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="White" Grid.Column="2" FontSize="22" Margin="0,0,20,0" Text="{x:Bind Skier.Country.Code}" />
+                                <Image Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0" Stretch="Fill"
+                                       Height="20" Width="30"
+                                       Source="{x:Bind Skier.Country.Code, Converter={StaticResource CountryCodeToImagePathConverter}}" />
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="White"
+                                           Grid.Column="2" FontSize="22" Margin="0,0,20,0"
+                                           Text="{x:Bind Skier.Country.Code}" />
                             </Grid>
                         </Border>
                         <Border Grid.Column="2" Margin="0,0,-12,0" Background="{StaticResource BlueGradientBrush}">
-                            <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" Foreground="White" FontSize="22" HorizontalAlignment="Right" Text="{x:Bind TotalTime, Converter={StaticResource DoubleTimeFormatConverter}}" />
+                            <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" Foreground="White" FontSize="22"
+                                       HorizontalAlignment="Right"
+                                       Text="{x:Bind TotalTime, Converter={StaticResource DoubleTimeFormatConverter}}" />
                         </Border>
                     </Grid>
                 </DataTemplate>
@@ -108,8 +127,8 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Margin" Value="0,-11,0,0"></Setter>
-                    <Setter Property="Padding" Value="0"></Setter>
+                    <Setter Property="Margin" Value="0,-11,0,0" />
+                    <Setter Property="Padding" Value="0" />
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

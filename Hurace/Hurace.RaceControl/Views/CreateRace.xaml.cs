@@ -44,7 +44,7 @@ namespace Hurace.RaceControl.Views
             {
                 if (message.DialogEvent == DialogEvent.RaceEditSuccess)
                 {
-                    toast = new ToastNotification(toastContent.GetXml()) { ExpirationTime = DateTime.Now.AddSeconds(4) };
+                    toast = new ToastNotification(toastContent.GetXml()) {ExpirationTime = DateTime.Now.AddSeconds(4)};
                     ToastNotificationManager.CreateToastNotifier().Show(toast);
                 }
             });

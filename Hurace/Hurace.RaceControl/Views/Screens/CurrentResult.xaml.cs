@@ -14,7 +14,7 @@ namespace Hurace.RaceControl.Views.Screens
     {
         public CurrentResult()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

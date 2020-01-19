@@ -2,9 +2,9 @@
 
 namespace Hurace.RaceControl.Helpers.MvvmCross
 {
-    class DialogService : IDialogService
+    internal class DialogService : IDialogService
     {
-        private IMvxMessenger _messenger;
+        private readonly IMvxMessenger _messenger;
 
         public DialogService(IMvxMessenger messenger)
         {

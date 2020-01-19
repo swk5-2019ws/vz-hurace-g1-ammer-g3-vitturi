@@ -2,7 +2,7 @@
 
 namespace Hurace.RaceControl.Helpers.MvvmCross
 {
-    class DialogMessage : MvxMessage
+    internal class DialogMessage : MvxMessage
     {
         public DialogMessage(object sender, DialogEvent dialogEvent) : base(sender)
         {
