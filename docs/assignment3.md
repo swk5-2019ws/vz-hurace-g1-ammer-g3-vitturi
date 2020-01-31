@@ -34,13 +34,17 @@ Universal Windows Platform application to view and manipulate the data.
 Implementation of Hurace.Timer with manual controls in a graphical user interface.
 
 **Hurace.Timer**  
-Assignemnt-specified `IRaceClock` interface.
+Assignment-specified `IRaceClock` interface.
 
 # Data Storage
 
-## Models
+## Models (`Hurace.Domain`)
 
 Classes in the application logic (.NET classes) and relational entities (SQL tables) have been modeled to be a one-to-one representation of each other, besides a few exceptions for enumerations. Each entity has the same attributes (properties in .NET, columns in SQL) and connections to other entities (refernces in .NET, foreign keys in SQL).
+
+![](assets/cld.png)
+
+![](assets/erd.png)
 
 ***DataObject***  
 An abstract entity that is uniquely identified by an integer `Id` which constitutes its primary key. This serves as base class for all other classes that fullfill this characteristic.
@@ -76,7 +80,7 @@ A measurement performed by `Hurace.Timer` during a race. The measurement is rela
 A class representing a participant of ski competitions.
 
 
-## Data Access Objects
+## Data Access Objects (`Hurace.Core/Daos`)
 
 The DAOs provide a set of methods to insert, retrieve, update, delete the domain classes in the concrete storage provider, that is a SQLite database. Each operation is implemented generically by `DataObjectDao`, from which all other DAOs are derived, with the helper of `Hurace.Core.Mapper`.
 
@@ -90,7 +94,7 @@ A file-based database management system is also an appropriate storage type for 
 
 Despite many misconceptions, SQLite provides a locking mechanism and allows for concurrency making it feasable to have multiple clients accessing the data, in this case the UI and web API.
 
-## Object-Relational Mapper
+## Object-Relational Mapper (`Hurace.Core.Mapper`)
 
 The Hurace.Core.Mapper project is a simple object mapper that is responsible for mapping between the database and the programming language. It also adds extension methods for `DbConnections` to query a database.
 
@@ -111,6 +115,9 @@ Indicates that the property is the primary key.
 **`Required`**  
 Indicates that the column must not be null.
 
+**`Ignore`**
+Specifies that the column should be ignored when inserting or updating an object.
+
 The following methods can be used to communicate with the database.
 
 **`Get<T>(id)`**  
@@ -130,7 +137,7 @@ Deletes an entity.
 
 All of these extensions rely on one of the base methods `Execute` or `Query`.
 
-# Web API
+# Web API (`Hurace.Api`)
 
 ## OpenAPI
 
@@ -164,11 +171,17 @@ public async Task<ActionResult<Skier>> CreateSkier(
 
 A set of matching rules in the Angular Hurace.Web client can be used to provide immediate feedback to the user trying to modify or create a resource before submitting the request to the server and receiving an error message.
 
-# Business Logic
+# Business Logic (`Hurace.Core`)
 
-![](assets/sequence-diagram.jpeg)
+The first sequence diagram visualizes the flow when the web app wants to retrieve the sensor measurements for the current run.
 
-## Services
+![](assets/get-sensor-measurements.jpeg)
+
+The second diagram show the steps which are eecuted when a new sensor measurement is added.
+
+![](assets/handle-sensor-measurement.png)
+
+## Services (`Hurace.Core/Services`)
 
 In order to access the data access objects (DAOs) the view controllers, and the web API backend, communicate with a business logic layer divided into multiple *services*:
 
@@ -186,23 +199,80 @@ Moreover these two services are responsible for signaling to the Race Control th
 
 Each service may need one or more DAO implementations for each entity it updates or needs information from. An helper class `DaoProvider` has been created in order to collect all DAO implementations so to be passed to each service, which will then have all DAOs at its availability. The helper class simply takes all DAOs (`ICountryDao`, `ILocationDao`, `IRaceDao`, `IRunDao`, `ISensorMeasurementDao`, `ISkierDao`) in the constructor an makes them available as public properties.
 
-# Graphical User Interface
+# Graphical User Interface (`Hurace.RaceControl`)
+
+The race control is an UWP app to control all the races. 
+
+This page shows all created races and also let's the user search for specific races. The side navigation on the left allows a quick navigation between the most important screens.
 
 ![](assets/home.png)
 
+This screen can be used to create new races and also update them. Unfortunately UWP does not implement `INotifyDataErrorInfo` on text boxes and therefore no error indicator are displayed. On the right half the user can edited the start list.
+
 ![](assets/edit.png)
+
+This page is used to control the race by releasing skiers, stopping a race, disqualify skiers and switching to the second run.
 
 ![](assets/control.png)
 
-![](assets/current_result.png)
+This screen allows to create new windows which show the current result or the current skier.
 
-![](assets/current_skier.png)
+![](assets/screen-selection.png)
+
+The current result screen shows the currentleader board.
+
+![](assets/current-result.png)
+
+The current skier screen shows the current skier and also the current position in the race.
+
+![](assets/current-skier.png)
 
 ## Universal Windows Platform
 
+The client is realized with the Universal Windows Platform and a helper library called [Windows Community Toolkit](https://docs.microsoft.com/en-us/windows/communitytoolkit/).
+
 ## MvvmCross
 
-# Simulator
+MvvmCross is a convention based MVVM framework for Xamarin and Windows. The main usages of these library are listed below:
+
+* Dependeny injection of services
+* Navigation between ViewModels with the `IMvxNavigationService`
+* Communication between ViewModels with the `MvxMessengerHub`
+* Custom `MvxWindowsViewPresenter` to allow the creation of new windows (e. g. current result screen)
+* Custom `DialogService` with the `IMvxMessenger`
+
+### Dependency Injection
+
+By specifying a class which inherits from `MvxApplication`, all services can be registered as singletons and therefore every ViewModel can access them if needed.
+
+```
+public override void Initialize()
+{
+    var daoProvider = new DaoProvider(countryDao, locationDao, raceDao, runDao, sensorMeasurementDao, skierDao);
+    var messengerHub = new MvxMessengerHub();
+    var simulatorRaceClock = new SimulatorRaceClock();
+    Mvx.IoCProvider.RegisterSingleton<IMvxMessenger>(messengerHub);
+    Mvx.IoCProvider.RegisterSingleton<IDialogService>(new DialogService(messengerHub));
+    Mvx.IoCProvider.RegisterSingleton<IRaceService>(new RaceService(daoProvider));
+    Mvx.IoCProvider.RegisterSingleton<ILocationService>(new LocationService(daoProvider));
+    Mvx.IoCProvider.RegisterSingleton<ISkierService>(new SkierService(daoProvider));
+    Mvx.IoCProvider.RegisterSingleton<IRunService>(new RunService(daoProvider, simulatorRaceClock));
+    Mvx.IoCProvider.RegisterSingleton<SimulatorRaceClock>(simulatorRaceClock);
+
+    RegisterAppStart<ViewModels.NavigationRootViewModel>();
+}
+```
+
+## Limitations of UWP
+
+* The UWP TextBox does not implement the `INotifyDataErrorInfo` (see [Issue 179](https://github.com/microsoft/microsoft-ui-xaml/issues/179))
+* NavigationView does not support Command (see [Issue 944](https://github.com/microsoft/microsoft-ui-xaml/issues/944))
+* x:Bind does not support StringFormat without a converter (see [String format using UWP and x:Bind](https://stackoverflow.com/questions/34026332/string-format-using-uwp-and-xbind/34026544))
+* UWP does not support IMultiValueConverter
+
+# Simulator (`Hurace.Simulator`, `Hurace.RaceControl/Simulator`)
+
+![](assets/simulator.png)
 
 The simulator provides a simple way to send time impulses for testing and demonstration purposes. It is composed by an implementation of `IRaceClock` and an view and related view controller.
 
@@ -217,7 +287,7 @@ Since the sensors are not supposed to be completely reliable, the simulator allo
 
 When the business logic recives a sensor measurement to be handled it makes sure it is valid by checking whether the sensor identifier is following the previously saved measurement. This means sensor measurements are only considered when received in the correct order.
 
-# Testing
+# Testing (`Hurace.Core.Test`)
 
 ## In-Memory Database
 
