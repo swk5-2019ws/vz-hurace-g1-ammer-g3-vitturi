@@ -87,13 +87,6 @@ namespace Hurace.RaceControl.ViewModels.Screens
             {
                 RunNumber = runNumber;
                 var runsList = leaderboardRuns.ToList();
-                for (int i = 0; i < runsList.Count(); i++)
-                {
-                    if (i > 0)
-                    {
-                        runsList[i].TotalTime = runsList[i].TotalTime - runsList[0].TotalTime;
-                    }
-                }
                 Runs.SwitchTo(leaderboardRuns);
             };
 

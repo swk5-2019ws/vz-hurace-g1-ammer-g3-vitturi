@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Hurace.Core.Services
             {
                 // Create inverted start list
                 var pastRuns =
-                    (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber).ConfigureAwait(false)).Take(
+                    (await GetLeaderBoard(race, runNumber).ConfigureAwait(false)).Take(
                         AmountSkierSecondRun);
                 var newStartList = new List<Skier>();
 
@@ -46,7 +47,7 @@ namespace Hurace.Core.Services
                     if (pastRun.Status == RunStatus.Completed)
                         newStartList.Insert(0, pastRun.Skier);
 
-                await CreateSecondStartList(race, pastRuns.Reverse().ToList(), newStartList).ConfigureAwait(false);
+                await CreateSecondStartList(race, pastRuns.ToList(), newStartList).ConfigureAwait(false);
             }
         }
 
@@ -117,6 +118,26 @@ namespace Hurace.Core.Services
                 });
 
             await DaoProvider.RunDao.InsertMany(runs).ConfigureAwait(false);
+        }
+
+        private async Task<IEnumerable<Run>> GetLeaderBoard(Race race, int runNumber)
+        {
+            var runs = (await DaoProvider.RunDao.GetAllRunsForRace(race, runNumber)).ToArray();
+            Array.Sort(runs, (x, y) =>
+            {
+                var timeX = (int)(x.TotalTime * 1000);
+                var timeY = (int)(y.TotalTime * 1000);
+
+                // Push unfinished runs to the bottom
+                if (timeX == 0) timeX = int.MaxValue;
+                if (timeY == 0) timeY = int.MaxValue;
+
+                return timeX.CompareTo(timeY);
+            });
+
+            for (var i = 0; i < runs.Length; i++) runs[i].EndPosition = i + 1;
+
+            return runs;
         }
     }
 }

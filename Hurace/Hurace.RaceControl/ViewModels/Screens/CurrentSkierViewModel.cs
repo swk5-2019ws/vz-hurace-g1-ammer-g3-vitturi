@@ -154,7 +154,7 @@ namespace Hurace.RaceControl.ViewModels.Screens
             if (currentRunIndex != null)
             {
                 var leaderboardRuns = runs
-                    .Skip(currentRunIndex.index <= PreviousSkiers ? 0 : currentRunIndex.index - PreviousSkiers)
+                    .Skip(currentRunIndex.index <= PreviousSkiers ? 0 : (currentRunIndex.index - PreviousSkiers))
                     .Take(LeaderboardShownSkiers);
                 Runs.SwitchTo(leaderboardRuns);
             }
